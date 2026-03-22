@@ -2012,6 +2012,12 @@ def build(src_root, out_dir):
         rf'\1{ara_card}\n{sara_card}\2',
         html, count=1)
 
+    # Add back button to 아라캠/사라캠 section views
+    for campus_id in ['campus-ara', 'campus-sara']:
+        html = html.replace(
+            f'<div id="view-{campus_id}" class="view">\n  <div class="newsletter-section">\n    <div class="section-header">',
+            f'<div id="view-{campus_id}" class="view">\n  <div class="newsletter-section">\n    <div class="article-back-bar" onclick="showSection(\'campus\')"><span class="back-arrow">&larr;</span> 캠퍼스 네트워크 목록으로</div>\n    <div class="section-header">')
+
     # Fix 활동소개 카드: 날짜를 제목에서 부제로 이동, 시간 제거
     # 창립 58주년 (2025.1.24.) → 제목: 창립 58주년 기념 강연, 부제: 2025.1.24.
     # Use replace_all for both div and span variants
