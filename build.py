@@ -1403,7 +1403,20 @@ footer {
 }
 .back-top:hover { background: var(--green-mid); transform: translateY(-2px); opacity: 1; }
 
-/* -- RESPONSIVE -- */
+/* -- DESKTOP -- */
+@media (min-width: 641px) {
+    .nav-inner {
+        max-width: 100%;
+        justify-content: center;
+        gap: 1rem;
+    }
+    .nav-brand { font-size: 1.05rem; }
+    .toc-list a { font-size: 1rem; padding: 0.4rem 0.85rem; }
+    .masthead-eyebrow { font-size: 0.9rem; padding: 1.2rem 1.5rem 0.6rem; }
+    .masthead-meta { font-size: 1rem; padding: 1rem 1.5rem; }
+}
+
+/* -- MOBILE -- */
 @media (max-width: 640px) {
     .nav-inner {
         padding: 0 0.75rem;
