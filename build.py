@@ -1821,7 +1821,7 @@ def build(src_root, out_dir):
         html, flags=re.DOTALL)
 
     # Remove 연구비 수주 description aside block
-    html = re.sub(r'<div class="aside-block">.*?연구 참여가 활성화.*?</div>', '', html, flags=re.DOTALL)
+    html = re.sub(r'<div class="aside-block"><span>💡</span>\s*<span>[^<]*연구 참여가 활성화[^<]*</span></div>', '', html)
 
     # Fix 구성원 소개: remove blank hrs, 제주지회 구성원 heading, add 임원진 heading
     html = re.sub(r'<h1[^>]*>제주지회 구성원</h1>', '', html)
