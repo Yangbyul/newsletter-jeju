@@ -938,11 +938,11 @@ main {
     letter-spacing: -0.02em;
 }
 .section-desc {
-    font-size: 0.85rem;
-    color: var(--gray-text);
+    font-size: 0.78rem;
+    color: #aaa;
     font-family: var(--font-ui);
-    margin-top: 0.5rem;
-    line-height: 1.6;
+    margin: 0.3rem 0 0.8rem;
+    line-height: 1.4;
 }
 .section-subtitle {
     font-family: var(--font-ui);
