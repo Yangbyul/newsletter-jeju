@@ -1900,6 +1900,27 @@ def build(src_root, out_dir):
         '<span>제주대학교 교육대학원 교육학과 이인회 교수님께서 <strong>한국교육학회 제주지회 회장</strong>으로 취임하셨습니다. (임기: 2025.1.1.~2026.12.31.)</span>',
         html)
 
+    # Fix 신간 안내: merge 저/ and 학지사 lines
+    html = html.replace(
+        '한은정 저/</span>\n<span>학지사/ 2025.04.30. 출간</span>',
+        '한은정 저/ 학지사/ 2025.04.30. 출간</span>')
+
+    # Fix 박사학위논문 bold consistency:
+    # 통일 규칙: 한글 제목 볼드, 영문 제목 일반체, 저자정보 볼드
+    # 1. 영문제목에서 bold 제거 (전체 <strong> 감싸진 경우)
+    html = re.sub(
+        r'<span><strong>\((Experiences of Youth.*?)\)</strong></span>',
+        r'<span>(\1)</span>', html)
+    # 2. <strong>(</strong> 패턴 수정 (볼드 괄호만 있는 경우)
+    html = re.sub(r'<strong>\(</strong>', '(', html)
+    # 3. 장애학생 논문: 한글 제목 볼드로
+    html = html.replace(
+        '<span>장애학생 진로직업교육에 대한 질적 시스템다이내믹스 접근</span>',
+        '<span><strong>장애학생 진로직업교육에 대한 질적 시스템다이내믹스 접근</strong></span>')
+    html = html.replace(
+        '<span>: 지역사회와의 생태학적 협력체계를 중심으로</span>',
+        '<span><strong>: 지역사회와의 생태학적 협력체계를 중심으로</strong></span>')
+
     # Fix footer address: add line break after 아라캠퍼스
     html = html.replace(
         f'<span>{ADDRESS}</span>',
