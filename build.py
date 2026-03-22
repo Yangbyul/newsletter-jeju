@@ -472,37 +472,6 @@ SECTIONS = [
         'subsections': []
     },
     {
-        'id': 'activities',
-        'title': '제주지회 활동 소개',
-        'subtitle': '',
-        'icon': '',
-        'color': '#2d6a4f',
-        'file_key': '',
-        'subsections': [
-            {'title': '구성원 소개', 'file_key': '제주지회 활동 소개 237', 'strip_content': ['주요 행사와 운영 계획', '2025 주요 활동', '제주지회 향후 계획']},
-            {'title': '- 2025 주요 활동 -', 'file_key': '', 'is_divider': True},
-            {'title': '창립 58주년 기념 강연 (2025.1.24.)', 'file_key': '창립 58주년 기념 강연'},
-            {'title': '원도심마을탐방 (2025.4.26.)', 'file_key': '원도심마을탐방'},
-            {'title': '2025 임원회의 (2025.9.12.)', 'file_key': '2025 임원회의'},
-            {'title': '- 제주지회 향후 계획 -', 'file_key': '', 'is_divider': True},
-            {'title': '제주교육학 제4차 공동학술대회', 'file_key': '제주교육학 제 4차 공동학술대회'},
-            {'title': '2026년 창립 59주년 학술행사', 'file_key': '2026년 창립 59주년'},
-        ]
-    },
-    {
-        'id': 'member',
-        'title': '회원 동정',
-        'subtitle': '',
-        'icon': '',
-        'color': '#40916c',
-        'file_key': '',
-        'subsections': [
-            {'title': '연구비 수주', 'file_key': '연구비 수주'},
-            {'title': '회원 신간 안내', 'file_key': '회원 신간 안내'},
-            {'title': '회원 소식', 'file_key': '회원 소식 237'},
-        ]
-    },
-    {
         'id': 'jeju-news',
         'title': '제주교육소식',
         'subtitle': '',
@@ -535,6 +504,37 @@ SECTIONS = [
             {'title': '2025 유럽 선진 숲 교육기관 연수', 'file_key': '2025 유럽 선진 숲 교육기관 연수'},
             {'title': '신입생 소개 - 이선아', 'file_key': '신입생 소개 26cf7f2dc41f80df'},
             {'title': '신입생 소개 - 김신회', 'file_key': '신입생 소개 28bf7f2dc41f80c5'},
+        ]
+    },
+    {
+        'id': 'member',
+        'title': '회원 동정',
+        'subtitle': '',
+        'icon': '',
+        'color': '#40916c',
+        'file_key': '',
+        'subsections': [
+            {'title': '연구비 수주', 'file_key': '연구비 수주'},
+            {'title': '회원 신간 안내', 'file_key': '회원 신간 안내'},
+            {'title': '회원 소식', 'file_key': '회원 소식 237'},
+        ]
+    },
+    {
+        'id': 'activities',
+        'title': '제주지회 활동 소개',
+        'subtitle': '',
+        'icon': '',
+        'color': '#2d6a4f',
+        'file_key': '',
+        'subsections': [
+            {'title': '구성원 소개', 'file_key': '제주지회 활동 소개 237', 'strip_content': ['주요 행사와 운영 계획', '2025 주요 활동', '제주지회 향후 계획']},
+            {'title': '- 2025 주요 활동 -', 'file_key': '', 'is_divider': True},
+            {'title': '창립 58주년 기념 강연 (2025.1.24.)', 'file_key': '창립 58주년 기념 강연'},
+            {'title': '원도심마을탐방 (2025.4.26.)', 'file_key': '원도심마을탐방'},
+            {'title': '2025 임원회의 (2025.9.12.)', 'file_key': '2025 임원회의'},
+            {'title': '- 제주지회 향후 계획 -', 'file_key': '', 'is_divider': True},
+            {'title': '제주교육학 제4차 공동학술대회', 'file_key': '제주교육학 제 4차 공동학술대회'},
+            {'title': '2026년 창립 59주년 학술행사', 'file_key': '2026년 창립 59주년'},
         ]
     },
 ]
