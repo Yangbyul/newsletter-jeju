@@ -688,9 +688,11 @@ nav.site-nav {
     margin: 0 auto;
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.5rem;
     padding: 0.5rem 1.5rem;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 .nav-brand {
     color: var(--white);
@@ -705,7 +707,8 @@ nav.site-nav {
     display: flex;
     list-style: none;
     gap: 0.15rem;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    flex-shrink: 0;
 }
 .toc-list a {
     color: #b7e4c7;
@@ -821,6 +824,8 @@ main {
 }
 .section-content {
     padding: 1.5rem 1.75rem;
+    overflow-wrap: break-word;
+    word-break: keep-all;
 }
 
 /* TYPOGRAPHY */
@@ -960,6 +965,8 @@ td {
     border-bottom: 1px solid var(--gray-mid);
     vertical-align: top;
     line-height: 1.6;
+    word-break: keep-all;
+    overflow-wrap: break-word;
 }
 tr:nth-child(even) td { background: var(--green-faint); }
 tr:hover td { background: #e9f5ec; }
@@ -1085,9 +1092,10 @@ footer {
 
 /* RESPONSIVE */
 @media (max-width: 640px) {
-    .nav-inner { padding: 0.4rem 1rem; }
+    .nav-inner { padding: 0.4rem 0.8rem; gap: 0.3rem; }
+    .nav-brand { font-size: 0.7rem; }
     .toc-list { gap: 0.1rem; }
-    .toc-list a { font-size: 0.72rem; padding: 0.15rem 0.4rem; }
+    .toc-list a { font-size: 0.68rem; padding: 0.15rem 0.35rem; }
     main { padding: 1rem; }
     .section-header { padding: 1rem 1.25rem 0.75rem; }
     .section-content { padding: 1rem 1.25rem; }
@@ -1176,7 +1184,7 @@ def build_html(toc_html, intro_html, sections_html, hero_img_src):
 <!-- NAVIGATION -->
 <nav class="site-nav" role="navigation" aria-label="목차">
   <div class="nav-inner">
-    <a class="nav-brand" href="#">{NEWSLETTER_TITLE}</a>
+    <a class="nav-brand" href="#" onclick="event.preventDefault(); showSection('intro');">{NEWSLETTER_TITLE}</a>
     {toc_html}
   </div>
 </nav>
@@ -1253,9 +1261,7 @@ def build_html(toc_html, intro_html, sections_html, hero_img_src):
 # ---------------------------------------------------------------------------
 
 def build_toc():
-    items = [
-        '<li><a href="#" data-section="intro">발간사</a></li>',
-    ]
+    items = []
     for sec in SECTIONS:
         items.append(f'<li><a href="#" data-section="{sec["id"]}">{sec["title"]}</a></li>')
     return '<ul class="toc-list">' + ''.join(items) + '</ul>'
