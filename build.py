@@ -1963,10 +1963,10 @@ def build(src_root, out_dir):
         '<span><strong>가입비 겸 연회비</strong>: 30,000 (농협, 302-2028-2520-51, 한국교육학회 제주지회)</span>',
         '<span><strong>가입비 겸 연회비</strong><br>30,000 (농협, 302-2028-2520-51, 이인회)</span>')
 
-    # Fix 제주교육 나침반 split title
+    # Fix 제주교육 나침반 split title → merge into one heading
     html = re.sub(
         r'<h1[^>]*>제주형 학생맞춤통합지원 체계</h1>\s*<p>구축의 현재와 미래</p>',
-        '', html)
+        '<h1>제주형 학생맞춤통합지원 체계 구축의 현재와 미래</h1>', html)
 
     # Fix footer address: add line break after 아라캠퍼스
     html = html.replace(
