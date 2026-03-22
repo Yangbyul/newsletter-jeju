@@ -618,6 +618,8 @@ def build_intro_html(root_md_path):
     md = strip_h1(md)
     # Remove CSV/database links
     md = re.sub(r'\[.+?\]\(.+?\.csv\)\n?', '', md)
+    # Remove Notion navigation aside (cursor-click)
+    md = re.sub(r'<aside>.*?cursor-click.*?</aside>', '', md, flags=re.DOTALL)
     content = md_to_html(md, root_md_path)
     return f'''
 <section id="intro" class="newsletter-section intro-section">
