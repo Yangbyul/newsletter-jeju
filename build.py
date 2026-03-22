@@ -858,13 +858,14 @@ nav.site-nav {
     background: var(--green-dark);
 }
 .masthead-calligraphy {
-    width: 100%;
-    line-height: 0;
+    background: var(--green-dark);
+    text-align: center;
+    padding: 1.5rem 2rem;
 }
 .masthead-calligraphy img {
-    width: 100%;
-    height: auto;
-    display: block;
+    max-height: 50px;
+    width: auto;
+    display: inline-block;
 }
 .masthead-hero-img {
     width: 100%;
@@ -1592,7 +1593,7 @@ def build_html(toc_html, intro_html, sections_html, article_views_html, hero_img
   <div class="masthead-inner">
     <div class="masthead-eyebrow">{SINCE} &#183; {NEWSLETTER_SUBTITLE}</div>
     {hero}
-    <div class="masthead-calligraphy" style="display:none;"><img src="images/calligraphy.jpg" alt="제주교육마루"></div>
+    <div class="masthead-calligraphy" style="display:none;"><img src="images/calligraphy-white.png" alt="제주교육마루"></div>
     <div class="masthead-meta">
       <span>{NEWSLETTER_TITLE}</span>
       <span class="dot">&#183;</span>
