@@ -116,46 +116,40 @@ nav.site-nav {
 
 /* -- MASTHEAD -- */
 .masthead {
-    background: linear-gradient(160deg, var(--green-dark) 0%, #2d6a4f 55%, #40916c 100%);
+    background: #1a1a1a;
     color: var(--white);
-    padding: 3.5rem 1.5rem 2.5rem;
     text-align: center;
     position: relative;
     overflow: hidden;
 }
-.masthead::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at 70% 30%, rgba(116,198,157,0.18) 0%, transparent 60%);
-    pointer-events: none;
-}
 .masthead-inner {
-    max-width: var(--max-width);
-    margin: 0 auto;
     position: relative;
 }
 .masthead-eyebrow {
     font-family: var(--font-ui);
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.6);
-    margin-bottom: 0.75rem;
+    color: rgba(255,255,255,0.7);
+    padding: 1rem 1.5rem 0.5rem;
+    background: var(--green-dark);
 }
-.masthead h1 {
-    font-size: clamp(1.5rem, 5vw, 2.6rem);
-    font-weight: 900;
-    letter-spacing: -0.02em;
-    margin-bottom: 0.5rem;
-    line-height: 1.2;
+.masthead-hero-img {
+    width: 100%;
+    line-height: 0;
+}
+.masthead-hero-img img {
+    width: 100%;
+    height: auto;
+    display: block;
 }
 .masthead-meta {
     font-family: var(--font-ui);
     font-size: 0.85rem;
-    color: rgba(255,255,255,0.65);
-    margin-bottom: 2rem;
+    color: rgba(255,255,255,0.8);
+    padding: 0.8rem 1.5rem;
+    background: var(--green-dark);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -163,18 +157,6 @@ nav.site-nav {
     flex-wrap: wrap;
 }
 .masthead-meta .dot { opacity: 0.4; }
-.masthead-hero-img {
-    margin: 0 auto;
-    max-width: 700px;
-    border-radius: var(--radius-card);
-    overflow: hidden;
-    box-shadow: 0 8px 40px rgba(0,0,0,0.25);
-}
-.masthead-hero-img img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
 
 /* -- VIEW SHELL -- */
 main {
@@ -695,7 +677,8 @@ footer {
     .nav-brand { font-size: 0.72rem; }
     .toc-list a { font-size: 0.75rem; padding: 0.25rem 0.45rem; }
     main { padding: 1rem 0.875rem 2rem; }
-    .masthead { padding: 2.5rem 1rem 2rem; }
+    .masthead-eyebrow { font-size: 0.68rem; padding: 0.8rem 1rem 0.4rem; }
+    .masthead-meta { font-size: 0.78rem; padding: 0.6rem 1rem; }
     .section-header,
     .article-header { padding: 1.25rem 1.25rem 1rem; }
     .section-content,
