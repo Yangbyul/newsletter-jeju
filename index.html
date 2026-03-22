@@ -372,7 +372,7 @@ tr:hover td { background: #e9f5ec; }
 .subsection:hover { box-shadow: var(--shadow-sm); }
 details > summary {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 0.75rem;
     padding: 0.85rem 1.25rem;
     cursor: pointer;
@@ -399,11 +399,15 @@ details > summary:hover { background: var(--green-pale); }
     color: var(--green-dark);
     font-size: 0.97rem;
 }
+.sub-title-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
 .sub-subtitle {
     color: var(--gray-text);
     font-size: 0.82rem;
     font-weight: 400;
-    flex-shrink: 0;
 }
 .sub-content {
     padding: 1.5rem;
@@ -820,8 +824,10 @@ footer {
 <div class="subsection" id="구성원-소개">
   <details>
     <summary>
-      <span class="sub-title">구성원 소개</span>
-      
+      <div class="sub-title-wrap">
+        <span class="sub-title">구성원 소개</span>
+        
+      </div>
     </summary>
     <div class="sub-content"><hr>
 <hr>
@@ -861,8 +867,10 @@ footer {
 <div class="subsection" id="창립-58주년-기념-강연-2025-1-24">
   <details>
     <summary>
-      <span class="sub-title">창립 58주년 기념 강연 (2025.1.24.)</span>
-      
+      <div class="sub-title-wrap">
+        <span class="sub-title">창립 58주년 기념 강연 (2025.1.24.)</span>
+        
+      </div>
     </summary>
     <div class="sub-content"><p><img src="images/b8e30aa5_image.png" alt="image.png" loading="lazy"></p>
 <h2 id="1-김민호-교수님의-정년-기념-강연">1. 김민호 교수님의 정년 기념 강연</h2>
@@ -1059,8 +1067,10 @@ footer {
 <div class="subsection" id="원도심마을탐방-2025-4-26">
   <details>
     <summary>
-      <span class="sub-title">원도심마을탐방 (2025.4.26.)</span>
-      
+      <div class="sub-title-wrap">
+        <span class="sub-title">원도심마을탐방 (2025.4.26.)</span>
+        
+      </div>
     </summary>
     <div class="sub-content"><h1 id="세대를-잇는-교육의-공간-원도심-탐방기">세대를 잇는 교육의 공간, 원도심 탐방기</h1>
 <p><img src="images/ea82fca1_image.png" alt="image.png" loading="lazy"></p>
@@ -1086,8 +1096,10 @@ footer {
 <div class="subsection" id="2025-임원회의-2025-9-12">
   <details>
     <summary>
-      <span class="sub-title">2025 임원회의 (2025.9.12.)</span>
-      
+      <div class="sub-title-wrap">
+        <span class="sub-title">2025 임원회의 (2025.9.12.)</span>
+        
+      </div>
     </summary>
     <div class="sub-content"><h1 id="YES의-마음으로-제주교육의-내일을-잇다">YES의 마음으로 제주교육의 내일을 잇다</h1>
 <p><img src="images/14d34df3_image.png" alt="image.png" loading="lazy"></p>
@@ -1104,8 +1116,10 @@ footer {
 <div class="subsection" id="제주교육학-제4차-공동학술대회">
   <details>
     <summary>
-      <span class="sub-title">제주교육학 제4차 공동학술대회</span>
-      <span class="sub-subtitle">2025년 11월 8일 오전 9:30 (GMT+9)</span>
+      <div class="sub-title-wrap">
+        <span class="sub-title">제주교육학 제4차 공동학술대회</span>
+        <span class="sub-subtitle">2025년 11월 8일 오전 9:30 (GMT+9)</span>
+      </div>
     </summary>
     <div class="sub-content"><p><img src="images/fa9eb629_image.png" alt="image.png" loading="lazy"></p>
 <hr>
@@ -1116,8 +1130,10 @@ footer {
 <div class="subsection" id="2026년-창립-59주년-학술행사">
   <details>
     <summary>
-      <span class="sub-title">2026년 창립 59주년 학술행사</span>
-      <span class="sub-subtitle">2026년 1월 23일 오후 2:00 (GMT+9)</span>
+      <div class="sub-title-wrap">
+        <span class="sub-title">2026년 창립 59주년 학술행사</span>
+        <span class="sub-subtitle">2026년 1월 23일 오후 2:00 (GMT+9)</span>
+      </div>
     </summary>
     <div class="sub-content"><h1 id="2026년-창립-59주년-학술행사를-준비하며">2026년 창립 59주년 학술행사를 준비하며</h1>
 <p>안녕하세요. 한국교육학회 제주지회 사무국장 황현철입니다. 뉴스레터로 인사드리게 되어 반갑습니다. 한국교육학회 제주지회는 1967년 창립된 이후 지금까지 제주지역의 교육 발전을 위해 노력해오고 있습니다. 특히 2023년 제주지회 활성화 노력을 바탕으로 재도약의 시기를 맞이하고 있습니다. 지금 발행하는 뉴스레터 또한 이러한 활성화를 위한 한 축이라고 할 수 있습니다.</p>
@@ -1168,8 +1184,10 @@ footer {
 <div class="subsection" id="연구비-수주">
   <details>
     <summary>
-      <span class="sub-title">연구비 수주</span>
-      
+      <div class="sub-title-wrap">
+        <span class="sub-title">연구비 수주</span>
+        
+      </div>
     </summary>
     <div class="sub-content"><div class="aside-block"><span>💡</span>
 <span>한국교육학회 제주지회는 2025년 2개의 연구 과제(70,000,000원)를 수주하였습니다. 지회 회원님들의 연구 참여가 활성화 되었습니다. 연구가 마무리될 때까지 지회에서는 부단히 노력하겠습니다.</span></div>
@@ -1187,8 +1205,10 @@ footer {
 <div class="subsection" id="회원-신간-안내">
   <details>
     <summary>
-      <span class="sub-title">회원 신간 안내</span>
-      
+      <div class="sub-title-wrap">
+        <span class="sub-title">회원 신간 안내</span>
+        
+      </div>
     </summary>
     <div class="sub-content"><div class="aside-block"><span><img src="images/553538f9_Rectangle_2.png"  alt="%ED%9A%8C%EC%9B%90%20%EC%8B%A0%EA%B0%84%20%EC%95%88%EB%82%B4/Rectangle_2.png" width="40px" ></span>
 <span><img src="images/3cc5e1a7_image.png" alt="image.png" loading="lazy"></span>
@@ -1252,8 +1272,10 @@ footer {
 <div class="subsection" id="회원-소식">
   <details>
     <summary>
-      <span class="sub-title">회원 소식</span>
-      
+      <div class="sub-title-wrap">
+        <span class="sub-title">회원 소식</span>
+        
+      </div>
     </summary>
     <div class="sub-content"><div class="aside-block"><span><img src="images/553538f9_Rectangle_2.png"  alt="%ED%9A%8C%EC%9B%90%20%EC%8B%A0%EA%B0%84%20%EC%95%88%EB%82%B4/Rectangle_2.png" width="40px" ></span>
 <span><img src="images/8fb7eb46_image.png" alt="image.png" loading="lazy"></span>
@@ -1298,8 +1320,10 @@ footer {
 <div class="subsection" id="생생-수업-나눔">
   <details>
     <summary>
-      <span class="sub-title">생생 수업 나눔</span>
-      <span class="sub-subtitle">[수업사례 나눔] 손끝으로 만드는 음악 세상</span>
+      <div class="sub-title-wrap">
+        <span class="sub-title">생생 수업 나눔</span>
+        <span class="sub-subtitle">[수업사례 나눔] 손끝으로 만드는 음악 세상</span>
+      </div>
     </summary>
     <div class="sub-content"><p class="section-desc">교육현장에서 일어나는 교육활동과 실천 사례를 나눕니다.</p>
 <h1 id="수업사례-나눔">[수업사례 나눔]</h1>
@@ -1334,8 +1358,10 @@ footer {
 <div class="subsection" id="교수님의-연구실">
   <details>
     <summary>
-      <span class="sub-title">교수님의 연구실</span>
-      <span class="sub-subtitle">교육공학, 무엇이든 물어보세요</span>
+      <div class="sub-title-wrap">
+        <span class="sub-title">교수님의 연구실</span>
+        <span class="sub-subtitle">교육공학, 무엇이든 물어보세요</span>
+      </div>
     </summary>
     <div class="sub-content"><p class="section-desc">제주지회 교수님들의 연구와 이야기를 인터뷰 형식으로 전합니다.</p>
 <h1 id="미래-교육을-위한-XR-학습-연구">미래 교육을 위한 XR 학습 연구</h1>
@@ -1389,8 +1415,10 @@ footer {
 <div class="subsection" id="스마트-교실-비밀병기">
   <details>
     <summary>
-      <span class="sub-title">스마트 교실 비밀병기</span>
-      <span class="sub-subtitle">수업 준비 시간을 줄여주는 디지털 도구 모음</span>
+      <div class="sub-title-wrap">
+        <span class="sub-title">스마트 교실 비밀병기</span>
+        <span class="sub-subtitle">수업 준비 시간을 줄여주는 디지털 도구 모음</span>
+      </div>
     </summary>
     <div class="sub-content"><p class="section-desc">에듀테크 수업 도구를 소개하는 실용 코너입니다.</p>
 <h1 id="에듀테크-수업-도구-소개">에듀테크 수업 도구 소개</h1>
@@ -1500,8 +1528,10 @@ footer {
 <div class="subsection" id="제주교육-나침반">
   <details>
     <summary>
-      <span class="sub-title">제주교육 나침반</span>
-      <span class="sub-subtitle">한 아이도 놓치지 않는 교실을 위하여</span>
+      <div class="sub-title-wrap">
+        <span class="sub-title">제주교육 나침반</span>
+        <span class="sub-subtitle">한 아이도 놓치지 않는 교실을 위하여</span>
+      </div>
     </summary>
     <div class="sub-content"><p class="section-desc">제주교육 정책의 방향과 흐름을 소개합니다.</p>
 <h1 id="제주형-학생맞춤통합지원-체계">제주형 학생맞춤통합지원 체계</h1>
@@ -1542,8 +1572,10 @@ footer {
 <div class="subsection" id="동백꽃-편지">
   <details>
     <summary>
-      <span class="sub-title">동백꽃 편지</span>
-      <span class="sub-subtitle">설렘과 두려움 사이, 교단에 첫 발을 딛다</span>
+      <div class="sub-title-wrap">
+        <span class="sub-title">동백꽃 편지</span>
+        <span class="sub-subtitle">설렘과 두려움 사이, 교단에 첫 발을 딛다</span>
+      </div>
     </summary>
     <div class="sub-content"><p class="section-desc">자유롭게 나누는 교육 이야기, 경험, 제언을 담습니다.</p>
 <h1 id="교사의-길-두려움-너머의-하루들">교사의 길, 두려움 너머의 하루들</h1>
@@ -1569,8 +1601,10 @@ footer {
 <div class="subsection" id="이어가는-이야기">
   <details>
     <summary>
-      <span class="sub-title">이어가는 이야기</span>
-      <span class="sub-subtitle">강단을 떠나, 교육을 품다</span>
+      <div class="sub-title-wrap">
+        <span class="sub-title">이어가는 이야기</span>
+        <span class="sub-subtitle">강단을 떠나, 교육을 품다</span>
+      </div>
     </summary>
     <div class="sub-content"><p class="section-desc">퇴임 후 삶과 경험을 회원들과 나눕니다.</p>
 <h1 id="2025년-산티아고-도보-순례-소감">2025년 산티아고 도보 순례 소감</h1>
@@ -1613,8 +1647,10 @@ footer {
 <div class="subsection" id="제주한라대학교">
   <details>
     <summary>
-      <span class="sub-title">제주한라대학교</span>
-      
+      <div class="sub-title-wrap">
+        <span class="sub-title">제주한라대학교</span>
+        
+      </div>
     </summary>
     <div class="sub-content"><div class="aside-block"><span><img src="images/66db51bb_image.png" alt="image.png" loading="lazy"></span>
 <span><strong>박한샘 교수 (제주한라대)</strong></span></div>
@@ -1644,8 +1680,10 @@ footer {
 <div class="subsection" id="제주국제대학교">
   <details>
     <summary>
-      <span class="sub-title">제주국제대학교</span>
-      
+      <div class="sub-title-wrap">
+        <span class="sub-title">제주국제대학교</span>
+        
+      </div>
     </summary>
     <div class="sub-content"><div class="aside-block"><span><img src="images/e134f857_김은정_교수.jpg" alt="김은정 교수.jpg" loading="lazy"></span>
 <span><strong>김은정 교수 (국제대)</strong></span></div>
@@ -1677,8 +1715,10 @@ footer {
 <div class="subsection" id="마을과-함께-가꾸는-교육의-터전">
   <details>
     <summary>
-      <span class="sub-title">마을과 함께 가꾸는 교육의 터전</span>
-      <span class="sub-subtitle">박정환 교수님</span>
+      <div class="sub-title-wrap">
+        <span class="sub-title">마을과 함께 가꾸는 교육의 터전</span>
+        <span class="sub-subtitle">박정환 교수님</span>
+      </div>
     </summary>
     <div class="sub-content"><p>서귀포시 한림읍 신평리의 푸른 들녘에서는 지금도 특별한 교육 실험이 계속되고 있다. 박정환 교수님과 그의 연구실 구성원들이 마을 주민들과 손을 맞잡고 펼쳐가고 있는 논 프로그램은 단순한 농업 체험을 넘어, 지역사회와 교육이 만나는 새로운 패러다임을 제시하고 있다.</p>
 <p>2024년, 박정환 교수님의 발걸음이 신평리를 향했을 때, 그 시작은 작은 씨앗 하나 같았다. 하지만 그 씨앗이 품고 있던 교육에 대한 열망과 지역사회와의 상생에 대한 철학은 시간이 흐를수록 더욱 풍성한 열매를 맺어가고 있다. 2024년 부터 2025년 8월 현재까지, 박정환 교수님은 매주 빠짐없이 신평리를 찾아가며 마을 주민들과의 협업을 통해 이 의미 있는 프로그램을 지속해오고 있다.</p>
@@ -1707,8 +1747,10 @@ footer {
 <div class="subsection" id="2025-프론티어방-하계-워크숍">
   <details>
     <summary>
-      <span class="sub-title">2025 프론티어방 하계 워크숍</span>
-      <span class="sub-subtitle">이인회 교수님</span>
+      <div class="sub-title-wrap">
+        <span class="sub-title">2025 프론티어방 하계 워크숍</span>
+        <span class="sub-subtitle">이인회 교수님</span>
+      </div>
     </summary>
     <div class="sub-content"><p><img src="images/25a14b72_image.png" alt="image.png" loading="lazy"></p>
 <h2 id="창조는-고통-없이-나올-수-없다">창조는 고통 없이 나올 수 없다</h2>
@@ -1736,8 +1778,10 @@ footer {
 <div class="subsection" id="2025-유럽-선진-숲-교육기관-연수">
   <details>
     <summary>
-      <span class="sub-title">2025 유럽 선진 숲 교육기관 연수</span>
-      <span class="sub-subtitle">고전 교수님</span>
+      <div class="sub-title-wrap">
+        <span class="sub-title">2025 유럽 선진 숲 교육기관 연수</span>
+        <span class="sub-subtitle">고전 교수님</span>
+      </div>
     </summary>
     <div class="sub-content"><h2 id="1-서론">1. 서론</h2>
 <p>(사)한국숲유치원협회는 2025년 7월 30일부터 8월 8일까지 8박 10일간 협회 회원 34명을 대상으로 독일, 벨기에, 네덜란드 3개국 해외 연수를 진행했다. 이번 연수는 유럽 선진국의 유아교육기관 현장 방문을 통해 국내 숲교육의 질적 향상을 도모하고, 다양한 교육 정보 제공으로 교원의 직무 수행 능력을 증진시키는 것을 목적으로 했다. 참가자들은 기관 탐방, 프로그램 체험 및 문화 탐방의 기회를 가졌다.</p>
@@ -1798,8 +1842,10 @@ footer {
 <div class="subsection" id="신입생-소개-이선아">
   <details>
     <summary>
-      <span class="sub-title">신입생 소개 — 이선아</span>
-      <span class="sub-subtitle">연준모 교수님</span>
+      <div class="sub-title-wrap">
+        <span class="sub-title">신입생 소개 — 이선아</span>
+        <span class="sub-subtitle">연준모 교수님</span>
+      </div>
     </summary>
     <div class="sub-content"><p><img src="images/d98e5ba4_image.png" alt="image.png" loading="lazy"></p>
 <p>안녕하세요. 이번 학기부터 제주대학교 일반대학원 교육학과 박사과정에 입학한 <strong>이선아</strong>입니다. 저는 특수교육대상학생을 지도하는 특수교사입니다. 현재 제주서중학교에서 특수학급을 맡아 학생들과 함께 생활하며, 통합교육과 개별화교육의 필요성을 현장에서 깊이 느끼고 있습니다. 특히 문해력 향상이 학생들의 학업 성취뿐 아니라 자존감과 사회적 관계 형성에도 중요한 역할을 한다는 점을 체감하였습니다.</p>
@@ -1814,8 +1860,10 @@ footer {
 <div class="subsection" id="신입생-소개-김신회">
   <details>
     <summary>
-      <span class="sub-title">신입생 소개 — 김신회</span>
-      <span class="sub-subtitle">연준모 교수님</span>
+      <div class="sub-title-wrap">
+        <span class="sub-title">신입생 소개 — 김신회</span>
+        <span class="sub-subtitle">연준모 교수님</span>
+      </div>
     </summary>
     <div class="sub-content"><p>안녕하세요.</p>
 <p>이번 학기부터 제주대학교 일반대학원 교육학과 박사과정에 입학한 김신회입니다.</p>
@@ -1891,11 +1939,13 @@ function showSection(id) {
   if (activeLink) activeLink.classList.add('active');
   // Scroll to top
   window.scrollTo({ top: 0 });
-  // Open first subsection
-  const section = document.getElementById(id);
-  if (section) {
-    const firstDetails = section.querySelector('.subsection:first-child details');
-    if (firstDetails) firstDetails.setAttribute('open', '');
+  // Open first subsection (except for specific sections)
+  if (typeof noAutoOpen === 'undefined' || !noAutoOpen.includes(id)) {
+    const section = document.getElementById(id);
+    if (section) {
+      const firstDetails = section.querySelector('.subsection:first-child details');
+      if (firstDetails) firstDetails.setAttribute('open', '');
+    }
   }
 }
 
@@ -1910,6 +1960,9 @@ document.querySelectorAll('.toc-list a').forEach(a => {
 
 // Show intro by default
 showSection('intro');
+
+// Sections where first toggle should NOT auto-open
+const noAutoOpen = ['member', 'jeju-news', 'campus'];
 </script>
 </body>
 </html>

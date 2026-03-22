@@ -623,8 +623,10 @@ def build_section_html(section, all_files):
 <div class="subsection" id="{sub_id}">
   <details>
     <summary>
-      <span class="sub-title">{escape_html(sub_title)}</span>
-      {('<span class="sub-subtitle">' + escape_html(meta_label) + '</span>') if meta_label else ''}
+      <div class="sub-title-wrap">
+        <span class="sub-title">{escape_html(sub_title)}</span>
+        {('<span class="sub-subtitle">' + escape_html(meta_label) + '</span>') if meta_label else ''}
+      </div>
     </summary>
     <div class="sub-content">{sub_html}</div>
   </details>
@@ -1047,7 +1049,7 @@ tr:hover td { background: #e9f5ec; }
 .subsection:hover { box-shadow: var(--shadow-sm); }
 details > summary {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 0.75rem;
     padding: 0.85rem 1.25rem;
     cursor: pointer;
@@ -1074,11 +1076,15 @@ details > summary:hover { background: var(--green-pale); }
     color: var(--green-dark);
     font-size: 0.97rem;
 }
+.sub-title-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
 .sub-subtitle {
     color: var(--gray-text);
     font-size: 0.82rem;
     font-weight: 400;
-    flex-shrink: 0;
 }
 .sub-content {
     padding: 1.5rem;
@@ -1214,11 +1220,13 @@ function showSection(id) {
   if (activeLink) activeLink.classList.add('active');
   // Scroll to top
   window.scrollTo({ top: 0 });
-  // Open first subsection
-  const section = document.getElementById(id);
-  if (section) {
-    const firstDetails = section.querySelector('.subsection:first-child details');
-    if (firstDetails) firstDetails.setAttribute('open', '');
+  // Open first subsection (except for specific sections)
+  if (typeof noAutoOpen === 'undefined' || !noAutoOpen.includes(id)) {
+    const section = document.getElementById(id);
+    if (section) {
+      const firstDetails = section.querySelector('.subsection:first-child details');
+      if (firstDetails) firstDetails.setAttribute('open', '');
+    }
   }
 }
 
@@ -1233,6 +1241,9 @@ document.querySelectorAll('.toc-list a').forEach(a => {
 
 // Show intro by default
 showSection('intro');
+
+// Sections where first toggle should NOT auto-open
+const noAutoOpen = ['member', 'jeju-news', 'campus'];
 """
 
 
