@@ -1137,7 +1137,7 @@ main {
 }
 .author-card .author-info span:first-child {
     font-weight: 700;
-    color: var(--black);
+    color: var(--green-dark);
     font-size: 1rem;
 }
 
@@ -1920,6 +1920,11 @@ def build(src_root, out_dir):
     html = html.replace(
         '<span>: 지역사회와의 생태학적 협력체계를 중심으로</span>',
         '<span><strong>: 지역사회와의 생태학적 협력체계를 중심으로</strong></span>')
+
+    # Fix 제주교육 나침반 split title
+    html = re.sub(
+        r'<h1[^>]*>제주형 학생맞춤통합지원 체계</h1>\s*<p>구축의 현재와 미래</p>',
+        '', html)
 
     # Fix footer address: add line break after 아라캠퍼스
     html = html.replace(
