@@ -880,7 +880,7 @@ nav.site-nav {
 .masthead-calligraphy {
     background: var(--green-dark);
     text-align: center;
-    padding: 0.8rem 2rem;
+    padding: 0.5rem 2rem;
 }
 .masthead-calligraphy img {
     width: 100%;
