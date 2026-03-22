@@ -1413,6 +1413,16 @@ def build(src_root, out_dir):
     html = build_html(toc_html, intro_html, '\n'.join(sections_parts), hero_img_src)
     # Post-process: remove any remaining ** markdown bold markers
     html = html.replace('**', '')
+    # Fix split titles: H1 followed by a <p> that continues the title
+    html = re.sub(
+        r'<h1[^>]*>제주교육의 정체성 구현과</h1>\s*<p>제주지회의 활성화</p>',
+        '', html)
+    html = re.sub(
+        r'<h1[^>]*>제주도 교육 특별자치,</h1>\s*<p>이제 어드레 가멘\??</p>',
+        '', html)
+    html = re.sub(
+        r'<h1[^>]*>\[수업사례 나눔\]</h1>\s*<p>손끝으로 만드는 음악 세상</p>',
+        '', html)
     out_path = Path(out_dir) / 'index.html'
     with open(str(out_path), 'w', encoding='utf-8') as f:
         f.write(html)
