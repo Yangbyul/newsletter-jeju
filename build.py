@@ -497,10 +497,30 @@ SECTIONS = [
         'subsections': [
             {'title': '제주한라대학교', 'file_key': '제주한라대학교'},
             {'title': '제주국제대학교', 'file_key': '제주국제대학교'},
-            {'title': '- 제주대학교 아라캠퍼스 -', 'file_key': '', 'is_divider': True},
+        ]
+    },
+    {
+        'id': 'campus-ara',
+        'title': '제주대학교 아라캠퍼스',
+        'subtitle': '',
+        'icon': '',
+        'color': '#74c69d',
+        'file_key': '',
+        'nav_hidden': True,
+        'subsections': [
             {'title': '마을과 함께 가꾸는 교육의 터전', 'file_key': '마을과 함께 가꾸는 교육의 터전'},
             {'title': '2025 프론티어방 하계 워크숍', 'file_key': '2025 프론티어방 하계 워크숍'},
-            {'title': '- 제주대학교 사라캠퍼스 -', 'file_key': '', 'is_divider': True},
+        ]
+    },
+    {
+        'id': 'campus-sara',
+        'title': '제주대학교 사라캠퍼스',
+        'subtitle': '',
+        'icon': '',
+        'color': '#74c69d',
+        'file_key': '',
+        'nav_hidden': True,
+        'subsections': [
             {'title': '2025 유럽 선진 숲 교육기관 연수', 'file_key': '2025 유럽 선진 숲 교육기관 연수'},
             {'title': '신입생 소개 - 이선아', 'file_key': '신입생 소개 26cf7f2dc41f80df'},
             {'title': '신입생 소개 - 김신회', 'file_key': '신입생 소개 28bf7f2dc41f80c5'},
@@ -1676,6 +1696,8 @@ def build_html(toc_html, intro_html, sections_html, article_views_html, hero_img
 def build_toc():
     items = []
     for sec in SECTIONS:
+        if sec.get('nav_hidden'):
+            continue
         nav_label = sec.get('nav_title', sec['title'])
         items.append(f'<li><a href="#" data-section="{sec["id"]}">{nav_label}</a></li>')
     return '<ul class="toc-list">' + ''.join(items) + '</ul>'
@@ -1981,6 +2003,14 @@ def build(src_root, out_dir):
     html = re.sub(
         r'<h1[^>]*>제주형 학생맞춤통합지원 체계</h1>\s*<p>구축의 현재와 미래</p>',
         '<h1>제주형 학생맞춤통합지원 체계 구축의 현재와 미래</h1>', html)
+
+    # Add 아라캠/사라캠 cards to campus card list
+    ara_card = '<button class="sub-card" onclick="showSection(\'campus-ara\')" type="button"><div class="sub-card-content"><div class="sub-title-wrap"><span class="sub-title">제주대학교 아라캠퍼스</span></div></div><span class="sub-card-arrow">&rarr;</span></button>'
+    sara_card = '<button class="sub-card" onclick="showSection(\'campus-sara\')" type="button"><div class="sub-card-content"><div class="sub-title-wrap"><span class="sub-title">제주대학교 사라캠퍼스</span></div></div><span class="sub-card-arrow">&rarr;</span></button>'
+    html = re.sub(
+        r'(</button>)(</div>\s*</div>\s*</div>\s*<div id="view-campus-ara")',
+        rf'\1{ara_card}\n{sara_card}\2',
+        html, count=1)
 
     # Fix 59주년 위원회 표: 3행 삭제, 상임이사 겸임을 연준모 교수 옆에
     html = html.replace(
