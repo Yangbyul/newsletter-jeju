@@ -1894,6 +1894,17 @@ def build(src_root, out_dir):
         return html_text
     html = convert_author_cards(html)
 
+    # Fix 회원동정 취임 text: merge spans into flowing text
+    html = re.sub(
+        r'<span>제주대학교 교육대학원 교육학과 이인회 교수님께서</span>\s*<span><strong>한국교육학회 제주지회 회장</strong>으로 취임하셨습니다\.</span>\s*<span>\(임기: 2025\.1\.1\.~2026\.12\.31\.\)</span>',
+        '<span>제주대학교 교육대학원 교육학과 이인회 교수님께서 <strong>한국교육학회 제주지회 회장</strong>으로 취임하셨습니다. (임기: 2025.1.1.~2026.12.31.)</span>',
+        html)
+
+    # Fix footer address: add line break after 아라캠퍼스
+    html = html.replace(
+        f'<span>{ADDRESS}</span>',
+        f'<span>제주대학교 아라캠퍼스<br>사범대학 2호관 1312호</span>')
+
     # Fix 회장 info: merge phone/email spans into one line
     html = re.sub(
         r'<span>- 전화번호: ([^<]+)</span>\s*<span>- 이메일:\s*([^<]+)</span>',
