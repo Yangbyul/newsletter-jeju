@@ -1981,6 +1981,11 @@ def build(src_root, out_dir):
         r'<h1[^>]*>제주형 학생맞춤통합지원 체계</h1>\s*<p>구축의 현재와 미래</p>',
         '<h1>제주형 학생맞춤통합지원 체계 구축의 현재와 미래</h1>', html)
 
+    # Fix 59주년 위원회 표: 3행 삭제, 상임이사 겸임을 연준모 교수 옆에
+    html = html.replace(
+        '<tr><td>위원장 양은별 교수</td><td>위원장 연준모 교수</td></tr>\n<tr><td>(상임이사 겸임)</td></tr>',
+        '<tr><td>위원장 양은별 교수</td><td>위원장 연준모 교수 (상임이사 겸임)</td></tr>')
+
     # Fix footer address: add line break after 아라캠퍼스
     html = html.replace(
         f'<span>{ADDRESS}</span>',
