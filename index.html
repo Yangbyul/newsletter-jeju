@@ -499,12 +499,13 @@ tr:hover td { background: var(--green-faint); }
 
 /* -- CARD LIST (level-2: subsection list) -- */
 .card-list {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 0.6rem;
     padding: 1.5rem 2rem;
 }
 .subsection-divider {
+    grid-column: 1 / -1;
     padding: 1.1rem 0 0.35rem;
     font-family: var(--font-ui);
     font-size: 0.73rem;
@@ -750,7 +751,7 @@ footer {
     .article-header { padding: 1.25rem 1.25rem 1rem; }
     .section-content,
     .article-body { padding: 1.25rem 1.25rem 1.75rem; }
-    .card-list { padding: 1rem 1.25rem; }
+    .card-list { padding: 1rem 1.25rem; grid-template-columns: 1fr; }
     .article-back-bar { padding: 0.75rem 1.25rem; }
     .footer-grid { grid-template-columns: 1fr 1fr; gap: 0.6rem 1rem; }
     .footer-grid .footer-item:last-child { grid-column: 1 / -1; }
