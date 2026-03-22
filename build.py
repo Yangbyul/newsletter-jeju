@@ -1933,6 +1933,11 @@ def build(src_root, out_dir):
         '<span>: 지역사회와의 생태학적 협력체계를 중심으로</span>',
         '<span><strong>: 지역사회와의 생태학적 협력체계를 중심으로</strong></span>')
 
+    # Normalize affiliations: 제주대 → 제주대학교, 한라대 → 제주한라대학교, 국제대 → 제주국제대학교
+    html = html.replace('(제주대)', '(제주대학교)')
+    html = html.replace('(제주한라대)', '(제주한라대학교)')
+    html = html.replace('(국제대)', '(제주국제대학교)')
+
     # Split single-span author names into name + (소속) on separate lines
     def split_author_name(m):
         name_part = m.group(1).replace('<strong>','').replace('</strong>','').strip()
