@@ -89,9 +89,13 @@ nav.site-nav {
     transition: background 0.2s, color 0.2s;
     white-space: nowrap;
 }
-.toc-list a:hover {
-    background: rgba(255,255,255,0.15);
+.toc-list a:hover, .toc-list a.active {
+    background: rgba(255,255,255,0.2);
     color: var(--white);
+}
+.toc-list a.active {
+    background: rgba(255,255,255,0.25);
+    font-weight: 700;
 }
 
 /* MASTHEAD */
@@ -479,7 +483,7 @@ footer {
 <nav class="site-nav" role="navigation" aria-label="목차">
   <div class="nav-inner">
     <a class="nav-brand" href="#">한국교육학회 제주지회 뉴스레터</a>
-    <ul class="toc-list"><li><a href="#intro">발간사</a></li><li><a href="#juron">주론</a></li><li><a href="#siron">시론</a></li><li><a href="#activities">제주지회 활동 소개</a></li><li><a href="#member">회원 동정</a></li><li><a href="#jeju-news">제주교육소식</a></li><li><a href="#campus">캠퍼스 네트워크</a></li></ul>
+    <ul class="toc-list"><li><a href="#" data-section="intro">발간사</a></li><li><a href="#" data-section="juron">주론</a></li><li><a href="#" data-section="siron">시론</a></li><li><a href="#" data-section="activities">제주지회 활동 소개</a></li><li><a href="#" data-section="member">회원 동정</a></li><li><a href="#" data-section="jeju-news">제주교육소식</a></li><li><a href="#" data-section="campus">캠퍼스 네트워크</a></li></ul>
   </div>
 </nav>
 
@@ -514,7 +518,7 @@ footer {
 <hr>
 <p><img src="images/dc7ca42c_image.png" alt="image.png" loading="lazy"></p>
 <p>존경하는 회원 여러분,</p>
-<p>****한국교육학회 제주지회 회장 이인회입니다.</p>
+<p>한국교육학회 제주지회 회장 이인회입니다.</p>
 <p>제주지회는 과거에도 뉴스레터를 통해 제주교육의 현안을 공유해왔습니다. <strong>이번 재창간호는 그 전통을 이어가면서도</strong> <strong>노션(Notion) 기반의 현대적인 뉴스레터로 새롭게 출발한다는 점에서 더욱 뜻깊습니다.</strong></p>
 <p>이번 재창간을 위해 애써주신 임원진과 원고를 보내주신 회원 여러분께 깊이 감사드립니다. 앞으로 이 뉴스레터가 단순한 소식지를 넘어 <strong>제주교육의 미래를 모색하는 열린 소통의 장</strong>이 되기를 바랍니다.</p>
 <p>회원 여러분의 많은 관심과 참여를 부탁드립니다.</p>
@@ -547,10 +551,10 @@ footer {
   </div>
   <div class="section-content">
     <div class="aside-block"><span><img src="images/c5f10810_image.png" alt="image.png" loading="lazy"></span>
-<span>**이인회 교수</span>
-<span>(한국교육학회 제주지회 회장)**</span></div>
-<h1 id="제주교육의-정체성-구현과">**제주교육의 정체성 구현과</h1>
-<p>제주지회의 활성화**</p>
+<span>이인회 교수</span>
+<span>(한국교육학회 제주지회 회장)</span></div>
+<h1 id="제주교육의-정체성-구현과">제주교육의 정체성 구현과</h1>
+<p>제주지회의 활성화</p>
 <h1 id="1-뉴스레터-재창간에-즈음하여">1. 뉴스레터 재창간에 즈음하여</h1>
 <p>막바지에 다다른 여름을 보내며 기후위기를 실감했던 지난 7~8월을 돌아본다. 다행히 그 실감은 큰 고통이지는 않았던 것으로 기억난다. 대규모 연구과제에 집필진의 한 명으로 참여하면서 여름의 거의 대부분 동안 하루의 많은 시간을 연구실 에어컨과 지냈기 때문이다. 오히려 기후온난화를 부채질한 것은 아닌가 하는 미안함이 있다. 그런데 필자의 내자는 그 더위에도 일본인 특유의 경제 감각으로 선풍기만을 고집했으니, 연구실과 가정에서 사용한 전기의 총량은 작년과 거의 동일할 것이라고 위안해본다. 가을을 다시 돌려보낸 우주의 원리에 감사하는 시간이기도 하다.</p>
 <p>이러한 감사함과 미안함이 얽힌 연구실 에어컨과 밀착 동거 속에서 그래도 얻은 큰 수확이 있었다. 그 연구과제 덕분에 제주지회의 60년 가까운 연혁을 엮을 수 있는 2가지 자료를 우연히 발견했던 것이다. 전혀 생각하지 못했던 자료였기에 얼마나 놀랐는지 모른다. 인디아나 존스 시리즈의 주인공 해리슨 포드가, 고고학 사상 최고의 발견이 될 ‘크리스탈 해골’로 가는 2조각의 단서를 얻은 듯한 기분이었다면 과장일까? 교육학자에게도 연구대상과 관련된 원자료 조각의 발견과 보고 그 자체가 연구의 결과물이 될 수 있다.</p>
@@ -560,7 +564,7 @@ footer {
 <p>부족하나마 제주지회의 지난 58년 활동을 복기하면 다음과 같다. 우선, 회원과 관련해서이다. 1973년 자료에 기재된 18명 회원의 구성을 보면 다음의 <표 1>과 같다. <표 1>에서 보듯이, 회원의 구성은 학교현장과 대학, 교육행정기관 등으로 다양하게 분포되어 있어 현재와 크게 다르지 않다. 다만 중등과 대학에 소속된 회원의 수가 많았던 관계로 지회 임원을 윤번제로 운영했다고 한다.</p>
 <p><code><표 1> 1973년 당시 지회 회원의 구성</code></p>
 <div class="table-wrap"><table>
-<thead><tr><th>**소속**</th><th>**인원수**</th><th>**소속**</th><th>**인원수**</th></tr></thead>
+<thead><tr><th>소속</th><th>인원수</th><th>소속</th><th>인원수</th></tr></thead>
 <tbody>
 <tr><td>초등학교</td><td>2</td><td>교육청</td><td>3</td></tr>
 <tr><td>중학교</td><td>3</td><td>교육위원회</td><td>1</td></tr>
@@ -571,7 +575,7 @@ footer {
 <p>다음으로, 지회의 주요 활동은 연구발표회와 총회, 2개의 축으로 파악된다. 연구발표회는 연 1회로 추진되다가 1975년에는 동계와 하계로 나누어 진행되기도 했다. 이외에도 매년 한국교육학회 연차학술대회에 회원을 파견하여 중앙과의 연계를 유지하였고, 회원의 정년퇴직 또는 출판을 기념하거나 친목 도모(대소사 참여)에도 노력한 것으로 보인다. 제주지회의 주요 활동을 나름대로 복기하면 <표 2>와 같다.</p>
 <p><code><표 2> 제주지회 주요 활동 연혁</code></p>
 <div class="table-wrap"><table>
-<thead><tr><th>**연대**</th><th>**주요 활동**</th><th>**특이 사항**</th></tr></thead>
+<thead><tr><th>연대</th><th>주요 활동</th><th>특이 사항</th></tr></thead>
 <tbody>
 <tr><td>1960년대</td><td>-1967. 1월. 제주지회 창립</td></tr>
 </tbody></table></div>
@@ -657,8 +661,8 @@ footer {
   <div class="section-content">
     <div class="aside-block"><span><img src="images/39d5298a_image.png" alt="image.png" loading="lazy"></span>
 <span><strong>고전 교수 (제주대)</strong></span></div>
-<h1 id="제주도-교육-특별자치">**제주도 교육 특별자치,</h1>
-<p>이제 어드레 가멘**?</p>
+<h1 id="제주도-교육-특별자치">제주도 교육 특별자치,</h1>
+<p>이제 어드레 가멘?</p>
 <p><code>[1]</code></p>
 <p>최근 이인회 회장님께서 알려 오신 두 가지 소식에 따르면, 우리나라 교육행정에서 지방교육자치와 학교자치의 새로운 국면이 전개될 가능성이 점쳐지기도 한다. 최교진 현 세종특별자치시 교육감(2014년 이후 3선째)이 교육부장관 후보로 지명되었다는 점에서 교육분권 강화의 흐름을 기대할 수 있고, 국정기획 위원회가 ‘학교자치와 교육 거버넌스 혁신’을 제102번째 국정과제로 채택했다는 것은 주춤했던 학교자치의 부활을 예상할 수 있기 때문이다.</p>
 <p>하지만, 유독 제주에서의 상황은 녹녹치 않다. 2006년 제주특별자치도의 출범과 더불어 ‘특별한 교육자치’를 표방한 교육의원제가 실시된지 20여년 만에 페업을 10개월 앞두고 있고, 이에 대한 제주교육청의 대응책이나 지방의회의 대안 논의도 ‘위원회론’이 전부이다. 교육자치 활성화 조례에 따른 교육청의 관련 위원회가 명맥을 유지할 뿐이고, 도의회 교육위원회는 교육의원 폐지 후에도 ‘교육위원회’로 명명(17개시도 중 15개 유지)할 것을 읍소하는 정도이다.</p>
@@ -918,7 +922,7 @@ footer {
 <li>난딩토야, 신효주, 문현식, 김민호(2024). 제주 거주 몽골 이주 배경 부모의 이중언어교육 경험 연구. <strong>제주도연구, 61</strong>, 25-50.</li>
 <li>문현식, 이한결, 김민호(2023). 제주 지역 30대 남성의 초등학교 전입 이야기: “너”로서 친구와 자연과의 만남을 중심으로. <strong>내러티브와 교육연구, 11</strong>(3), 27-50.</li>
 <li>김신주, 김민호(2023). 프레이리 프락시스 관점에서 특수교사의 실천 행위 연구의 재해석. <strong>한국교원교육연구, 40</strong>(4), 295-324.</li>
-<li>김민호, 김성환(2023). <strong>**제주해군기지 반대운동과 글로컬 시민성 학습. </strong>동아시아사회교육연구, 28,** 47-64.</li>
+<li>김민호, 김성환(2023). <strong>제주해군기지 반대운동과 글로컬 시민성 학습. </strong>동아시아사회교육연구, 28, 47-64.</li>
 <li>김영례, 김민호(2023). 아유르베다 체험의 교육적 의미: “건강하게 사는 방법의 발견을 통한 의식의 확장.” 고려대학교 교육문제연구소. <strong>교육문제연구, 36</strong>(3), 31-58.</li>
 <li>김경남, 김신주, 임희숙, 김민호(2023). 초등 초임교사의 수석교사와 함께 한 전문적학습공동체 참여 경험. <strong>한국교원교육연구, 40</strong>(2), 217-243.</li>
 <li>Kim, M. H. (2023). The implications of ‘May 4, 1970 and its aftermath’ for citizenship education in the United States and Korea: “The constitutional rights against national security ideology.” <em>Korean Journal of Comparative Education, 33</em>(2), 89-127.</li>
@@ -929,7 +933,7 @@ footer {
 <li>문현식, 김민호(2020). 초등학교 지역화 교과서에 선정된 토착지식의 재해석: 제주 지역 초등학교 3학년 사회과 지역화 교과서를 중심으로<strong>.</strong> <strong>초등교육연구, 33</strong>(2), 147-176.</li>
 <li>김민호, 홍현미(2019). 포토보이스를 활용한 지역사회기반 지체장애인 환경교육 프로그램 연구. <strong>평생교육학연구, 25</strong>(2), 99-128.</li>
 <li>김민호(2018). 상호문화교육 관점에서 초등학교 『도덕 4』 교과서의 다문화 단원 분석. <strong>초등교육연구, 31</strong>(3), 1-25.</li>
-<li>김민호(2017). <strong>**제주해녀의 토착지식 기반 다문화교육의 지역화 방안. </strong>교육문화연구, 23**(4), 433-458.</li>
+<li>김민호(2017). <strong>제주해녀의 토착지식 기반 다문화교육의 지역화 방안. </strong>교육문화연구, 23(4), 433-458.</li>
 <li>김민호(2016). ‘시민성 학습의 일상화’: 의미, 조건 및 과제. <strong>평생학습사회, 12</strong>(3), 1-28.</li>
 <li>Kim, M. H.(2015). A Spiritual Transition from 'Rentership' to 'Stewardship': A Qualitative Case Study on the Staff Development at a Worker Center in L.A. <strong>평생학습사회, 11</strong>(2), 339-372.</li>
 <li>김민호(2015). ‘학습의 일상성’ 구현 : 장애요인과 기본원칙. <strong>평생학습사회, 11</strong>(1), 1-26.</li>
@@ -956,13 +960,13 @@ footer {
 <li>김민호(2002). 시민사회 주도의 지역 평생학습문화 형성 방안. <strong>평생교육학연구, 8</strong>(1).</li>
 <li>김민호(2002). 제주국제자유도시와 제주교육의 과제<strong>.</strong> <strong>제주교육대학논문집, 31</strong>.</li>
 <li>김민호(2002). 제주국제자유도시특별법 시행에 따른 역기능 해소 방안: 교육관련 분야를 중심으로. 제주발전연구원. <strong>제주발전포럼, 1</strong>.</li>
-<li>김민호(2000). 사회교육의 지역화: 제주지역을 중심으로. <strong>**한국교육개발원. </strong>한국교육, 27**(1).</li>
+<li>김민호(2000). 사회교육의 지역화: 제주지역을 중심으로. <strong>한국교육개발원. </strong>한국교육, 27(1).</li>
 <li>김민호(2000). 세계화와 제주의 초등교육. 제주교육대학교 초등교육연구소. <strong>초등교육연구, 5.</strong></li>
 <li>김민호(2000). 시민사회단체 주도 평생교육 활동 법제화의 의미. <strong>평생교육학연구, 6</strong>(1).</li>
 <li>김민호(1999). 제주지역 자원봉사의 실태와 개선방안. <strong>제주교육대학논문집, 28.</strong></li>
 <li>김민호(1998). 인천 ‘노동자대학’ 합법화 운동, 1988-1995. <strong>사회교육학연구, 4</strong>(1).</li>
 <li>김민호(1998). 제6공화국의 노동교육정책 환경에 관한 사회학적 분석. <strong>교육사회학연구, 8</strong>(2).</li>
-<li>김민호(1998). <strong>**제주지역 부모의 학교참여 실태와 과제</strong>.<strong> 제주교육대학교 초등교육연구소. </strong>초등교육연구, 4.**</li>
+<li>김민호(1998). <strong>제주지역 부모의 학교참여 실태와 과제</strong>.<strong> 제주교육대학교 초등교육연구소. </strong>초등교육연구, 4.</li>
 <li>김민호(1998). 교육대학교 학생문화의 이상과 현실: 제주교육대학교 사례를 중심으로. <strong>제주교육대학논문집, 27.</strong></li>
 <li>김민호(1997). 노동교육 운동에 관한 연구: 인천 ‘노동자대학’을 중심으로. <strong>현장에서 미래를, 26.</strong></li>
 <li>김민호(1997). 인천 ‘노동자대학’ 교육 프로그램 분석. <strong>제주교육대학논문집, 26.</strong></li>
@@ -1089,14 +1093,14 @@ footer {
 <p>한국교육학회 제주지회는 그동안 제주도 내 4개 대학 5개 캠퍼스의 연합을 위해 꾸준히 노력해 왔습니다. 그 과정에서 임원 중심의 운영이 두드러졌던 점에 대해 자성하며, 앞으로는 소위원회를 중심으로 보다 활발한 활동을 펼쳐 나가고자 합니다. 이러한 변화는 지회의 활동을 더욱 민주적이고 개방적으로 만들며, 다양한 연구자와 교육자들의 참여를 보장하는 중요한 전환점이 될 것입니다.</p>
 <p>현재 위원회 구성은 정관 제29조에 근거하여 마련되고 있으며, 상설위원회 2개와 신설위원회 3개 정도로 정비될 예정입니다. 이미 확정된 상설위원회는 다음과 같습니다.</p>
 <div class="table-wrap"><table>
-<thead><tr><th>**뉴스레터 위원회**</th><th>**네트워크 위원회**</th></tr></thead>
+<thead><tr><th>뉴스레터 위원회</th><th>네트워크 위원회</th></tr></thead>
 <tbody>
 <tr><td>위원장 양은별 교수</td><td>위원장 연준모 교수</td></tr>
 <tr><td>(상임이사 겸임)</td></tr>
 </tbody></table></div>
 <p>또한, 새롭게 조직될 신설위원회는 다음과 같이 구상 중입니다. (위원회 명칭과 구성은 일부 조정될 수 있습니다)</p>
 <div class="table-wrap"><table>
-<thead><tr><th>**교육공동체위원회**</th><th>**상담교육위원회**</th><th>**영유아교육위원회**</th></tr></thead>
+<thead><tr><th>교육공동체위원회</th><th>상담교육위원회</th><th>영유아교육위원회</th></tr></thead>
 <tbody>
 <tr><td>위원장 강은주 교감</td><td>위원장 박한샘 교수</td><td>위원장 김은정 교수</td></tr>
 </tbody></table></div>
@@ -1173,8 +1177,8 @@ footer {
 <span>본 연구는 한국 대학생과 외국 유학생의 진로대안 및 직업포부를 비교하여, 이들의 진로선택 과정을 이해하고 효과적인 지도 방안을 모색한다. 연구 결과, 외국 유학생은 한국 대학생보다 성역할에 있어 더 중성적이며, 사회적 지위가 높은 직업을 선택하는 경향을 보였다. 특히 대다수(65%) 학생들은 자신이 현실적으로 고려하는 진로대안 영역을 벗어난 직업을 포부로 설정하는 경향을 나타냈다. 이러한 결과는 유학생의 진로장벽 해소 등 맞춤형 상담 및 정책 수립을 위한 기초자료를 제공하여, 향후 진로 시장의 갈등 완화에 기여할 수 있다.</span></div>
 <div class="aside-block"><span><img src="images/553538f9_Rectangle_2.png"  alt="%ED%9A%8C%EC%9B%90%20%EC%8B%A0%EA%B0%84%20%EC%95%88%EB%82%B4/Rectangle_2.png" width="40px" ></span>
 <span><strong>박사학위논문</strong></span>
-<span>### **장애학생 진로직업교육에 대한 질적 시스템다이내믹스 접근</span>
-<span>: 지역사회와의 생태학적 협력체계를 중심으로**</span>
+<span>### 장애학생 진로직업교육에 대한 질적 시스템다이내믹스 접근</span>
+<span>: 지역사회와의 생태학적 협력체계를 중심으로</span>
 <span><strong>(</strong>Qualitative System Dynamics Approach to Career and Vocational Education for Students with Disabilities</span>
 <span>: Focusing on the Ecological Collaboration System between Schools and Local Communities)</span>
 <span><strong>강윤진 박사 (지도교수 이인회) / 2025. 2.</strong></span>
@@ -1268,8 +1272,8 @@ footer {
       <span class="sub-subtitle">[수업사례 나눔] 손끝으로 만드는 음악 세상</span>
     </summary>
     <div class="sub-content"><div class="aside-block"><span><img src="https://www.notion.so/icons/phone_green.svg" alt="https://www.notion.so/icons/phone_green.svg" width="40px" /> 교육현장에서 일어나는 교육활동과 실천 사례를 나눕니다.</span></div>
-<h1 id="수업사례-나눔">**[수업사례 나눔]</h1>
-<p>손끝으로 만드는 음악 세상**</p>
+<h1 id="수업사례-나눔">[수업사례 나눔]</h1>
+<p>손끝으로 만드는 음악 세상</p>
 <div class="aside-block"><span><img src="images/4a3a024e_황현철_선생님.jpg" alt="황현철 선생님.jpg" loading="lazy"></span>
 <span><strong>황현철 교사 (제주영송학교)</strong></span></div>
 <p>지난 5월 실시했던 음악 수업사례를 나눔으로써 변화하고 있는 학교 현장의 모습과 특수교육을 소개하고자 한다. 이 글에서 다루는 수업 내용은 2025년 5월 제주영송학교에서 실시된 고등학교 과정 음악 수업을 기반으로 함을 미리 알려드린다. 또한 이 수업은 동료 교사 3인과 함께 진행 중인 제64회 전국 특수교육 현장 연구 과정의 일환으로 기획된 것이다.</p>
@@ -1370,64 +1374,64 @@ footer {
 <p>오늘날 교육현장은 디지털 기술과 AI 기반 도구의 발전으로 급격히 변화하고 있다. 교사와 학생은 기존의 교과 중심 수업 방식을 넘어, 다양한 에듀테크(Edutech) 도구를 활용하여 학습의 효과성과 참여도를 높일 수 있는 새로운 가능성을 경험하고 있다. 특히 AI 기반 피드백, 협업 플랫폼, 멀티미디어 콘텐츠 제작 도구 등은 학생의 개별화 학습을 지원하고 교사의 수업 운영을 효율화하는 데 중요한 역할을 하고 있다. 본 글에서는 교과 맞춤형 에듀테크 도구, 학습 관리 및 협업 플랫폼, 수업자료 제작 도구, 참여형 수업 지원 도구, 그리고 기타 기능성 서비스까지 종합적으로 살펴보며, 교실 수업에 적용할 수 있는 실제적 활용 방안을 탐색해 보고자 한다.</p>
 <h3 id="2-교과-맞춤형-에듀테크-도구">2. 교과 맞춤형 에듀테크 도구</h3>
 <div class="table-wrap"><table>
-<thead><tr><th>**에듀테크명**</th><th>**홈페이지**</th><th>**설명**</th></tr></thead>
+<thead><tr><th>에듀테크명</th><th>홈페이지</th><th>설명</th></tr></thead>
 <tbody>
-<tr><td>**레서**</td><td>[https://www.lesser.school/](https://www.lesser.school/)</td><td>글쓰기 기반의 국어 학습 플랫폼으로, AI가 글을 분석하고 맞춤형 피드백을 제공</td></tr>
-<tr><td>**자작자작**</td><td>[https://www.jajakjajak.com/](https://www.jajakjajak.com/)</td><td>이야기 창작과 글쓰기 활동을 위한 플랫폼으로, 학생의 창의적인 표현력 향상을 지원</td></tr>
-<tr><td>**클리포**</td><td>[https://clipo.ai/](https://clipo.ai/)</td><td>동영상 기반 국어 수업 콘텐츠를 제작·활용할 수 있는 학습자료 플랫폼</td></tr>
-<tr><td>**리딩앤**</td><td>[https://www.readingn.com/](https://www.readingn.com/)</td><td>영어 독해 및 독서 기반 학습 플랫폼으로, 수준별 영어 지문과 문제 제공</td></tr>
-<tr><td>**스마트리**</td><td>[https://smartreeenglish.com/](https://smartreeenglish.com/)</td><td>온라인 영어 학습 플랫폼으로, 회화·문법·듣기 등 다양한 영어 학습 콘텐츠 제공</td></tr>
-<tr><td>**호두잉글리시**</td><td>[https://hodooschool.com/](https://hodooschool.com/)</td><td>게이미피케이션 기반의 AI 영어회화 학습 플랫폼, 상황별 회화 훈련 제공</td></tr>
-<tr><td>**플랭**</td><td>[https://www.plang.ai/](https://www.plang.ai/)</td><td>AI 기반 영어 쓰기 및 말하기 연습 도구로, 학생의 영어 표현력 향상을 돕는 피드백 제공</td></tr>
-<tr><td>**마타수학**</td><td>[https://ai.matamath.net/](https://ai.matamath.net/)</td><td>AI가 학생의 수학 실력을 분석하고 수준별 맞춤 문제를 제공하는 수학 학습 플랫폼</td></tr>
-<tr><td>**콴다**</td><td>[https://qanda.ai/ko](https://qanda.ai/ko)</td><td>수학 문제를 촬영하면 AI가 풀이와 해설을 제공하는 학습 보조 도구</td></tr>
-<tr><td>**스쿨플랫**</td><td>[https://www.schoolflat.com/](https://www.schoolflat.com/)</td><td>수학 수업자료 제작과 수업 운영을 지원하는 플랫폼으로, 콘텐츠 공유 및 분석 기능 제공</td></tr>
-<tr><td>**매쓰홀릭**</td><td>[https://www.matholic.com/](https://www.matholic.com/)</td><td>수학 개념 이해와 문제 해결을 위한 영상 중심 학습 플랫폼</td></tr>
-<tr><td>**코들**</td><td>[https://about.codle.io/ko/](https://about.codle.io/ko/)</td><td>초·중등 대상 코딩 교육 플랫폼으로, 블록 기반의 쉬운 프로그래밍 수업 제공</td></tr>
+<tr><td>레서</td><td>[https://www.lesser.school/](https://www.lesser.school/)</td><td>글쓰기 기반의 국어 학습 플랫폼으로, AI가 글을 분석하고 맞춤형 피드백을 제공</td></tr>
+<tr><td>자작자작</td><td>[https://www.jajakjajak.com/](https://www.jajakjajak.com/)</td><td>이야기 창작과 글쓰기 활동을 위한 플랫폼으로, 학생의 창의적인 표현력 향상을 지원</td></tr>
+<tr><td>클리포</td><td>[https://clipo.ai/](https://clipo.ai/)</td><td>동영상 기반 국어 수업 콘텐츠를 제작·활용할 수 있는 학습자료 플랫폼</td></tr>
+<tr><td>리딩앤</td><td>[https://www.readingn.com/](https://www.readingn.com/)</td><td>영어 독해 및 독서 기반 학습 플랫폼으로, 수준별 영어 지문과 문제 제공</td></tr>
+<tr><td>스마트리</td><td>[https://smartreeenglish.com/](https://smartreeenglish.com/)</td><td>온라인 영어 학습 플랫폼으로, 회화·문법·듣기 등 다양한 영어 학습 콘텐츠 제공</td></tr>
+<tr><td>호두잉글리시</td><td>[https://hodooschool.com/](https://hodooschool.com/)</td><td>게이미피케이션 기반의 AI 영어회화 학습 플랫폼, 상황별 회화 훈련 제공</td></tr>
+<tr><td>플랭</td><td>[https://www.plang.ai/](https://www.plang.ai/)</td><td>AI 기반 영어 쓰기 및 말하기 연습 도구로, 학생의 영어 표현력 향상을 돕는 피드백 제공</td></tr>
+<tr><td>마타수학</td><td>[https://ai.matamath.net/](https://ai.matamath.net/)</td><td>AI가 학생의 수학 실력을 분석하고 수준별 맞춤 문제를 제공하는 수학 학습 플랫폼</td></tr>
+<tr><td>콴다</td><td>[https://qanda.ai/ko](https://qanda.ai/ko)</td><td>수학 문제를 촬영하면 AI가 풀이와 해설을 제공하는 학습 보조 도구</td></tr>
+<tr><td>스쿨플랫</td><td>[https://www.schoolflat.com/](https://www.schoolflat.com/)</td><td>수학 수업자료 제작과 수업 운영을 지원하는 플랫폼으로, 콘텐츠 공유 및 분석 기능 제공</td></tr>
+<tr><td>매쓰홀릭</td><td>[https://www.matholic.com/](https://www.matholic.com/)</td><td>수학 개념 이해와 문제 해결을 위한 영상 중심 학습 플랫폼</td></tr>
+<tr><td>코들</td><td>[https://about.codle.io/ko/](https://about.codle.io/ko/)</td><td>초·중등 대상 코딩 교육 플랫폼으로, 블록 기반의 쉬운 프로그래밍 수업 제공</td></tr>
 </tbody></table></div>
 <p>교과 학습을 지원하는 에듀테크 도구들은 국어, 영어, 수학, 코딩 등 다양한 영역에서 AI 분석과 피드백을 제공하여 학생 맞춤형 학습을 가능하게 한다. 예를 들어, ‘레서’와 ‘자작자작’은 글쓰기와 창작 활동에 AI 기반 피드백을 제공하며, ‘리딩앤’, ‘스마트리’, ‘호두잉글리시’, ‘플랭’은 영어 독해·회화·쓰기 학습을 지원한다. 수학 영역에서는 ‘마타수학’, ‘콴다’, ‘스쿨플랫’, ‘매쓰홀릭’이 학생 수준별 문제 제공과 풀이 과정을 지원하고, 코딩 교육에서는 ‘코들’이 블록 기반 프로그래밍 수업을 제공한다. 이러한 교과 맞춤형 도구들은 학생 개별 학습을 정교하게 지원하며 학습 격차를 줄이는 데 기여한다.</p>
 <h3 id="3-디지털-콘텐츠-및-교육자료-제공-플랫폼">3. 디지털 콘텐츠 및 교육자료 제공 플랫폼</h3>
 <div class="table-wrap"><table>
-<thead><tr><th>**에듀테크명**</th><th>**홈페이지**</th><th>**설명**</th></tr></thead>
+<thead><tr><th>에듀테크명</th><th>홈페이지</th><th>설명</th></tr></thead>
 <tbody>
-<tr><td>**NearPod**</td><td>[https://nearpod.com/](https://nearpod.com/)</td><td>상호작용형 수업 콘텐츠 제공</td></tr>
-<tr><td>**쏠북**</td><td>[https://solvook.com/](https://solvook.com/)</td><td>내신 평가자료와 수업자료를 공유 및 열람</td></tr>
-<tr><td>**아이스크림**</td><td>[https://www.i-scream.co.kr/user/main/MainPage.do](https://www.i-scream.co.kr/user/main/MainPage.do)</td><td>초등 대상 멀티미디어 교육 콘텐츠</td></tr>
-<tr><td>**비바샘 초등**</td><td>[https://e.vivasam.com/main](https://e.vivasam.com/main)</td><td>초등 대상 멀티미디어 교육 콘텐츠</td></tr>
-<tr><td>**디딤돌 교실**</td><td>[https://www.didimdolclass.co.kr/](https://www.didimdolclass.co.kr/)</td><td>초등 대상 멀티미디어 교육 콘텐츠</td></tr>
-<tr><td>**알지오매스**</td><td>[https://www.algeomath.kr/](https://www.algeomath.kr/)</td><td>수학 개념 학습 영상 콘텐츠</td></tr>
-<tr><td>**YouTube**</td><td>[https://www.youtube.com/](https://www.youtube.com/)</td><td>다양한 주제의 영상자료 공유 플랫폼</td></tr>
+<tr><td>NearPod</td><td>[https://nearpod.com/](https://nearpod.com/)</td><td>상호작용형 수업 콘텐츠 제공</td></tr>
+<tr><td>쏠북</td><td>[https://solvook.com/](https://solvook.com/)</td><td>내신 평가자료와 수업자료를 공유 및 열람</td></tr>
+<tr><td>아이스크림</td><td>[https://www.i-scream.co.kr/user/main/MainPage.do](https://www.i-scream.co.kr/user/main/MainPage.do)</td><td>초등 대상 멀티미디어 교육 콘텐츠</td></tr>
+<tr><td>비바샘 초등</td><td>[https://e.vivasam.com/main](https://e.vivasam.com/main)</td><td>초등 대상 멀티미디어 교육 콘텐츠</td></tr>
+<tr><td>디딤돌 교실</td><td>[https://www.didimdolclass.co.kr/](https://www.didimdolclass.co.kr/)</td><td>초등 대상 멀티미디어 교육 콘텐츠</td></tr>
+<tr><td>알지오매스</td><td>[https://www.algeomath.kr/](https://www.algeomath.kr/)</td><td>수학 개념 학습 영상 콘텐츠</td></tr>
+<tr><td>YouTube</td><td>[https://www.youtube.com/](https://www.youtube.com/)</td><td>다양한 주제의 영상자료 공유 플랫폼</td></tr>
 </tbody></table></div>
 <p>학습 자료의 접근성과 다양성을 넓히는 플랫폼들도 활발히 활용된다. ‘NearPod’는 상호작용형 수업 콘텐츠를 제공하여 교실 내 참여를 촉진하고, ‘쏠북’, ‘아이스크림’, ‘비바샘’, ‘디딤돌교실’, ‘알지오매스’는 교사들이 교과 수업에 직접 활용할 수 있는 다양한 멀티미디어 및 평가 자료를 제공한다. 또한 ‘YouTube’는 교과를 넘어선 폭넓은 학습 자료를 제공하여 학생의 자기주도적 학습에도 기여한다.</p>
 <h3 id="4-학습관리-및-협업-플랫폼">4. 학습관리 및 협업 플랫폼</h3>
 <div class="table-wrap"><table>
-<thead><tr><th>**에듀테크 명**</th><th>**설명**</th><th>**활용 팁**</th><th>**주의 사항**</th></tr></thead>
+<thead><tr><th>에듀테크 명</th><th>설명</th><th>활용 팁</th><th>주의 사항</th></tr></thead>
 <tbody>
-<tr><td>**구글 클래스룸(에듀+)**</td><td>구글 기반 수업 관리 플랫폼으로 과제, 채점, 피드백을 통합 제공</td><td>과제 자동화 및 학생별 피드백을 구글 계정으로 손쉽게</td><td>구글 계정 연동 및 권한 설정이 복잡할 수 있음.</td></tr>
-<tr><td>**리로스쿨**</td><td>출결, 공지, 수업자료 등을 통합 제공하는 한국형 학교 운영 시스템</td><td>출결 확인 및 학부모 소통에 효과적</td><td>모바일 앱 위주로 구성되어 PC 기반 활용에는 제한이 있음.</td></tr>
-<tr><td>**MS Teams**</td><td>마이크로소프트의 협업 플랫폼, 채팅·수업·자료 공유 지원</td><td>영상 수업과 과제 연동을 하나의 플랫폼에서 통합 운영 가능</td><td>처음 사용하는 경우 인터페이스 적응이 필요함.</td></tr>
-<tr><td>**클래스팅**</td><td>교사-학생-학부모 간 소통 중심의 수업 커뮤니티 플랫폼</td><td>학생 및 학부모 알림 기능을 활용한 실시간 소통 가능</td><td>과제나 자료 게시 시 일부 형식 제한 존재</td></tr>
-<tr><td>**슬랙(Slack)**</td><td>실시간 메시징 및 채널 기반 협업 플랫폼</td><td>소그룸 프로젝트나 토론방 구성에 적합</td><td>학생용 계정 구성 시 초대 및 접근 설정 필요</td></tr>
-<tr><td>**노션(Notion)**</td><td>문서, 데이터베이스, 협업 기능을 통합한 생산성 도구</td><td>학생별 포트폴리오 제작 및 수업 기록 관리에 유용</td><td>과도한 기능 활용 시 초보자에게는 난이도 높을 수 있음.</td></tr>
-<tr><td>**다했니**</td><td>과제 관리와 피드백 중심 플랫폼</td><td>간단한 과제 관리 및 완료 여부 확인 용이</td><td>피드백 기능은 텍스트 위주로 한정됨.</td></tr>
-<tr><td>**학교종이**</td><td>가정통신문 전자 발송 및 회신용 플랫폼</td><td>회신 확인 기능으로 학부모 응답률 높임.</td><td>연동된 정보 수정이 제한적일 수 있음.</td></tr>
+<tr><td>구글 클래스룸(에듀+)</td><td>구글 기반 수업 관리 플랫폼으로 과제, 채점, 피드백을 통합 제공</td><td>과제 자동화 및 학생별 피드백을 구글 계정으로 손쉽게</td><td>구글 계정 연동 및 권한 설정이 복잡할 수 있음.</td></tr>
+<tr><td>리로스쿨</td><td>출결, 공지, 수업자료 등을 통합 제공하는 한국형 학교 운영 시스템</td><td>출결 확인 및 학부모 소통에 효과적</td><td>모바일 앱 위주로 구성되어 PC 기반 활용에는 제한이 있음.</td></tr>
+<tr><td>MS Teams</td><td>마이크로소프트의 협업 플랫폼, 채팅·수업·자료 공유 지원</td><td>영상 수업과 과제 연동을 하나의 플랫폼에서 통합 운영 가능</td><td>처음 사용하는 경우 인터페이스 적응이 필요함.</td></tr>
+<tr><td>클래스팅</td><td>교사-학생-학부모 간 소통 중심의 수업 커뮤니티 플랫폼</td><td>학생 및 학부모 알림 기능을 활용한 실시간 소통 가능</td><td>과제나 자료 게시 시 일부 형식 제한 존재</td></tr>
+<tr><td>슬랙(Slack)</td><td>실시간 메시징 및 채널 기반 협업 플랫폼</td><td>소그룸 프로젝트나 토론방 구성에 적합</td><td>학생용 계정 구성 시 초대 및 접근 설정 필요</td></tr>
+<tr><td>노션(Notion)</td><td>문서, 데이터베이스, 협업 기능을 통합한 생산성 도구</td><td>학생별 포트폴리오 제작 및 수업 기록 관리에 유용</td><td>과도한 기능 활용 시 초보자에게는 난이도 높을 수 있음.</td></tr>
+<tr><td>다했니</td><td>과제 관리와 피드백 중심 플랫폼</td><td>간단한 과제 관리 및 완료 여부 확인 용이</td><td>피드백 기능은 텍스트 위주로 한정됨.</td></tr>
+<tr><td>학교종이</td><td>가정통신문 전자 발송 및 회신용 플랫폼</td><td>회신 확인 기능으로 학부모 응답률 높임.</td><td>연동된 정보 수정이 제한적일 수 있음.</td></tr>
 </tbody></table></div>
 <p>학습 관리 및 협업을 위한 플랫폼은 교사-학생-학부모 간 소통과 수업 운영을 효율화하는 데 중점을 둔다. ‘구글 클래스룸’, ‘리로스쿨’, ‘MS Teams’는 과제 관리, 출결, 영상 수업을 통합 제공하여 수업의 체계적 운영을 돕고, ‘클래스팅’과 ‘학교종이’는 교사-학부모 소통을 원활히 하는 도구로 기능한다. 또한 ‘슬랙’과 ‘노션’은 프로젝트 학습이나 포트폴리오 제작에서 활용도가 높으며, ‘다했니’는 간단한 과제 관리에 특화되어 있다. 이들 플랫폼은 학습 과정의 흐름을 체계화하고 협업 학습을 가능하게 하며, 교사의 행정적 부담을 줄여준다.</p>
 <h3 id="5-콘텐츠-저작-및-수업자료-제작-도구">5. 콘텐츠 저작 및 수업자료 제작 도구</h3>
 <div class="table-wrap"><table>
-<thead><tr><th>**에듀테크명**</th><th>**홈페이지**</th><th>**설명**</th><th>**활용 팁**</th><th>**주의 사항**</th></tr></thead>
+<thead><tr><th>에듀테크명</th><th>홈페이지</th><th>설명</th><th>활용 팁</th><th>주의 사항</th></tr></thead>
 <tbody>
-<tr><td>**미리캔버스**</td><td>[https://www.miricanvas.com/ko](https://www.miricanvas.com/ko)</td><td>디자인 중심 콘텐츠 제작 도구</td><td>템플릿을 활용해 카드뉴스, 발표자료 제작 가능</td><td>무료 버전은 해상도 및 일부 기능 제한 있음</td></tr>
-<tr><td>**망고보드**</td><td>[https://www.mangoboard.net/](https://www.mangoboard.net/)</td><td>디자인 중심 콘텐츠 제작 도구</td><td>인포그래픽 활동에 적합</td><td>저장 시 워터마크 여부 확인 필요</td></tr>
-<tr><td>**Canva**</td><td>[https://www.canva.com/ko_kr/](https://www.canva.com/ko_kr/)</td><td>디자인 중심 콘텐츠 제작 도구</td><td>SNS 콘텐츠, 발표 포스터 등 시각자료 제작에 활용</td><td>공유 설정 및 팀 계정 연동 주의 필요</td></tr>
-<tr><td>**VLLO**</td><td>[https://www.vllo.io/?lang=ko](https://www.vllo.io/?lang=ko)</td><td>영상 편집 앱</td><td>브이로그나 발표 영상 제작에 활용</td><td>광고 제거 및 고급 기능은 유료</td></tr>
-<tr><td>**Goodnotes**</td><td>[https://www.goodnotes.com/kr](https://www.goodnotes.com/kr)</td><td>태블릿 기반 디지털 필기 앱</td><td>수업 판서 및 노트 필기에 효과적</td><td>iOS 및 기기 호환 여부 확인 필요</td></tr>
-<tr><td>**iSpring Suite**</td><td>[https://www.ispringsolutions.com/ispring-suite](https://www.ispringsolutions.com/ispring-suite)</td><td>파워포인트 기반 e-러닝 콘텐츠 제작 도구</td><td>슬라이드를 영상이나 퀴즈 포함 콘텐츠로 변환 가능</td><td>설치 환경 요구 사항과 라이선스 비용 확인 필요</td></tr>
+<tr><td>미리캔버스</td><td>[https://www.miricanvas.com/ko](https://www.miricanvas.com/ko)</td><td>디자인 중심 콘텐츠 제작 도구</td><td>템플릿을 활용해 카드뉴스, 발표자료 제작 가능</td><td>무료 버전은 해상도 및 일부 기능 제한 있음</td></tr>
+<tr><td>망고보드</td><td>[https://www.mangoboard.net/](https://www.mangoboard.net/)</td><td>디자인 중심 콘텐츠 제작 도구</td><td>인포그래픽 활동에 적합</td><td>저장 시 워터마크 여부 확인 필요</td></tr>
+<tr><td>Canva</td><td>[https://www.canva.com/ko_kr/](https://www.canva.com/ko_kr/)</td><td>디자인 중심 콘텐츠 제작 도구</td><td>SNS 콘텐츠, 발표 포스터 등 시각자료 제작에 활용</td><td>공유 설정 및 팀 계정 연동 주의 필요</td></tr>
+<tr><td>VLLO</td><td>[https://www.vllo.io/?lang=ko](https://www.vllo.io/?lang=ko)</td><td>영상 편집 앱</td><td>브이로그나 발표 영상 제작에 활용</td><td>광고 제거 및 고급 기능은 유료</td></tr>
+<tr><td>Goodnotes</td><td>[https://www.goodnotes.com/kr](https://www.goodnotes.com/kr)</td><td>태블릿 기반 디지털 필기 앱</td><td>수업 판서 및 노트 필기에 효과적</td><td>iOS 및 기기 호환 여부 확인 필요</td></tr>
+<tr><td>iSpring Suite</td><td>[https://www.ispringsolutions.com/ispring-suite](https://www.ispringsolutions.com/ispring-suite)</td><td>파워포인트 기반 e-러닝 콘텐츠 제작 도구</td><td>슬라이드를 영상이나 퀴즈 포함 콘텐츠로 변환 가능</td><td>설치 환경 요구 사항과 라이선스 비용 확인 필요</td></tr>
 </tbody></table></div>
 <p>교사는 학습 내용을 보다 효과적으로 전달하기 위해 다양한 시각적·영상 자료 제작 도구를 활용할 수 있다. ‘미리캔버스’, ‘망고보드’, ‘Canva’는 손쉽게 카드뉴스, 인포그래픽, 포스터 등을 제작할 수 있으며, ‘VLLO’는 영상 편집에 특화되어 발표자료 제작에 유용하다. ‘Goodnotes’는 디지털 필기와 판서 기능을 강화하여 교사의 수업 기록과 학생 필기에 활용된다. 또한 ‘iSpring Suite’는 파워포인트를 e-러닝 콘텐츠로 전환해 수업을 온라인 환경에 적합하게 변환할 수 있다. 이들 도구는 교사의 창의적 교수설계를 지원하며, 학습 자료의 시각적 효과를 극대화한다.</p>
 <h3 id="6-수업-활용-도구-퀴즈-피드백-참여형-수업-도구">6. 수업 활용 도구(퀴즈/피드백/참여형 수업 도구)</h3>
 <div class="table-wrap"><table>
-<thead><tr><th>**에듀테크명**</th><th>**홈페이지**</th><th>**설명**</th><th>**활용 팁**</th><th>**주의 사항**</th></tr></thead>
+<thead><tr><th>에듀테크명</th><th>홈페이지</th><th>설명</th><th>활용 팁</th><th>주의 사항</th></tr></thead>
 <tbody>
 <tr><td>Zep</td><td>[https://zep.us/](https://zep.us/)</td><td>메타버스 기반 가상 교실 플랫폼</td><td>아바타로 자유롭게 이동하며 협업 공간 구성 가능</td><td>PC 사양이 낮거나 네트워크가 불안정할 경우 접속 지연 가능</td></tr>
 <tr><td>퀴즈앤</td><td>[https://www.quizn.show/](https://www.quizn.show/)</td><td>실시간 퀴즈·평가 도구</td><td>수업 도입·정리 시 학습 이해도 점검에 효과적</td><td>실시간 반응이 중요하므로 기기 연결 상태 사전 점검 필요</td></tr>
@@ -1438,21 +1442,21 @@ footer {
 <tr><td>Wordwall</td><td>[https://wordwall.net/ko](https://wordwall.net/ko)</td><td>다양한 수업 활동 템플릿 제공 퀴즈 도구</td><td>랜덤카드, 짝맞추기 등 다양한 활동 유형 활용 추천</td><td>모바일 기기에서는 일부 활동이 작동 제한될 수 있음.</td></tr>
 <tr><td>패들렛(Padlet)</td><td>[https://padlet.com/](https://padlet.com/)</td><td>디지털 게시판 형식으로 아이디어 공유</td><td>의견 나눔 및 생각 모으기 등 협업 활동에 활용</td><td>게시물 관리 및 비속어 필터링 기능 사용 권장</td></tr>
 <tr><td>Book Creator</td><td>[https://bookcreator.com/](https://bookcreator.com/)</td><td>학생·교사가 전자책 제작 가능한 플랫폼</td><td>프로젝트형 활동 결과물 제작에 적합</td><td>계정 연동 및 저장 공간 용량에 주의 필요</td></tr>
-<tr><td>**Quick Draw**</td><td>[https://quickdraw.withgoogle.com/](https://quickdraw.withgoogle.com/)</td><td>AI와 그림을 통해 상호작용하는 놀이형 학습 도구</td><td>창의적 발상 수업이나 미술 연계 활용에 활용 가능</td><td>AI 인식 실패 시 학생 흥미 저하 우려</td></tr>
+<tr><td>Quick Draw</td><td>[https://quickdraw.withgoogle.com/](https://quickdraw.withgoogle.com/)</td><td>AI와 그림을 통해 상호작용하는 놀이형 학습 도구</td><td>창의적 발상 수업이나 미술 연계 활용에 활용 가능</td><td>AI 인식 실패 시 학생 흥미 저하 우려</td></tr>
 </tbody></table></div>
 <p>학생 참여를 유도하고 학습 이해도를 실시간으로 확인할 수 있는 도구들도 다양하다. ‘Zep’은 메타버스 기반 가상교실로 학생 협업을 가능하게 하며, ‘퀴즈앤’, ‘Kahoot’, ‘Wordwall’은 게임형 퀴즈로 학습 흥미를 높인다. ‘띵커벨’, ‘클래스카드’, ‘트라이디스’는 질문과 피드백 중심의 수업을 지원하고, ‘패들렛’과 ‘Book Creator’는 협업형 프로젝트 학습에 적합하다. 또한 ‘Quick Draw’는 AI와의 상호작용을 통해 창의성을 자극한다. 이러한 참여형 도구들은 학생의 몰입도와 상호작용을 강화하여 교실 수업을 활기차게 만든다.</p>
 <h3 id="7-기타-기능성-도구-및-서비스">7. 기타 기능성 도구 및 서비스</h3>
 <div class="table-wrap"><table>
-<thead><tr><th>**에듀테크명**</th><th>**홈페이지**</th><th>**설명**</th><th>**활용 팁**</th><th>**주의 사항**</th></tr></thead>
+<thead><tr><th>에듀테크명</th><th>홈페이지</th><th>설명</th><th>활용 팁</th><th>주의 사항</th></tr></thead>
 <tbody>
-<tr><td>**Gemini**</td><td>[https://gemini.google.com/app?hl=ko](https://gemini.google.com/app?hl=ko)</td><td>AI 기반 글쓰기 및 자료 생성 지원</td><td>배경지식 생성, 초안 작성 등에 활용 가능</td><td>출처 확인 및 표절 우려에 대한 지도 필요</td></tr>
-<tr><td>**뤼튼**</td><td>[https://wrtn.ai/](https://wrtn.ai/)</td><td>AI 기반 글쓰기 및 자료 생성 지원</td><td>에세이 구조 점검 및 논리 흐름 잡기에 활용</td><td>자동생성 문장에 대한 수정 및 자기화 과정 필수</td></tr>
-<tr><td>**밀리의 서재**</td><td>[https://www.millie.co.kr/v3/brand](https://www.millie.co.kr/v3/brand)</td><td>전자책 구독 기반 독서 활동 보조</td><td>학생 흥미 기반 다양한 독서 지도에 활용</td><td>학급 계정 운영 시 저작권 및 사용범위 확인 필요</td></tr>
-<tr><td>**리딩앤**</td><td>[https://www.readingn.com/](https://www.readingn.com/)</td><td>전자책 구독 기반 독서 활동 보조</td><td>이해도 분석 및 읽기 활동 피드백 제공</td><td>진단 결과에 대한 과도한 의존 주의</td></tr>
-<tr><td>**알라딘**</td><td>[https://www.aladin.co.kr/home/welcome.aspx](https://www.aladin.co.kr/home/welcome.aspx)</td><td>전자책 구독 기반 독서 활동 보조</td><td>학생이 직접 책을 고르고 독서 계획 수립에 활용</td><td>상품 유도 광고 노출 가능성 유의</td></tr>
-<tr><td>**바이브온**</td><td>[https://www.vibeon.ai/](https://www.vibeon.ai/)</td><td>입시 정보 및 진로 설계 플랫폼</td><td>진로 설계 수업 및 개별 상담 시 참고 자료로 활용</td><td>정보 업데이트 시점과 정확성 확인 필요</td></tr>
-<tr><td>**입시캐스트**</td><td>[https://www.ipsicast.com/](https://www.ipsicast.com/)</td><td>입시 정보 및 진로 설계 플랫폼</td><td>전형 비교 및 입시 전략 수립에 유용</td><td>최신 정보 여부 확인 필요</td></tr>
-<tr><td>**카미(Kami)**</td><td>[https://www.kamiapp.com/](https://www.kamiapp.com/)</td><td>PDF 문서 협업 및 필기 도구</td><td>실시간 필기 공유와 피드백 기능으로 협업 가능</td><td>브라우저 환경 따라 호환성 이슈 발생 가능</td></tr>
+<tr><td>Gemini</td><td>[https://gemini.google.com/app?hl=ko](https://gemini.google.com/app?hl=ko)</td><td>AI 기반 글쓰기 및 자료 생성 지원</td><td>배경지식 생성, 초안 작성 등에 활용 가능</td><td>출처 확인 및 표절 우려에 대한 지도 필요</td></tr>
+<tr><td>뤼튼</td><td>[https://wrtn.ai/](https://wrtn.ai/)</td><td>AI 기반 글쓰기 및 자료 생성 지원</td><td>에세이 구조 점검 및 논리 흐름 잡기에 활용</td><td>자동생성 문장에 대한 수정 및 자기화 과정 필수</td></tr>
+<tr><td>밀리의 서재</td><td>[https://www.millie.co.kr/v3/brand](https://www.millie.co.kr/v3/brand)</td><td>전자책 구독 기반 독서 활동 보조</td><td>학생 흥미 기반 다양한 독서 지도에 활용</td><td>학급 계정 운영 시 저작권 및 사용범위 확인 필요</td></tr>
+<tr><td>리딩앤</td><td>[https://www.readingn.com/](https://www.readingn.com/)</td><td>전자책 구독 기반 독서 활동 보조</td><td>이해도 분석 및 읽기 활동 피드백 제공</td><td>진단 결과에 대한 과도한 의존 주의</td></tr>
+<tr><td>알라딘</td><td>[https://www.aladin.co.kr/home/welcome.aspx](https://www.aladin.co.kr/home/welcome.aspx)</td><td>전자책 구독 기반 독서 활동 보조</td><td>학생이 직접 책을 고르고 독서 계획 수립에 활용</td><td>상품 유도 광고 노출 가능성 유의</td></tr>
+<tr><td>바이브온</td><td>[https://www.vibeon.ai/](https://www.vibeon.ai/)</td><td>입시 정보 및 진로 설계 플랫폼</td><td>진로 설계 수업 및 개별 상담 시 참고 자료로 활용</td><td>정보 업데이트 시점과 정확성 확인 필요</td></tr>
+<tr><td>입시캐스트</td><td>[https://www.ipsicast.com/](https://www.ipsicast.com/)</td><td>입시 정보 및 진로 설계 플랫폼</td><td>전형 비교 및 입시 전략 수립에 유용</td><td>최신 정보 여부 확인 필요</td></tr>
+<tr><td>카미(Kami)</td><td>[https://www.kamiapp.com/](https://www.kamiapp.com/)</td><td>PDF 문서 협업 및 필기 도구</td><td>실시간 필기 공유와 피드백 기능으로 협업 가능</td><td>브라우저 환경 따라 호환성 이슈 발생 가능</td></tr>
 </tbody></table></div>
 <p>그 외에도 수업과 학생 성장 지원을 위한 다양한 기능성 도구가 있다. 예를 들어, ‘Gemini’와 ‘뤼튼’은 글쓰기와 자료 생성에 AI 기반 피드백을 제공하며, ‘밀리의 서재’와 ‘알라딘’은 전자책 기반 독서 활동을 돕는다. 또한 ‘바이브온’과 ‘입시캐스트’는 진로·진학 정보를 제공해 학생의 미래 설계에 도움을 준다. ‘카미(Kami)’는 PDF 협업 필기 도구로, 수업 자료를 실시간으로 공유하고 피드백을 반영할 수 있다. 이러한 도구들은 교과 학습을 넘어 학생의 전인적 성장과 진로 탐색에도 중요한 자원이 된다.</p>
 <h3 id="8-나가며">8. 나가며</h3>
@@ -1470,11 +1474,11 @@ footer {
       <span class="sub-subtitle">한 아이도 놓치지 않는 교실을 위하여</span>
     </summary>
     <div class="sub-content"><div class="aside-block"><span><img src="https://www.notion.so/icons/phone_green.svg" alt="https://www.notion.so/icons/phone_green.svg" width="40px" /> 제주교육 정책의 방향과 흐름을 소개합니다.</span></div>
-<h1 id="제주형-학생맞춤통합지원-체계">**제주형 학생맞춤통합지원 체계</h1>
-<p>구축의 현재와 미래**</p>
+<h1 id="제주형-학생맞춤통합지원-체계">제주형 학생맞춤통합지원 체계</h1>
+<p>구축의 현재와 미래</p>
 <div class="aside-block"><span><img src="images/a33a2473_증명사진.jpg" alt="증명사진.jpg" loading="lazy"></span>
-<span>**임희숙 기획운영실장</span>
-<span>(제주도서관)**</span></div>
+<span>임희숙 기획운영실장</span>
+<span>(제주도서관)</span></div>
 <p>2024년 12월 3일 국가 비상계엄 선언 이후 우여곡절 끝에 2025년 6월 출범한 이재명 정부는 같은 해 8월 국정운영 5개년 계획을 발표했다. 정부는 학령인구가 줄고 도움이 필요한 학생이 급증하는 상황에 대응하기 위해 기초학력, 특수·통합 교육 여건 개선, 심리·정서 지원 등을 통합적으로 지원하는‘교육격차 해소를 위한 공교육 강화’를 101번째 국정과제로 제시했다.</p>
 <p>교육격차 해소 정책은 이전 정부부터 꾸준히 추진 되어 정부 교체와 관계없이 이어졌다. 이에 따라 2025년 1월‘학생맞춤통합지원법’이 제정되었고, 2026년 3월 전국적으로 전면 시행될 예정이다. 이 법은 학생이 학교 안팎에서 겪는 어려움을 극복하고 건강하게 성장하도록, 학생 개인 상황에 맞춘 학습·복지·건강·진로·상담을 통합적으로 지원에 필요한 사항을 정해 학생의 교육받을 권리를 보장하고 전인적 성장을 돕는 것을 목적으로 한다.</p>
 <p>이 법이 제정되기 이전인 2017년부터 제주특별자치도교육청에서는 학생을 중심에 두고 기초학력·정서상담·다문화·경제적 교육복지 등을 통합지원하는 제주형 교육복지인‘학교 혼디거념(제주어로 함께 돌보다)’을 운영해 왔다. 제주‘학교 혼디거념’운영의 출발점은 정부 주도로 실행된 교육복지우선지원 사업(최초 명칭은 교육복지투자우선지역지원 사업임)에 있다(임희숙, 2024). 제주의 교육복지우선지원 사업은 저소득층 학생 밀집 지역 학교를 대상으로 2006년부터 2016년까지 추진되었다.</p>
@@ -1542,8 +1546,8 @@ footer {
 <h1 id="2025년-산티아고-도보-순례-소감">2025년 산티아고 도보 순례 소감</h1>
 <div class="aside-block"><span><img src="images/99ec5b63_image.png" alt="image.png" loading="lazy"></span>
 <span><strong>김민호 명예교수 (제주대학교)</strong></span></div>
-<div class="aside-block"><span>**“걸음을 걷는 우리는 자신을 스스로 옮겨가고 있음을, 아직 도착하지 못한 구도자임을 체험한다.”</span>
-<span>(칼 라너)**</span></div>
+<div class="aside-block"><span>“걸음을 걷는 우리는 자신을 스스로 옮겨가고 있음을, 아직 도착하지 못한 구도자임을 체험한다.”</span>
+<span>(칼 라너)</span></div>
 <p>나는 정년 기념으로 아내와 함께 산티아고 순례길을 나섰다. 2022년에 처음 가봤지만, 이번 두 번째 여정에서는 포르투칼 길과 북쪽 길을 선택했다. 2025년 3월 27일부터 4월 6일까지 포르투칼 길 280km. 4월 9일부터 5월 16일까지 북쪽 길 820km를 순례했다. 5월 18일에는 성 베드로 광장에서 레오 14세 교황님 즉위 미사에 참석했고, 산타 마리아 마조레 대성당에서 프란치스코 교황님을 조문할 수 있었다. 가톨릭 신자로서 은총의 여정이었다. 순례 막바지인 5월 15일, Arzua에서 O Pedrouzo까지 19.3Km를 걷고 나서 미사에 참석했다가 세계 여러 나라에서 온 순례자로 성당이 가득 찬 모습에 깜짝 놀랐다. 그날 밤 나는 “이렇게 많은 순례자가 시간과 돈. 땀과 육체적 고통을 감수하며 산티아고로 향하는 이유는 무엇일까? 나는 왜 산티아고를 향했는가?”를 질문하며, 순례 중 내게 인상적이었던 부분을 간단하게 정리하였다.</p>
 <p>우선, 3년 전에 갔던 프랑스 길과 비교하면 북쪽 길은 나이 많은 순례자가 많았다. 1) 나이 들어도 일상에 안주하지 않고 장거리의 평탄치 않은 길을 도전하는 모습이 매력적으로 보였다. 나 역시 여생을 안주하며 살고 싶지 않다. 신앙생활은 물론 개인적인 공부, 가정생활, 친구 관계, 사회생활 역시 마찬가지다. 달릴 길을 다 달리고 싶다. 다만 참여할 때와 물러날 때를 식별해야 할 것이다. 2) 누구와 동반했는지를 살펴볼 때, 나 홀로 무거운 배낭을 지고 걷는 노인도 있었지만, 대부분 은퇴 후 친구, 배우자 혹은 딸이나 조카, 손주 등과 함께 했다. 나는 아내와 동반했다. 나 혼자였다면 순례길을 엄두도 내지 못했을 것이다. 남은 생애도 아내와의 동반이 매우 소중할 것이다. 또 노인이 손주와, 아버지가 아이와 함께하는 모습도 인상적이었다. 나의 여생을 되도록 후손과 함께하고 싶다.</p>
 <p><img src="images/605b23bb_image_1.png" alt="image.png" loading="lazy"></p>
@@ -1860,24 +1864,44 @@ footer {
 <a href="#" class="back-top" aria-label="맨 위로">↑</a>
 
 <script>
-// Open first subsection of each section by default
-document.querySelectorAll('.subsection:first-child details').forEach(d => {
-  d.setAttribute('open', '');
-});
-// Smooth scroll with nav offset
-document.querySelectorAll('a[href^="#"]').forEach(a => {
-  a.addEventListener('click', e => {
-    const id = a.getAttribute('href').slice(1);
-    if (!id) return;
+// Tab-based navigation: show only selected section
+function showSection(id) {
+  // Hide all sections and intro
+  document.querySelectorAll('.newsletter-section, .intro-section').forEach(s => {
+    s.style.display = 'none';
+  });
+  // Show selected
+  if (id === 'intro') {
+    document.querySelectorAll('.intro-section').forEach(s => s.style.display = 'block');
+  } else {
     const el = document.getElementById(id);
-    if (el) {
-      e.preventDefault();
-      const offset = 60;
-      const top = el.getBoundingClientRect().top + window.scrollY - offset;
-      window.scrollTo({ top, behavior: 'smooth' });
-    }
+    if (el) el.style.display = 'block';
+  }
+  // Update active nav
+  document.querySelectorAll('.toc-list a').forEach(a => a.classList.remove('active'));
+  const activeLink = document.querySelector('.toc-list a[data-section="' + id + '"]');
+  if (activeLink) activeLink.classList.add('active');
+  // Scroll to top
+  window.scrollTo({ top: 0 });
+  // Open first subsection
+  const section = document.getElementById(id);
+  if (section) {
+    const firstDetails = section.querySelector('.subsection:first-child details');
+    if (firstDetails) firstDetails.setAttribute('open', '');
+  }
+}
+
+// Nav click handlers
+document.querySelectorAll('.toc-list a').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const sectionId = a.getAttribute('data-section');
+    if (sectionId) showSection(sectionId);
   });
 });
+
+// Show intro by default
+showSection('intro');
 </script>
 </body>
 </html>

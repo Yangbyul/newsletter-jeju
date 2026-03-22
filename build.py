@@ -152,6 +152,8 @@ def apply_inline(text, md_file):
     text = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', text)
     text = re.sub(r'(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)', r'<em>\1</em>', text)
     text = re.sub(r'`([^`]+)`', r'<code>\1</code>', text)
+    # Remove any remaining stray ** (multi-line bold that couldn't be matched)
+    text = text.replace('**', '')
     return text
 
 
@@ -715,9 +717,13 @@ nav.site-nav {
     transition: background 0.2s, color 0.2s;
     white-space: nowrap;
 }
-.toc-list a:hover {
-    background: rgba(255,255,255,0.15);
+.toc-list a:hover, .toc-list a.active {
+    background: rgba(255,255,255,0.2);
     color: var(--white);
+}
+.toc-list a.active {
+    background: rgba(255,255,255,0.25);
+    font-weight: 700;
 }
 
 /* MASTHEAD */
@@ -1103,24 +1109,44 @@ footer {
 # JavaScript
 # ---------------------------------------------------------------------------
 INLINE_JS = """
-// Open first subsection of each section by default
-document.querySelectorAll('.subsection:first-child details').forEach(d => {
-  d.setAttribute('open', '');
-});
-// Smooth scroll with nav offset
-document.querySelectorAll('a[href^="#"]').forEach(a => {
-  a.addEventListener('click', e => {
-    const id = a.getAttribute('href').slice(1);
-    if (!id) return;
+// Tab-based navigation: show only selected section
+function showSection(id) {
+  // Hide all sections and intro
+  document.querySelectorAll('.newsletter-section, .intro-section').forEach(s => {
+    s.style.display = 'none';
+  });
+  // Show selected
+  if (id === 'intro') {
+    document.querySelectorAll('.intro-section').forEach(s => s.style.display = 'block');
+  } else {
     const el = document.getElementById(id);
-    if (el) {
-      e.preventDefault();
-      const offset = 60;
-      const top = el.getBoundingClientRect().top + window.scrollY - offset;
-      window.scrollTo({ top, behavior: 'smooth' });
-    }
+    if (el) el.style.display = 'block';
+  }
+  // Update active nav
+  document.querySelectorAll('.toc-list a').forEach(a => a.classList.remove('active'));
+  const activeLink = document.querySelector('.toc-list a[data-section="' + id + '"]');
+  if (activeLink) activeLink.classList.add('active');
+  // Scroll to top
+  window.scrollTo({ top: 0 });
+  // Open first subsection
+  const section = document.getElementById(id);
+  if (section) {
+    const firstDetails = section.querySelector('.subsection:first-child details');
+    if (firstDetails) firstDetails.setAttribute('open', '');
+  }
+}
+
+// Nav click handlers
+document.querySelectorAll('.toc-list a').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const sectionId = a.getAttribute('data-section');
+    if (sectionId) showSection(sectionId);
   });
 });
+
+// Show intro by default
+showSection('intro');
 """
 
 
@@ -1228,10 +1254,10 @@ def build_html(toc_html, intro_html, sections_html, hero_img_src):
 
 def build_toc():
     items = [
-        '<li><a href="#intro">발간사</a></li>',
+        '<li><a href="#" data-section="intro">발간사</a></li>',
     ]
     for sec in SECTIONS:
-        items.append(f'<li><a href="#{sec["id"]}">{sec["title"]}</a></li>')
+        items.append(f'<li><a href="#" data-section="{sec["id"]}">{sec["title"]}</a></li>')
     return '<ul class="toc-list">' + ''.join(items) + '</ul>'
 
 
@@ -1292,6 +1318,8 @@ def build(src_root, out_dir):
 
     # Write output
     html = build_html(toc_html, intro_html, '\n'.join(sections_parts), hero_img_src)
+    # Post-process: remove any remaining ** markdown bold markers
+    html = html.replace('**', '')
     out_path = Path(out_dir) / 'index.html'
     with open(str(out_path), 'w', encoding='utf-8') as f:
         f.write(html)
