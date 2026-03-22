@@ -1303,7 +1303,6 @@ tr:hover td { background: var(--green-faint); }
     padding: 1.75rem 2rem 2.5rem;
     overflow-wrap: break-word;
     word-break: keep-all;
-    max-width: 680px;
 }
 
 /* -- FOOTER -- */
