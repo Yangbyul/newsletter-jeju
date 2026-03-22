@@ -1115,10 +1115,24 @@ footer {
 
 /* RESPONSIVE */
 @media (max-width: 640px) {
-    .nav-inner { padding: 0.4rem 0.8rem; gap: 0.3rem; }
-    .nav-brand { font-size: 0.7rem; }
-    .toc-list { gap: 0.1rem; }
-    .toc-list a { font-size: 0.68rem; padding: 0.15rem 0.35rem; }
+    .nav-inner {
+        padding: 0.5rem 0.8rem;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.3rem;
+    }
+    .nav-brand {
+        font-size: 0.85rem;
+        text-align: center;
+        border-bottom: 1px solid rgba(255,255,255,0.15);
+        padding-bottom: 0.4rem;
+    }
+    .toc-list {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.2rem;
+    }
+    .toc-list a { font-size: 0.85rem; padding: 0.25rem 0.5rem; }
     main { padding: 1rem; }
     .section-header { padding: 1rem 1.25rem 0.75rem; }
     .section-content { padding: 1rem 1.25rem; }
