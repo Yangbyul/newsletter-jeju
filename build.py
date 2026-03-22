@@ -1568,6 +1568,8 @@ def build_html(toc_html, intro_html, sections_html, article_views_html, hero_img
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="format-detection" content="telephone=no, email=no, address=no">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
   <meta name="description" content="{NEWSLETTER_TITLE} {NEWSLETTER_SUBTITLE} {PUBLICATION_DATE}">
   <title>{NEWSLETTER_TITLE} | {NEWSLETTER_SUBTITLE}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
