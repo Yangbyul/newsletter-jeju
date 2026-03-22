@@ -884,7 +884,7 @@ nav.site-nav {
 }
 .masthead-calligraphy img {
     width: 100%;
-    max-width: 420px;
+    max-width: 460px;
     height: auto;
     display: inline-block;
 }
