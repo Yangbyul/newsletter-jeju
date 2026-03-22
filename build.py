@@ -1107,6 +1107,40 @@ main {
     word-break: keep-all;
 }
 
+/* -- AUTHOR CARD (aside with portrait photo) -- */
+.author-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: var(--gray-light);
+    border: 1px solid var(--gray-mid);
+    border-radius: var(--radius-card);
+    margin: 1rem 0;
+}
+.author-card img {
+    width: 80px !important;
+    height: 80px !important;
+    max-width: 80px !important;
+    border-radius: 50% !important;
+    object-fit: cover;
+    object-position: top;
+    flex-shrink: 0;
+    margin: 0 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,.1);
+}
+.author-card .author-info span {
+    display: block;
+    font-size: 0.93rem;
+    color: var(--gray-text);
+    line-height: 1.5;
+}
+.author-card .author-info span:first-child {
+    font-weight: 700;
+    color: var(--black);
+    font-size: 1rem;
+}
+
 /* -- ASIDE BLOCKS -- */
 .aside-block {
     background: var(--gray-light);
@@ -1843,6 +1877,22 @@ def build(src_root, out_dir):
     html = html.replace(
         '<h3 id="회장">회장</h3>',
         '<h2 style="margin-top:1.5rem;">임원진</h2>\n<h3 id="회장">회장</h3>')
+
+    # Convert aside blocks with portrait photos to author-card layout
+    def convert_author_cards(html_text):
+        def replace_author(m):
+            img_tag = m.group(1)
+            spans = m.group(2)
+            # Extract span contents
+            span_texts = re.findall(r'<span>(.*?)</span>', spans, re.DOTALL)
+            info_html = ''.join(f'<span>{s}</span>' for s in span_texts)
+            return f'<div class="author-card">{img_tag}<div class="author-info">{info_html}</div></div>'
+        # Match aside-block with portrait image (교수, 선생님, 증명사진, or generic image.png in first span)
+        html_text = re.sub(
+            r'<div class="aside-block"><span>(<img[^>]*alt="[^"]*(?:교수|선생님|증명|image\.png)[^"]*"[^>]*>)</span>\s*((?:<span>.*?</span>\s*)+)</div>',
+            replace_author, html_text, flags=re.DOTALL)
+        return html_text
+    html = convert_author_cards(html)
 
     # Fix 회장 info: merge phone/email spans into one line
     html = re.sub(
