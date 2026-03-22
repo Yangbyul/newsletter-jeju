@@ -458,9 +458,11 @@ SECTIONS = [
         'color': '#2d6a4f',
         'file_key': '',
         'subsections': [
+            {'title': '구성원 소개', 'file_key': '제주지회 활동 소개 237'},
             {'title': '창립 58주년 기념 강연 (2025.1.24.)', 'file_key': '창립 58주년 기념 강연'},
             {'title': '원도심마을탐방 (2025.4.26.)', 'file_key': '원도심마을탐방'},
             {'title': '2025 임원회의 (2025.9.12.)', 'file_key': '2025 임원회의'},
+            {'title': '— 향후 활동 계획 —', 'file_key': '', 'is_divider': True},
             {'title': '제주교육학 제4차 공동학술대회', 'file_key': '제주교육학 제 4차 공동학술대회'},
             {'title': '2026년 창립 59주년 학술행사', 'file_key': '2026년 창립 59주년'},
         ]
@@ -562,10 +564,15 @@ def build_section_html(section, all_files):
         sub_parts = []
         for sub in section['subsections']:
             sub_title = sub['title']
-            sub_key = sub['file_key']
-            sub_file = find_file_by_key(all_files, sub_key)
+            sub_key = sub.get('file_key', '')
+            # Divider (group header)
+            if sub.get('is_divider'):
+                sub_parts.append(f'<div class="subsection-divider"><strong>{escape_html(sub_title)}</strong></div>')
+                continue
+            sub_file = find_file_by_key(all_files, sub_key) if sub_key else None
             if not sub_file:
-                print(f"  Warning: not found: '{sub_key}'")
+                if sub_key:
+                    print(f"  Warning: not found: '{sub_key}'")
                 continue
             sub_md = read_md(sub_file)
             sub_md = strip_h1(sub_md)
@@ -977,6 +984,14 @@ tr:hover td { background: #e9f5ec; }
 
 /* SUBSECTIONS */
 .subsections { margin-top: 1.5rem; border-top: 1px solid var(--gray-mid); padding-top: 1rem; }
+.subsection-divider {
+    padding: 0.8rem 0 0.3rem;
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    color: var(--green-dark);
+    border-top: 1px solid var(--gray-mid);
+    margin-top: 0.5rem;
+}
 .subsection {
     border: 1px solid var(--gray-mid);
     border-radius: var(--radius);
@@ -1196,15 +1211,7 @@ def build_html(toc_html, intro_html, sections_html, hero_img_src):
 <!-- MASTHEAD -->
 <header class="masthead" role="banner">
   <div class="masthead-inner">
-    <div class="masthead-badge">
-      <strong>{NEWSLETTER_SUBTITLE}</strong>
-      <span class="sep">|</span>
-      <span>발행일: {PUBLICATION_DATE}</span>
-      <span class="sep">|</span>
-      <span>{SINCE}</span>
-    </div>
     <h1>{NEWSLETTER_TITLE}</h1>
-    <p class="masthead-sub">제주교육의 현장과 미래를 함께 이야기합니다</p>
     {hero}
   </div>
 </header>
