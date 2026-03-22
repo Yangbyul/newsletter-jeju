@@ -858,14 +858,13 @@ nav.site-nav {
     background: var(--green-dark);
 }
 .masthead-calligraphy {
-    padding: 0.5rem 1.5rem;
-    text-align: center;
-    background: var(--green-dark);
+    width: 100%;
+    line-height: 0;
 }
 .masthead-calligraphy img {
-    max-height: 60px;
-    width: auto;
-    display: inline-block;
+    width: 100%;
+    height: auto;
+    display: block;
 }
 .masthead-hero-img {
     width: 100%;
