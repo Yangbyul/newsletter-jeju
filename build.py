@@ -479,12 +479,12 @@ SECTIONS = [
         'color': '#52b788',
         'file_key': '',
         'subsections': [
-            {'title': '생생 수업 나눔', 'file_key': '생생 수업 나눔'},
             {'title': '교수님의 연구실', 'file_key': '교수님의 연구실'},
-            {'title': '스마트 교실 비밀병기', 'file_key': '스마트 교실 비밀병기'},
-            {'title': '제주교육 나침반', 'file_key': '제주교육 나침반'},
             {'title': '동백꽃 편지', 'file_key': '동백꽃 편지'},
+            {'title': '생생 수업 나눔', 'file_key': '생생 수업 나눔'},
+            {'title': '스마트 교실 비밀병기', 'file_key': '스마트 교실 비밀병기'},
             {'title': '이어가는 이야기', 'file_key': '이어가는 이야기'},
+            {'title': '제주교육 나침반', 'file_key': '제주교육 나침반'},
         ]
     },
     {
@@ -495,8 +495,8 @@ SECTIONS = [
         'color': '#74c69d',
         'file_key': '',
         'subsections': [
-            {'title': '제주한라대학교', 'file_key': '제주한라대학교'},
             {'title': '제주국제대학교', 'file_key': '제주국제대학교'},
+            {'title': '제주한라대학교', 'file_key': '제주한라대학교'},
         ]
     },
     {
@@ -535,8 +535,8 @@ SECTIONS = [
         'file_key': '',
         'subsections': [
             {'title': '연구비 수주', 'file_key': '연구비 수주'},
-            {'title': '회원 신간 안내', 'file_key': '회원 신간 안내'},
             {'title': '회원 소식', 'file_key': '회원 소식 237'},
+            {'title': '회원 신간 안내', 'file_key': '회원 신간 안내'},
         ]
     },
     {
