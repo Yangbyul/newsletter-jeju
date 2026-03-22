@@ -432,18 +432,20 @@ def read_md(path):
 SECTIONS = [
     {
         'id': 'juron',
-        'title': '주론',
-        'subtitle': '제주교육의 정체성 구현과 제주지회의 활성화',
-        'icon': '✏️',
+        'title': '제주교육의 정체성 구현과 제주지회의 활성화',
+        'nav_title': '주론',
+        'subtitle': '',
+        'icon': '',
         'color': '#1a5c35',
         'file_key': '주론 237',
         'subsections': []
     },
     {
         'id': 'siron',
-        'title': '시론',
-        'subtitle': '제주도 교육 특별자치, 이제 어드레 가멘?',
-        'icon': '📝',
+        'title': '제주도 교육 특별자치, 이제 어드레 가멘?',
+        'nav_title': '시론',
+        'subtitle': '',
+        'icon': '',
         'color': '#1a5c35',
         'file_key': '시론 237',
         'subsections': []
@@ -1263,7 +1265,8 @@ def build_html(toc_html, intro_html, sections_html, hero_img_src):
 def build_toc():
     items = []
     for sec in SECTIONS:
-        items.append(f'<li><a href="#" data-section="{sec["id"]}">{sec["title"]}</a></li>')
+        nav_label = sec.get('nav_title', sec['title'])
+        items.append(f'<li><a href="#" data-section="{sec["id"]}">{nav_label}</a></li>')
     return '<ul class="toc-list">' + ''.join(items) + '</ul>'
 
 
