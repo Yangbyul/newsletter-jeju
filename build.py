@@ -880,10 +880,11 @@ nav.site-nav {
 .masthead-calligraphy {
     background: var(--green-dark);
     text-align: center;
-    padding: 1.5rem 2rem;
+    padding: 1rem 2rem;
 }
 .masthead-calligraphy img {
-    max-height: 50px;
+    max-height: 80px;
+    max-width: 90%;
     width: auto;
     display: inline-block;
 }
