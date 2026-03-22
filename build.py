@@ -1442,6 +1442,10 @@ function showSection(id) {
   var link = document.querySelector('.toc-list a[data-section="' + id + '"]');
   if (link) link.classList.add('active');
 
+  // Show/hide hero banner (only on intro page)
+  var heroImg = document.querySelector('.masthead-hero-img');
+  if (heroImg) heroImg.style.display = (id === 'intro') ? '' : 'none';
+
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -1455,6 +1459,8 @@ function showArticle(sectionId, subId) {
   if (art) {
     art.classList.add('active');
     _currentSection = sectionId;
+    var heroImg = document.querySelector('.masthead-hero-img');
+    if (heroImg) heroImg.style.display = 'none';
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }
