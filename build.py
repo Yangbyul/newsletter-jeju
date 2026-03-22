@@ -657,6 +657,9 @@ def build_section_html(section, all_files):
     <div class="article-body">
       {sub_html}
     </div>
+    <div class="article-back-bar article-back-bottom" onclick="backToSection()">
+      <span class="back-arrow">&larr;</span> {escape_html(nav_title)} 목록으로
+    </div>
   </div>
 </div>''')
 
