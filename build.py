@@ -1399,7 +1399,7 @@ footer {
     .article-body { padding: 1.25rem 1.25rem 1.75rem; }
     .card-list { padding: 1rem 1.25rem; }
     .article-back-bar { padding: 0.75rem 1.25rem; }
-    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .footer-grid { grid-template-columns: 1fr; gap: 0.8rem; }
     .section-title { font-size: 1.35rem; }
     .article-title { font-size: 1.25rem; }
 }
@@ -1670,8 +1670,9 @@ def build(src_root, out_dir):
         '', html)
     # Remove consecutive empty hrs and blank aside blocks
     html = re.sub(r'(<hr>\s*){2,}', '<hr>', html)
-    # Remove empty paragraphs
+    # Remove empty paragraphs and empty blockquotes
     html = re.sub(r'<p>\s*</p>', '', html)
+    html = re.sub(r'<blockquote>\s*</blockquote>', '', html)
     # Footnotes: convert <code>[N]</code> inline to superscript links,
     # and <p><code>[N]</code> text</p> to footnote definitions.
     # Process each view section separately to avoid duplicate IDs across articles.
