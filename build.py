@@ -1498,7 +1498,7 @@ def build_html(toc_html, intro_html, sections_html, article_views_html, hero_img
 <!-- NAVIGATION -->
 <nav class="site-nav" role="navigation" aria-label="목차">
   <div class="nav-inner">
-    <a class="nav-brand" href="#" onclick="event.preventDefault(); showSection('intro');">{NEWSLETTER_TITLE}</a>
+    <a class="nav-brand" href="#" onclick="event.preventDefault(); showSection('intro');">제주교육마루</a>
     {toc_html}
   </div>
 </nav>
@@ -1507,13 +1507,12 @@ def build_html(toc_html, intro_html, sections_html, article_views_html, hero_img
 <header class="masthead" role="banner">
   <div class="masthead-inner">
     <div class="masthead-eyebrow">{SINCE} &#183; {NEWSLETTER_SUBTITLE}</div>
-    <h1>{NEWSLETTER_TITLE}</h1>
+    {hero}
     <div class="masthead-meta">
-      <span>{PUBLISHER}</span>
+      <span>{NEWSLETTER_TITLE}</span>
       <span class="dot">&#183;</span>
       <span>{PUBLICATION_DATE}</span>
     </div>
-    {hero}
   </div>
 </header>
 
