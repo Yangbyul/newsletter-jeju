@@ -625,8 +625,11 @@ def build_intro_html(root_md_path):
     md = strip_h1(md)
     # Remove CSV/database links
     md = re.sub(r'\[.+?\]\(.+?\.csv\)\n?', '', md)
-    # Remove Notion navigation aside (cursor-click)
-    md = re.sub(r'<aside>.*?cursor-click.*?</aside>', '', md, flags=re.DOTALL)
+    # Remove specific Notion aside blocks by splitting and filtering
+    def remove_aside_blocks(text, keywords):
+        parts = re.split(r'(<aside>.*?</aside>)', text, flags=re.DOTALL)
+        return ''.join(p for p in parts if not any(kw in p for kw in keywords))
+    md = remove_aside_blocks(md, ['cursor-click', 'Since 1993'])
     content = md_to_html(md, root_md_path)
     return f'''
 <section id="intro" class="newsletter-section intro-section">
