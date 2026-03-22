@@ -1945,10 +1945,13 @@ def build(src_root, out_dir):
         f'<span>{ADDRESS}</span>',
         f'<span>제주대학교 아라캠퍼스<br>사범대학 2호관 1312호</span>')
 
-    # Fix 회장 info: merge phone/email spans into one line
+    # Fix 회장 info: clean up phone/email display
+    html = re.sub(
+        r'<span>- 전화번호: ([^<|]+)\|?\s*이메일:\s*([^<]+)</span>',
+        r'<span>- 전화번호: \1</span><span>- 이메일: \2</span>', html)
     html = re.sub(
         r'<span>- 전화번호: ([^<]+)</span>\s*<span>- 이메일:\s*([^<]+)</span>',
-        r'<span>- 전화번호: \1 | 이메일: \2</span>', html)
+        r'<span>- 전화번호: \1</span><span>- 이메일: \2</span>', html)
 
     # 시론 specific fixes:
     # [1] move to title
