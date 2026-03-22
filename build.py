@@ -690,7 +690,7 @@ def build_section_html(section, all_files):
     return section_view, article_views_html
 
 
-def build_intro_html(root_md_path):
+def build_intro_html(root_md_path, hero_image=''):
     if not root_md_path or not os.path.exists(str(root_md_path)):
         return ''
     md = read_md(root_md_path)
@@ -710,12 +710,14 @@ def build_intro_html(root_md_path):
     md = re.sub(r'.*e\.yang@jejunu.*\n?', '', md)
     md = re.sub(r'.*뉴스레터 어떠셨나요.*\n?', '', md)
     content = md_to_html(md, root_md_path)
+    hero_html = f'<img src="{hero_image}" alt="제주 하르방" loading="lazy" style="width:100%;border-radius:8px;margin-bottom:1.5rem;">' if hero_image else ''
     return f'''<div class="newsletter-section">
     <div class="section-header">
       <div class="section-kicker">발간사</div>
       <h2 class="section-title">발간의 글</h2>
     </div>
     <div class="section-content">
+      {hero_html}
       {content}
     </div>
   </div>'''
@@ -1612,22 +1614,28 @@ def build(src_root, out_dir):
     all_files = collect_md_files(subdir)
     print(f"  Found {len(all_files)} MD files")
 
-    # Find hero image
-    hero_img_src = ''
-    main_img_dir = Path(src_root)
-    for d in main_img_dir.iterdir():
-        if d.is_dir():
-            img = d / 'image.png'
-            if img.exists():
-                local = register_image(root_md if root_md else d / 'dummy.md', str(d.name + '/image.png'))
-                # Use correct md_file for root image
-                if root_md:
-                    hero_img_src = register_image(root_md, unquote('%ED%95%9C%EA%B5%AD%EA%B5%90%EC%9C%A1%ED%95%99%ED%9A%8C%20%EC%A0%9C%EC%A3%BC%EC%A7%80%ED%9A%8C%20%EB%89%B4%EC%8A%A4%EB%A0%88%ED%84%B0/image.png'))
-                break
+    # Hero image: use banner.jpg if it exists, otherwise find from export
+    banner_path = Path(out_dir) / 'images' / 'banner.jpg'
+    if banner_path.exists():
+        hero_img_src = 'images/banner.jpg'
+    else:
+        hero_img_src = ''
+        main_img_dir = Path(src_root)
+        for d in main_img_dir.iterdir():
+            if d.is_dir():
+                img = d / 'image.png'
+                if img.exists():
+                    if root_md:
+                        hero_img_src = register_image(root_md, unquote('%ED%95%9C%EA%B5%AD%EA%B5%90%EC%9C%A1%ED%95%99%ED%9A%8C%20%EC%A0%9C%EC%A3%BC%EC%A7%80%ED%9A%8C%20%EB%89%B4%EC%8A%A4%EB%A0%88%ED%84%B0/image.png'))
+                    break
+    # Register the old hero (하르방) for use in intro
+    old_hero_src = ''
+    if root_md:
+        old_hero_src = register_image(root_md, unquote('%ED%95%9C%EA%B5%AD%EA%B5%90%EC%9C%A1%ED%95%99%ED%9A%8C%20%EC%A0%9C%EC%A3%BC%EC%A7%80%ED%9A%8C%20%EB%89%B4%EC%8A%A4%EB%A0%88%ED%84%B0/image.png'))
 
     # Build sections
     print("  Building sections...")
-    intro_html = build_intro_html(root_md)
+    intro_html = build_intro_html(root_md, hero_image=old_hero_src)
 
     sections_parts = []
     all_article_views = []
