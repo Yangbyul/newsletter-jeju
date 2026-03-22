@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="한국교육학회 제주지회 뉴스레터 재창간호 — 2025년 10월 15일">
-  <title>한국교육학회 제주지회 뉴스레터 — 재창간호</title>
+  <meta name="description" content="한국교육학회 제주지회 뉴스레터 재창간호 2025년 10월 15일">
+  <title>한국교육학회 제주지회 뉴스레터 | 재창간호</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;900&family=Noto+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
 /* ============================================================
-   Newsletter CSS — 한국교육학회 제주지회
+   Newsletter CSS - 한국교육학회 제주지회 (Modern Magazine)
    ============================================================ */
 
 *, *::before, *::after {
@@ -26,16 +26,19 @@
     --green-pale:   #d8f3dc;
     --green-faint:  #f0faf3;
     --white:        #ffffff;
-    --gray-light:   #f8f9fa;
-    --gray-mid:     #e9ecef;
-    --gray-text:    #495057;
-    --black:        #212529;
+    --gray-light:   #f6f7f8;
+    --gray-mid:     #e4e8ec;
+    --gray-text:    #64748b;
+    --black:        #1e2630;
     --font-main:    'Noto Serif KR', 'NanumMyeongjo', Georgia, serif;
     --font-ui:      'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
-    --shadow-sm:    0 1px 3px rgba(0,0,0,.08);
-    --shadow-md:    0 4px 12px rgba(0,0,0,.12);
-    --radius:       8px;
-    --max-width:    900px;
+    --shadow-sm:    0 1px 4px rgba(0,0,0,.07);
+    --shadow-md:    0 4px 16px rgba(0,0,0,.10);
+    --shadow-card:  0 2px 12px rgba(26,92,53,.10);
+    --radius:       10px;
+    --radius-card:  12px;
+    --max-width:    860px;
+    --transition:   0.2s ease;
 }
 
 html { scroll-behavior: smooth; font-size: 16px; }
@@ -44,16 +47,17 @@ body {
     font-family: var(--font-main);
     color: var(--black);
     background: var(--gray-light);
-    line-height: 1.8;
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
 }
 
-/* NAV */
+/* -- NAV -- */
 nav.site-nav {
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 200;
     background: var(--green-dark);
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 2px 12px rgba(0,0,0,.18);
 }
 .nav-inner {
     max-width: var(--max-width);
@@ -61,7 +65,8 @@ nav.site-nav {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.5rem 1.5rem;
+    padding: 0 1.5rem;
+    height: 52px;
     flex-wrap: nowrap;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -69,82 +74,101 @@ nav.site-nav {
 .nav-brand {
     color: var(--white);
     font-family: var(--font-ui);
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     font-weight: 700;
     white-space: nowrap;
     text-decoration: none;
     flex-shrink: 0;
+    letter-spacing: -0.01em;
+    opacity: 0.92;
+    transition: opacity var(--transition);
+    cursor: pointer;
 }
+.nav-brand:hover { opacity: 1; }
 .toc-list {
     display: flex;
     list-style: none;
-    gap: 0.15rem;
+    gap: 0;
     flex-wrap: nowrap;
-    flex-shrink: 0;
+    flex-shrink: 1;
+    min-width: 0;
 }
 .toc-list a {
-    color: #b7e4c7;
+    color: rgba(255,255,255,0.7);
     text-decoration: none;
     font-family: var(--font-ui);
-    font-size: 0.78rem;
-    padding: 0.2rem 0.55rem;
-    border-radius: 4px;
-    transition: background 0.2s, color 0.2s;
+    font-size: 0.8rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    transition: background var(--transition), color var(--transition);
     white-space: nowrap;
+    display: block;
 }
-.toc-list a:hover, .toc-list a.active {
-    background: rgba(255,255,255,0.2);
+.toc-list a:hover {
+    background: rgba(255,255,255,0.12);
     color: var(--white);
 }
 .toc-list a.active {
-    background: rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.18);
+    color: var(--white);
     font-weight: 700;
 }
 
-/* MASTHEAD */
+/* -- MASTHEAD -- */
 .masthead {
-    background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-mid) 60%, var(--green-light) 100%);
+    background: linear-gradient(160deg, var(--green-dark) 0%, #2d6a4f 55%, #40916c 100%);
     color: var(--white);
-    padding: 3rem 1.5rem 2rem;
+    padding: 3.5rem 1.5rem 2.5rem;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+.masthead::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 70% 30%, rgba(116,198,157,0.18) 0%, transparent 60%);
+    pointer-events: none;
 }
 .masthead-inner {
     max-width: var(--max-width);
     margin: 0 auto;
+    position: relative;
 }
-.masthead-badge {
-    display: inline-flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.5rem 0.75rem;
-    background: rgba(255,255,255,0.12);
-    border: 1px solid rgba(255,255,255,0.3);
-    border-radius: 20px;
-    padding: 0.35rem 1rem;
+.masthead-eyebrow {
     font-family: var(--font-ui);
-    font-size: 0.85rem;
-    margin-bottom: 1.5rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 0.75rem;
 }
-.masthead-badge .sep { opacity: 0.4; }
 .masthead h1 {
-    font-size: clamp(1.5rem, 5vw, 2.5rem);
+    font-size: clamp(1.5rem, 5vw, 2.6rem);
     font-weight: 900;
     letter-spacing: -0.02em;
     margin-bottom: 0.5rem;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    line-height: 1.2;
 }
-.masthead-sub {
+.masthead-meta {
     font-family: var(--font-ui);
-    font-size: 0.9rem;
-    opacity: 0.85;
-    margin-bottom: 1.5rem;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
 }
+.masthead-meta .dot { opacity: 0.4; }
 .masthead-hero-img {
     margin: 0 auto;
-    max-width: 720px;
-    border-radius: var(--radius);
+    max-width: 700px;
+    border-radius: var(--radius-card);
     overflow: hidden;
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.25);
 }
 .masthead-hero-img img {
     width: 100%;
@@ -152,146 +176,183 @@ nav.site-nav {
     display: block;
 }
 
-/* LAYOUT */
+/* -- VIEW SHELL -- */
 main {
     max-width: var(--max-width);
     margin: 0 auto;
-    padding: 2rem 1.5rem;
+    padding: 2rem 1.5rem 3rem;
+    min-height: 60vh;
 }
 
-/* SECTIONS */
+/* -- VIEWS (level 1, 2, 3) -- */
+.view { display: none; }
+.view.active { display: block; }
+
+/* -- SECTION CARD (level-1 page) -- */
 .newsletter-section {
     background: var(--white);
-    border-radius: var(--radius);
+    border-radius: var(--radius-card);
     box-shadow: var(--shadow-sm);
-    margin-bottom: 2.5rem;
+    margin-bottom: 0;
     overflow: hidden;
+    animation: fadeUp 0.25s ease both;
+}
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 .section-header {
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-    padding: 1.5rem 1.75rem 1rem;
-    border-left: 5px solid var(--green-mid);
-    background: var(--green-faint);
+    padding: 2rem 2rem 1.25rem;
+    border-bottom: 1px solid var(--gray-mid);
+    background: var(--white);
 }
-.section-icon {
-    font-size: 1.4rem;
-    flex-shrink: 0;
-    margin-top: 0.1em;
+.section-kicker {
+    font-family: var(--font-ui);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--green-mid);
+    margin-bottom: 0.4rem;
 }
 .section-title {
-    font-size: 1.4rem;
-    font-weight: 800;
-    color: var(--green-dark);
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--black);
     font-family: var(--font-ui);
-    line-height: 1.3;
+    line-height: 1.25;
     word-break: keep-all;
+    letter-spacing: -0.02em;
 }
 .section-desc {
     font-size: 0.85rem;
-    color: #999;
+    color: var(--gray-text);
     font-family: var(--font-ui);
-    margin: 0.3rem 0 1rem;
-    line-height: 1.5;
+    margin-top: 0.5rem;
+    line-height: 1.6;
 }
 .section-subtitle {
     font-family: var(--font-ui);
     font-size: 0.88rem;
-    color: #40916c;
-    margin-top: 0.25rem;
-    line-height: 1.4;
+    color: var(--green-mid);
+    margin-top: 0.3rem;
+    line-height: 1.5;
 }
 .section-content {
-    padding: 1.5rem 1.75rem;
+    padding: 1.75rem 2rem;
     overflow-wrap: break-word;
     word-break: keep-all;
 }
 
-/* TYPOGRAPHY */
+/* -- TYPOGRAPHY (article content) -- */
+.article-body h1,
+.article-body h2,
+.article-body h3,
+.article-body h4,
 .section-content h1,
 .section-content h2,
 .section-content h3,
 .section-content h4 {
     font-family: var(--font-ui);
     color: var(--green-dark);
-    margin: 1.5rem 0 0.6rem;
+    margin: 1.75rem 0 0.65rem;
     line-height: 1.4;
 }
-.section-content h1 { font-size: 1.25rem; border-bottom: 2px solid var(--green-pale); padding-bottom: 0.3rem; }
-.section-content h2 { font-size: 1.1rem; }
-.section-content h3 { font-size: 1rem; }
-.section-content h4 { font-size: 0.95rem; color: var(--green-mid); }
-
-.section-content p {
-    margin-bottom: 1rem;
-    line-height: 1.9;
-    color: #333;
+.article-body h1, .section-content h1 {
+    font-size: 1.3rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 2px solid var(--green-pale);
 }
+.article-body h2, .section-content h2 { font-size: 1.15rem; }
+.article-body h3, .section-content h3 { font-size: 1.02rem; }
+.article-body h4, .section-content h4 { font-size: 0.95rem; color: var(--green-mid); }
+
+.article-body p,
+.section-content p {
+    margin-bottom: 1.1rem;
+    line-height: 2;
+    color: #2c3440;
+    font-size: 1rem;
+}
+.article-body strong,
 .section-content strong { color: var(--green-dark); font-weight: 700; }
+.article-body em,
 .section-content em { font-style: italic; }
+.article-body code,
 .section-content code {
     background: var(--green-pale);
     color: var(--green-dark);
     padding: 0.1em 0.4em;
-    border-radius: 3px;
+    border-radius: 4px;
     font-family: var(--font-ui);
     font-size: 0.85em;
 }
+.article-body hr,
 .section-content hr {
     border: none;
     border-top: 1px solid var(--gray-mid);
-    margin: 1.5rem 0;
+    margin: 2rem 0;
 }
+.article-body blockquote,
 .section-content blockquote {
     border-left: 3px solid var(--green-light);
-    padding: 0.75rem 1rem;
-    margin: 1rem 0;
+    padding: 0.85rem 1.25rem;
+    margin: 1.25rem 0;
     background: var(--green-faint);
     border-radius: 0 var(--radius) var(--radius) 0;
     font-style: italic;
     color: var(--gray-text);
 }
+.article-body ul, .article-body ol,
 .section-content ul, .section-content ol {
-    padding-left: 1.5rem;
-    margin-bottom: 1rem;
+    padding-left: 1.6rem;
+    margin-bottom: 1.1rem;
 }
-.section-content li { margin-bottom: 0.3rem; }
+.article-body li,
+.section-content li { margin-bottom: 0.35rem; line-height: 1.85; }
+.article-body a,
 .section-content a {
     color: var(--green-mid);
     text-decoration: underline;
     text-decoration-color: var(--green-pale);
-    transition: color 0.2s;
+    transition: color var(--transition);
 }
+.article-body a:hover,
 .section-content a:hover { color: var(--green-dark); }
 
-/* IMAGES */
+/* -- IMAGES -- */
+.article-body img,
 .section-content img {
     max-width: 100%;
     height: auto;
-    border-radius: var(--radius);
+    border-radius: var(--radius-card);
     display: block;
-    margin: 1.25rem auto;
+    margin: 1.5rem auto;
     box-shadow: var(--shadow-sm);
 }
+.article-body img[alt*="교수"],
+.article-body img[alt*="선생님"],
+.article-body img[alt*="사진"],
+.article-body img[alt*="증명"],
 .section-content img[alt*="교수"],
 .section-content img[alt*="선생님"],
 .section-content img[alt*="사진"],
 .section-content img[alt*="증명"] {
-    max-width: 160px;
+    max-width: 150px;
     border-radius: 50%;
     object-fit: cover;
     aspect-ratio: 1;
     object-position: top;
+    box-shadow: 0 2px 10px rgba(0,0,0,.12);
 }
 
-/* ASIDE BLOCKS */
+/* -- ASIDE BLOCKS -- */
 .aside-block {
-    background: var(--green-faint);
-    border-left: 3px solid var(--green-light);
-    border-radius: 0 var(--radius) var(--radius) 0;
-    padding: 1rem 1.25rem;
-    margin: 1rem 0;
+    background: var(--gray-light);
+    border: 1px solid var(--gray-mid);
+    border-radius: var(--radius-card);
+    padding: 1.1rem 1.4rem;
+    margin: 1.25rem 0;
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
@@ -300,7 +361,7 @@ main {
     display: block;
     font-size: 0.93rem;
     color: var(--gray-text);
-    line-height: 1.7;
+    line-height: 1.75;
     word-break: keep-all;
 }
 .aside-block strong { color: var(--green-dark); }
@@ -314,19 +375,19 @@ main {
 }
 .aside-block hr { border: none; border-top: 1px solid var(--gray-mid); margin: 0.25rem 0; }
 .aside-block img {
-    max-width: 120px;
+    max-width: 110px;
     border-radius: 50%;
     display: block;
     margin: 0.25rem auto;
     box-shadow: none;
 }
 
-/* TABLES */
+/* -- TABLES -- */
 .table-wrap {
     overflow-x: auto;
-    margin: 1.25rem 0;
+    margin: 1.5rem 0;
     border-radius: var(--radius);
-    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--gray-mid);
 }
 table {
     border-collapse: collapse;
@@ -337,97 +398,166 @@ table {
 th {
     background: var(--green-dark);
     color: var(--white);
-    padding: 0.65rem 0.9rem;
+    padding: 0.7rem 1rem;
     text-align: left;
     font-weight: 600;
+    white-space: nowrap;
 }
 td {
-    padding: 0.55rem 0.9rem;
+    padding: 0.6rem 1rem;
     border-bottom: 1px solid var(--gray-mid);
     vertical-align: top;
-    line-height: 1.6;
+    line-height: 1.65;
     word-break: keep-all;
     overflow-wrap: break-word;
 }
-tr:nth-child(even) td { background: var(--green-faint); }
-tr:hover td { background: #e9f5ec; }
+tr:last-child td { border-bottom: none; }
+tr:nth-child(even) td { background: #fafbfc; }
+tr:hover td { background: var(--green-faint); }
 
-/* SUBSECTIONS */
-.subsections { margin-top: 1.5rem; border-top: 1px solid var(--gray-mid); padding-top: 1rem; }
+/* -- CARD LIST (level-2: subsection list) -- */
+.card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 1.5rem 2rem;
+}
 .subsection-divider {
-    padding: 0.8rem 0 0.3rem;
+    padding: 1.1rem 0 0.35rem;
     font-family: var(--font-ui);
-    font-size: 0.9rem;
-    color: var(--green-dark);
+    font-size: 0.73rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--green-mid);
     border-top: 1px solid var(--gray-mid);
     margin-top: 0.5rem;
 }
-.subsection {
+.subsection-divider:first-child {
+    padding-top: 0;
+    border-top: none;
+    margin-top: 0;
+}
+.sub-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: var(--white);
     border: 1px solid var(--gray-mid);
     border-radius: var(--radius);
-    margin-bottom: 0.75rem;
-    overflow: hidden;
-    transition: box-shadow 0.2s;
-}
-.subsection:hover { box-shadow: var(--shadow-sm); }
-details > summary {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
-    padding: 0.85rem 1.25rem;
     cursor: pointer;
-    background: var(--green-faint);
-    font-family: var(--font-ui);
-    user-select: none;
-    border-left: 3px solid var(--green-light);
-    transition: background 0.2s;
-    list-style: none;
+    transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+    text-align: left;
+    text-decoration: none;
+    color: inherit;
 }
-details > summary::-webkit-details-marker { display: none; }
-details > summary::before {
-    content: '▶';
-    color: var(--green-mid);
-    font-size: 0.65rem;
-    transition: transform 0.2s;
-    flex-shrink: 0;
+.sub-card:hover {
+    border-color: var(--green-light);
+    box-shadow: var(--shadow-card);
+    transform: translateY(-1px);
 }
-details[open] > summary { border-left-color: var(--green-dark); }
-details[open] > summary::before { transform: rotate(90deg); }
-details > summary:hover { background: var(--green-pale); }
+.sub-card-body { flex: 1; min-width: 0; }
 .sub-title {
+    font-family: var(--font-ui);
     font-weight: 700;
-    color: var(--green-dark);
     font-size: 0.97rem;
-}
-.sub-title-wrap {
-    display: flex;
-    flex-direction: column;
-    gap: 0.15rem;
+    color: var(--black);
+    line-height: 1.4;
+    word-break: keep-all;
 }
 .sub-subtitle {
-    color: var(--gray-text);
+    font-family: var(--font-ui);
     font-size: 0.82rem;
-    font-weight: 400;
+    color: var(--gray-text);
+    margin-top: 0.2rem;
+    line-height: 1.5;
 }
-.sub-content {
-    padding: 1.5rem;
-    border-top: 1px solid var(--gray-mid);
-    background: var(--white);
+.sub-card-arrow {
+    color: var(--green-light);
+    font-size: 1rem;
+    flex-shrink: 0;
+    transition: color var(--transition), transform var(--transition);
+}
+.sub-card:hover .sub-card-arrow {
+    color: var(--green-dark);
+    transform: translateX(3px);
 }
 
-/* FOOTER */
+/* -- ARTICLE VIEW (level-3) -- */
+.article-view {
+    background: var(--white);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    animation: fadeUp 0.22s ease both;
+}
+.article-back-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.85rem 1.75rem;
+    background: var(--gray-light);
+    border-bottom: 1px solid var(--gray-mid);
+    font-family: var(--font-ui);
+    font-size: 0.83rem;
+    color: var(--green-dark);
+    cursor: pointer;
+    transition: background var(--transition);
+    user-select: none;
+}
+.article-back-bar:hover { background: var(--green-pale); }
+.article-back-bar .back-arrow { font-size: 1.05rem; }
+.article-header {
+    padding: 2rem 2rem 1.25rem;
+    border-bottom: 1px solid var(--gray-mid);
+}
+.article-kicker {
+    font-family: var(--font-ui);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--green-mid);
+    margin-bottom: 0.5rem;
+}
+.article-title {
+    font-family: var(--font-ui);
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--black);
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+    word-break: keep-all;
+}
+.article-subtitle {
+    font-family: var(--font-ui);
+    font-size: 0.88rem;
+    color: var(--gray-text);
+    margin-top: 0.5rem;
+}
+.article-body {
+    padding: 1.75rem 2rem 2.5rem;
+    overflow-wrap: break-word;
+    word-break: keep-all;
+    max-width: 680px;
+}
+
+/* -- FOOTER -- */
 footer {
     background: var(--green-dark);
-    color: rgba(255,255,255,0.85);
+    color: rgba(255,255,255,0.8);
     padding: 2.5rem 1.5rem 2rem;
     text-align: center;
     font-family: var(--font-ui);
     font-size: 0.85rem;
+    margin-top: 3rem;
 }
 .footer-inner { max-width: var(--max-width); margin: 0 auto; }
 .footer-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 1rem 1.5rem;
     text-align: left;
     margin-bottom: 1.5rem;
@@ -435,38 +565,40 @@ footer {
 .footer-item label {
     display: block;
     color: var(--green-pale);
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     font-weight: 700;
     margin-bottom: 0.2rem;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.07em;
 }
 .footer-item span, .footer-item a {
-    color: rgba(255,255,255,0.85);
+    color: rgba(255,255,255,0.8);
     text-decoration: none;
     line-height: 1.6;
+    font-size: 0.85rem;
 }
 .footer-item a:hover { color: var(--green-pale); }
-.footer-divider { border: none; border-top: 1px solid rgba(255,255,255,0.15); margin: 1.25rem 0; }
-.footer-copy { font-size: 0.78rem; opacity: 0.55; }
+.footer-divider { border: none; border-top: 1px solid rgba(255,255,255,0.12); margin: 1.25rem 0; }
+.footer-copy { font-size: 0.77rem; opacity: 0.45; }
 .feedback-box {
-    background: rgba(255,255,255,0.07);
+    background: rgba(255,255,255,0.06);
     border-radius: var(--radius);
     padding: 1rem 1.25rem;
     margin: 0 0 1rem;
-    font-size: 0.85rem;
-    line-height: 1.8;
+    font-size: 0.84rem;
+    line-height: 1.9;
     text-align: left;
+    border: 1px solid rgba(255,255,255,0.1);
 }
 .feedback-box a { color: var(--green-pale); }
-.donation-box { font-size: 0.8rem; opacity: 0.7; margin-bottom: 0.5rem; }
+.donation-box { font-size: 0.79rem; opacity: 0.65; margin-bottom: 0.5rem; }
 
-/* BACK TO TOP */
+/* -- BACK TO TOP -- */
 .back-top {
     position: fixed;
-    bottom: 1.5rem;
-    right: 1.5rem;
-    background: var(--green-mid);
+    bottom: 1.75rem;
+    right: 1.75rem;
+    background: var(--green-dark);
     color: white;
     border-radius: 50%;
     width: 44px;
@@ -477,47 +609,40 @@ footer {
     text-decoration: none;
     font-size: 1.1rem;
     box-shadow: var(--shadow-md);
-    transition: background 0.2s, transform 0.2s;
-    opacity: 0.88;
+    transition: background var(--transition), transform var(--transition);
+    opacity: 0.85;
     z-index: 50;
 }
-.back-top:hover { background: var(--green-dark); transform: translateY(-2px); opacity: 1; }
+.back-top:hover { background: var(--green-mid); transform: translateY(-2px); opacity: 1; }
 
-/* RESPONSIVE */
+/* -- RESPONSIVE -- */
 @media (max-width: 640px) {
     .nav-inner {
-        padding: 0.5rem 0.8rem;
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0.3rem;
+        padding: 0 0.75rem;
+        height: 48px;
     }
-    .nav-brand {
-        font-size: 0.85rem;
-        text-align: center;
-        border-bottom: 1px solid rgba(255,255,255,0.15);
-        padding-bottom: 0.4rem;
-    }
-    .toc-list {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 0.2rem;
-    }
-    .toc-list a { font-size: 0.85rem; padding: 0.25rem 0.5rem; }
-    main { padding: 1rem; }
-    .section-header { padding: 1rem 1.25rem 0.75rem; }
-    .section-content { padding: 1rem 1.25rem; }
-    .sub-content { padding: 1rem; }
-    .masthead { padding: 2rem 1rem 1.5rem; }
+    .nav-brand { font-size: 0.72rem; }
+    .toc-list a { font-size: 0.75rem; padding: 0.25rem 0.45rem; }
+    main { padding: 1rem 0.875rem 2rem; }
+    .masthead { padding: 2.5rem 1rem 2rem; }
+    .section-header,
+    .article-header { padding: 1.25rem 1.25rem 1rem; }
+    .section-content,
+    .article-body { padding: 1.25rem 1.25rem 1.75rem; }
+    .card-list { padding: 1rem 1.25rem; }
+    .article-back-bar { padding: 0.75rem 1.25rem; }
     .footer-grid { grid-template-columns: 1fr 1fr; }
+    .section-title { font-size: 1.35rem; }
+    .article-title { font-size: 1.25rem; }
 }
 
 @media print {
-    nav.site-nav, .back-top { display: none; }
+    nav.site-nav, .back-top, .article-back-bar { display: none !important; }
+    .view { display: block !important; }
     .newsletter-section { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
-    details { display: block !important; }
-    details > summary { display: none; }
-    .sub-content { display: block !important; padding: 1rem 0; }
+    .sub-card { page-break-inside: avoid; }
 }
+
 </style>
 </head>
 <body>
@@ -526,30 +651,35 @@ footer {
 <nav class="site-nav" role="navigation" aria-label="목차">
   <div class="nav-inner">
     <a class="nav-brand" href="#" onclick="event.preventDefault(); showSection('intro');">한국교육학회 제주지회 뉴스레터</a>
-    <ul class="toc-list"><li><a href="#" data-section="juron">주론</a></li><li><a href="#" data-section="siron">시론</a></li><li><a href="#" data-section="activities">제주지회 활동 소개</a></li><li><a href="#" data-section="member">회원 동정</a></li><li><a href="#" data-section="jeju-news">제주교육소식</a></li><li><a href="#" data-section="campus">캠퍼스 네트워크</a></li></ul>
+    <ul class="toc-list"><li><a href="#" data-section="intro">발간사</a></li><li><a href="#" data-section="juron">주론</a></li><li><a href="#" data-section="siron">시론</a></li><li><a href="#" data-section="activities">제주지회 활동 소개</a></li><li><a href="#" data-section="member">회원 동정</a></li><li><a href="#" data-section="jeju-news">제주교육소식</a></li><li><a href="#" data-section="campus">캠퍼스 네트워크</a></li></ul>
   </div>
 </nav>
 
 <!-- MASTHEAD -->
 <header class="masthead" role="banner">
   <div class="masthead-inner">
+    <div class="masthead-eyebrow">Since 1993 &#183; 재창간호</div>
     <h1>한국교육학회 제주지회 뉴스레터</h1>
+    <div class="masthead-meta">
+      <span>한국교육학회 제주지회</span>
+      <span class="dot">&#183;</span>
+      <span>2025년 10월 15일</span>
+    </div>
     <div class="masthead-hero-img"><img src="images/dc7ca42c_image.png" alt="뉴스레터 헤더 이미지"></div>
   </div>
 </header>
 
-<!-- CONTENT -->
+<!-- CONTENT (all views, JS shows/hides) -->
 <main>
-  
-<section id="intro" class="newsletter-section intro-section">
-  <div class="section-header" style="border-left-color:#1a5c35">
-    <span class="section-icon"></span>
-    <div>
-      <h2 class="section-title">발간사</h2>
+  <!-- Level 1: Intro -->
+  <div id="view-intro" class="view">
+    <div class="newsletter-section">
+    <div class="section-header">
+      <div class="section-kicker">발간사</div>
+      <h2 class="section-title">발간의 글</h2>
     </div>
-  </div>
-  <div class="section-content">
-    <hr>
+    <div class="section-content">
+      <hr>
 <p>존경하는 회원 여러분,</p>
 <p>한국교육학회 제주지회 회장 이인회입니다.</p>
 <p>제주지회는 과거에도 뉴스레터를 통해 제주교육의 현안을 공유해왔습니다. <strong>이번 재창간호는 그 전통을 이어가면서도</strong> <strong>노션(Notion) 기반의 현대적인 뉴스레터로 새롭게 출발한다는 점에서 더욱 뜻깊습니다.</strong></p>
@@ -560,20 +690,19 @@ footer {
 <hr>
 <blockquote></blockquote>
 
+    </div>
   </div>
-</section>
+  </div>
 
-  
-<section id="juron" class="newsletter-section">
-  <div class="section-header" style="border-left-color:#1a5c35">
-    <span class="section-icon"></span>
-    <div>
+  <!-- Level 1+2: Section views (card list or direct content) -->
+  <div id="view-juron" class="view">
+  <div class="newsletter-section">
+    <div class="section-header">
+      <div class="section-kicker">주론</div>
       <h2 class="section-title">제주교육의 정체성 구현과 제주지회의 활성화</h2>
       
     </div>
-  </div>
-  <div class="section-content">
-    <div class="aside-block"><span><img src="images/c5f10810_image.png" alt="image.png" loading="lazy"></span>
+    <div class="section-content"><div class="aside-block"><span><img src="images/c5f10810_image.png" alt="image.png" loading="lazy"></span>
 <span>이인회 교수</span>
 <span>(한국교육학회 제주지회 회장)</span></div>
 
@@ -666,22 +795,17 @@ footer {
 <div class="aside-block"><span>(현) 제주대학교 교육대학원 교육학과 교수</span>
 <span>(현) 한국교육학회 제주지회 회장</span></div>
 <hr>
-
-    
+</div>
   </div>
-</section>
-
-
-<section id="siron" class="newsletter-section">
-  <div class="section-header" style="border-left-color:#1a5c35">
-    <span class="section-icon"></span>
-    <div>
+</div>
+<div id="view-siron" class="view">
+  <div class="newsletter-section">
+    <div class="section-header">
+      <div class="section-kicker">시론</div>
       <h2 class="section-title">제주도 교육 특별자치, 이제 어드레 가멘?</h2>
       
     </div>
-  </div>
-  <div class="section-content">
-    <div class="aside-block"><span><img src="images/39d5298a_image.png" alt="image.png" loading="lazy"></span>
+    <div class="section-content"><div class="aside-block"><span><img src="images/39d5298a_image.png" alt="image.png" loading="lazy"></span>
 <span><strong>고전 교수 (제주대)</strong></span></div>
 
 <p><code>[1]</code></p>
@@ -794,32 +918,217 @@ footer {
 <div class="aside-block"><span>(현) 제주대학교 초등교육학부 교수</span>
 <span>(현) 한국교육학회 부회장</span></div>
 <hr>
-
-    
+</div>
   </div>
-</section>
-
-
-<section id="activities" class="newsletter-section">
-  <div class="section-header" style="border-left-color:#2d6a4f">
-    <span class="section-icon"></span>
-    <div>
+</div>
+<div id="view-activities" class="view">
+  <div class="newsletter-section">
+    <div class="section-header">
+      
       <h2 class="section-title">제주지회 활동 소개</h2>
       
     </div>
-  </div>
-  <div class="section-content">
+    <div class="card-list"><button class="sub-card" onclick="showArticle('activities','구성원-소개')" type="button">
+  <div class="sub-card-body">
+    <div class="sub-title">구성원 소개</div>
     
-    <div class="subsections">
-<div class="subsection" id="구성원-소개">
-  <details>
-    <summary>
-      <div class="sub-title-wrap">
-        <span class="sub-title">구성원 소개</span>
-        
-      </div>
-    </summary>
-    <div class="sub-content"><hr>
+  </div>
+  <span class="sub-card-arrow">&rarr;</span>
+</button>
+<div class="subsection-divider">2025 주요 활동</div>
+<button class="sub-card" onclick="showArticle('activities','창립-58주년-기념-강연-2025-1-24')" type="button">
+  <div class="sub-card-body">
+    <div class="sub-title">창립 58주년 기념 강연 (2025.1.24.)</div>
+    
+  </div>
+  <span class="sub-card-arrow">&rarr;</span>
+</button>
+<button class="sub-card" onclick="showArticle('activities','원도심마을탐방-2025-4-26')" type="button">
+  <div class="sub-card-body">
+    <div class="sub-title">원도심마을탐방 (2025.4.26.)</div>
+    
+  </div>
+  <span class="sub-card-arrow">&rarr;</span>
+</button>
+<button class="sub-card" onclick="showArticle('activities','2025-임원회의-2025-9-12')" type="button">
+  <div class="sub-card-body">
+    <div class="sub-title">2025 임원회의 (2025.9.12.)</div>
+    
+  </div>
+  <span class="sub-card-arrow">&rarr;</span>
+</button>
+<div class="subsection-divider">제주지회 향후 계획</div>
+<button class="sub-card" onclick="showArticle('activities','제주교육학-제4차-공동학술대회')" type="button">
+  <div class="sub-card-body">
+    <div class="sub-title">제주교육학 제4차 공동학술대회</div>
+    <div class="sub-subtitle">2025년 11월 8일 오전 9:30 (GMT+9)</div>
+  </div>
+  <span class="sub-card-arrow">&rarr;</span>
+</button>
+<button class="sub-card" onclick="showArticle('activities','2026년-창립-59주년-학술행사')" type="button">
+  <div class="sub-card-body">
+    <div class="sub-title">2026년 창립 59주년 학술행사</div>
+    <div class="sub-subtitle">2026년 1월 23일 오후 2:00 (GMT+9)</div>
+  </div>
+  <span class="sub-card-arrow">&rarr;</span>
+</button></div>
+  </div>
+</div>
+<div id="view-member" class="view">
+  <div class="newsletter-section">
+    <div class="section-header">
+      
+      <h2 class="section-title">회원 동정</h2>
+      
+    </div>
+    <div class="card-list"><button class="sub-card" onclick="showArticle('member','연구비-수주')" type="button">
+  <div class="sub-card-body">
+    <div class="sub-title">연구비 수주</div>
+    
+  </div>
+  <span class="sub-card-arrow">&rarr;</span>
+</button>
+<button class="sub-card" onclick="showArticle('member','회원-신간-안내')" type="button">
+  <div class="sub-card-body">
+    <div class="sub-title">회원 신간 안내</div>
+    
+  </div>
+  <span class="sub-card-arrow">&rarr;</span>
+</button>
+<button class="sub-card" onclick="showArticle('member','회원-소식')" type="button">
+  <div class="sub-card-body">
+    <div class="sub-title">회원 소식</div>
+    
+  </div>
+  <span class="sub-card-arrow">&rarr;</span>
+</button></div>
+  </div>
+</div>
+<div id="view-jeju-news" class="view">
+  <div class="newsletter-section">
+    <div class="section-header">
+      
+      <h2 class="section-title">제주교육소식</h2>
+      
+    </div>
+    <div class="card-list"><button class="sub-card" onclick="showArticle('jeju-news','생생-수업-나눔')" type="button">
+  <div class="sub-card-body">
+    <div class="sub-title">생생 수업 나눔</div>
+    <div class="sub-subtitle">[수업사례 나눔] 손끝으로 만드는 음악 세상</div>
+  </div>
+  <span class="sub-card-arrow">&rarr;</span>
+</button>
+<button class="sub-card" onclick="showArticle('jeju-news','교수님의-연구실')" type="button">
+  <div class="sub-card-body">
+    <div class="sub-title">교수님의 연구실</div>
+    <div class="sub-subtitle">교육공학, 무엇이든 물어보세요</div>
+  </div>
+  <span class="sub-card-arrow">&rarr;</span>
+</button>
+<button class="sub-card" onclick="showArticle('jeju-news','스마트-교실-비밀병기')" type="button">
+  <div class="sub-card-body">
+    <div class="sub-title">스마트 교실 비밀병기</div>
+    <div class="sub-subtitle">수업 준비 시간을 줄여주는 디지털 도구 모음</div>
+  </div>
+  <span class="sub-card-arrow">&rarr;</span>
+</button>
+<button class="sub-card" onclick="showArticle('jeju-news','제주교육-나침반')" type="button">
+  <div class="sub-card-body">
+    <div class="sub-title">제주교육 나침반</div>
+    <div class="sub-subtitle">한 아이도 놓치지 않는 교실을 위하여</div>
+  </div>
+  <span class="sub-card-arrow">&rarr;</span>
+</button>
+<button class="sub-card" onclick="showArticle('jeju-news','동백꽃-편지')" type="button">
+  <div class="sub-card-body">
+    <div class="sub-title">동백꽃 편지</div>
+    <div class="sub-subtitle">설렘과 두려움 사이, 교단에 첫 발을 딛다</div>
+  </div>
+  <span class="sub-card-arrow">&rarr;</span>
+</button>
+<button class="sub-card" onclick="showArticle('jeju-news','이어가는-이야기')" type="button">
+  <div class="sub-card-body">
+    <div class="sub-title">이어가는 이야기</div>
+    <div class="sub-subtitle">강단을 떠나, 교육을 품다</div>
+  </div>
+  <span class="sub-card-arrow">&rarr;</span>
+</button></div>
+  </div>
+</div>
+<div id="view-campus" class="view">
+  <div class="newsletter-section">
+    <div class="section-header">
+      
+      <h2 class="section-title">캠퍼스 네트워크</h2>
+      
+    </div>
+    <div class="card-list"><button class="sub-card" onclick="showArticle('campus','제주한라대학교')" type="button">
+  <div class="sub-card-body">
+    <div class="sub-title">제주한라대학교</div>
+    
+  </div>
+  <span class="sub-card-arrow">&rarr;</span>
+</button>
+<button class="sub-card" onclick="showArticle('campus','제주국제대학교')" type="button">
+  <div class="sub-card-body">
+    <div class="sub-title">제주국제대학교</div>
+    
+  </div>
+  <span class="sub-card-arrow">&rarr;</span>
+</button>
+<div class="subsection-divider">제주대학교 아라캠퍼스</div>
+<button class="sub-card" onclick="showArticle('campus','마을과-함께-가꾸는-교육의-터전')" type="button">
+  <div class="sub-card-body">
+    <div class="sub-title">마을과 함께 가꾸는 교육의 터전</div>
+    <div class="sub-subtitle">박정환 교수님</div>
+  </div>
+  <span class="sub-card-arrow">&rarr;</span>
+</button>
+<button class="sub-card" onclick="showArticle('campus','2025-프론티어방-하계-워크숍')" type="button">
+  <div class="sub-card-body">
+    <div class="sub-title">2025 프론티어방 하계 워크숍</div>
+    <div class="sub-subtitle">이인회 교수님</div>
+  </div>
+  <span class="sub-card-arrow">&rarr;</span>
+</button>
+<div class="subsection-divider">제주대학교 사라캠퍼스</div>
+<button class="sub-card" onclick="showArticle('campus','2025-유럽-선진-숲-교육기관-연수')" type="button">
+  <div class="sub-card-body">
+    <div class="sub-title">2025 유럽 선진 숲 교육기관 연수</div>
+    <div class="sub-subtitle">고전 교수님</div>
+  </div>
+  <span class="sub-card-arrow">&rarr;</span>
+</button>
+<button class="sub-card" onclick="showArticle('campus','신입생-소개-이선아')" type="button">
+  <div class="sub-card-body">
+    <div class="sub-title">신입생 소개 - 이선아</div>
+    <div class="sub-subtitle">연준모 교수님</div>
+  </div>
+  <span class="sub-card-arrow">&rarr;</span>
+</button>
+<button class="sub-card" onclick="showArticle('campus','신입생-소개-김신회')" type="button">
+  <div class="sub-card-body">
+    <div class="sub-title">신입생 소개 - 김신회</div>
+    <div class="sub-subtitle">연준모 교수님</div>
+  </div>
+  <span class="sub-card-arrow">&rarr;</span>
+</button></div>
+  </div>
+</div>
+
+  <!-- Level 3: Article views -->
+  <div id="article-activities-구성원-소개" class="view">
+  <div class="article-view">
+    <div class="article-back-bar" onclick="backToSection()">
+      <span class="back-arrow">&larr;</span> 제주지회 활동 소개 목록으로
+    </div>
+    <div class="article-header">
+      <div class="article-kicker">제주지회 활동 소개</div>
+      <h1 class="article-title">구성원 소개</h1>
+      
+    </div>
+    <div class="article-body">
+      <hr>
 <hr>
 <hr>
 <h1 id="제주지회-구성원">제주지회 구성원</h1>
@@ -849,20 +1158,22 @@ footer {
 <h3 id="총무">총무</h3>
 <div class="aside-block"><span>양유정 (제주대학교)</span></div>
 <hr>
-</div>
-  </details>
-</div>
-<div class="subsection-divider"><strong>— 2025 주요 활동 —</strong></div>
 
-<div class="subsection" id="창립-58주년-기념-강연-2025-1-24">
-  <details>
-    <summary>
-      <div class="sub-title-wrap">
-        <span class="sub-title">창립 58주년 기념 강연 (2025.1.24.)</span>
-        
-      </div>
-    </summary>
-    <div class="sub-content"><p><img src="images/b8e30aa5_image.png" alt="image.png" loading="lazy"></p>
+    </div>
+  </div>
+</div>
+<div id="article-activities-창립-58주년-기념-강연-2025-1-24" class="view">
+  <div class="article-view">
+    <div class="article-back-bar" onclick="backToSection()">
+      <span class="back-arrow">&larr;</span> 제주지회 활동 소개 목록으로
+    </div>
+    <div class="article-header">
+      <div class="article-kicker">제주지회 활동 소개</div>
+      <h1 class="article-title">창립 58주년 기념 강연 (2025.1.24.)</h1>
+      
+    </div>
+    <div class="article-body">
+      <p><img src="images/b8e30aa5_image.png" alt="image.png" loading="lazy"></p>
 <h2 id="1-김민호-교수님의-정년-기념-강연">1. 김민호 교수님의 정년 기념 강연</h2>
 <p>지난 2025년 1월 24일(금), 사라캠퍼스에서 제주대학교 초등교육학부 초등교육학전공 김민호 교수님의 정년 기념 강연 및 축하식이 있었습니다. 이 강연은 한국교육학회 제주지회 창립 38주년 「제주 교육학 연구의 어제와 오늘, 그리고 내일」 행사와 겸하여 이루어졌습니다. 교수님의 제주교육대학에서 14,361일 동안의 정년 기념 강연에 이어 추억과 응원의 영상 감상, 헌사 및 헌화, 감사패 전달, 기념촬영 순서로 축하식이 이어졌습니다. 강연장에는 교수님의 가족뿐만 아니라 학계 인사, 동료 교수, 제자 등 수십 명이 참석하여 교수님의 정년을 축하하였습니다. 그리고 모두가 교수님이 걸어오신 길을 같이 돌아보며, 교수님의 교육과 연구에 대한 열정을 다시금 되새겼습니다. 그날의 기억을 떠올리며 교수님 강연의 주요 내용을 소개해 드립니다.</p>
 <h2 id="2-나의-교육학-여정">2. ‘나의 교육학 여정’</h2>
@@ -1050,19 +1361,22 @@ footer {
 <p><img src="images/707e049f_image_6.png" alt="image.png" loading="lazy"></p>
 <div class="aside-block"><span>문현식 박사 (제주대학교)</span></div>
 <hr>
-</div>
-  </details>
-</div>
 
-<div class="subsection" id="원도심마을탐방-2025-4-26">
-  <details>
-    <summary>
-      <div class="sub-title-wrap">
-        <span class="sub-title">원도심마을탐방 (2025.4.26.)</span>
-        
-      </div>
-    </summary>
-    <div class="sub-content"><h1 id="세대를-잇는-교육의-공간-원도심-탐방기">세대를 잇는 교육의 공간, 원도심 탐방기</h1>
+    </div>
+  </div>
+</div>
+<div id="article-activities-원도심마을탐방-2025-4-26" class="view">
+  <div class="article-view">
+    <div class="article-back-bar" onclick="backToSection()">
+      <span class="back-arrow">&larr;</span> 제주지회 활동 소개 목록으로
+    </div>
+    <div class="article-header">
+      <div class="article-kicker">제주지회 활동 소개</div>
+      <h1 class="article-title">원도심마을탐방 (2025.4.26.)</h1>
+      
+    </div>
+    <div class="article-body">
+      <h1 id="세대를-잇는-교육의-공간-원도심-탐방기">세대를 잇는 교육의 공간, 원도심 탐방기</h1>
 <p><img src="images/ea82fca1_image.png" alt="image.png" loading="lazy"></p>
 <p>4월 26일 토요일, 봄의 한가운데에서 한국교육학회 제주지회는 창립 이래 처음으로 회원 선생님들과 함께 제주교육의 발상지인 원도심을 탐방했습니다. 이날 탐방에는 제주대학교, 제주국제대학교, 제주한라대학교 등 도내 대학의 교수님들과 졸업생, 재학생 등 40여 명이 함께했습니다.</p>
 <p>제가 20여 년간의 서울 생활을 마치고 2017년에 고향 제주로 돌아왔을 때, 가장 큰 변화를 느낀 곳이 바로 이 원도심이었습니다. 어릴 적 어머니의 손을 잡고 다니던 시장, 친구들과 웃음소리를 나누던 거리, 추억이 깃든 장소들이 여전히 곳곳에 남아 있었습니다. 칠성로의 냄비우동집, 친구들과 약속을 잡던 조일약국 앞, 동문시장과 시네하우스, 학산문구사를 지나 사라봉 옆 우리 집으로 향하던 길까지 모두 기억 속에 선명했습니다. 하지만 돌아온 고향의 원도심은 많은 사람들이 떠나고 활기를 잃은 모습이었습니다. 그 모습을 보며 안타까운 마음이 들었습니다.</p>
@@ -1079,53 +1393,61 @@ footer {
 <p><img src="images/79c0f285_image_3.png" alt="image.png" loading="lazy"></p>
 <div class="aside-block"><span>양유정 (제주대학교 교육학과 박사과정, 한국교육학회 제주지회 총무 )</span></div>
 <hr>
-</div>
-  </details>
-</div>
 
-<div class="subsection" id="2025-임원회의-2025-9-12">
-  <details>
-    <summary>
-      <div class="sub-title-wrap">
-        <span class="sub-title">2025 임원회의 (2025.9.12.)</span>
-        
-      </div>
-    </summary>
-    <div class="sub-content"><h1 id="YES의-마음으로-제주교육의-내일을-잇다">YES의 마음으로 제주교육의 내일을 잇다</h1>
+    </div>
+  </div>
+</div>
+<div id="article-activities-2025-임원회의-2025-9-12" class="view">
+  <div class="article-view">
+    <div class="article-back-bar" onclick="backToSection()">
+      <span class="back-arrow">&larr;</span> 제주지회 활동 소개 목록으로
+    </div>
+    <div class="article-header">
+      <div class="article-kicker">제주지회 활동 소개</div>
+      <h1 class="article-title">2025 임원회의 (2025.9.12.)</h1>
+      
+    </div>
+    <div class="article-body">
+      <h1 id="YES의-마음으로-제주교육의-내일을-잇다">YES의 마음으로 제주교육의 내일을 잇다</h1>
 <p><img src="images/14d34df3_image.png" alt="image.png" loading="lazy"></p>
 <p>9월 12일 금요일 오후, 제주지회 임원들이 모여 오랜만에 반가운 인사를 나눴습니다. 이인회 제주지회 회장, 김민호 전 지회장, 고전 교수, 연준모 상임이사, 양은별 뉴스레터 위원장, 황현철 사무국장, 양유정 총무가 함께한 이 자리는 지회의 현재를 돌아보고, 앞으로의 방향을 함께 고민하는 뜻깊은 시간이 되었습니다.</p>
 <p>회의에서는 그동안의 활동을 점검하고, 제주교육의 발전을 위해 지회가 어떤 역할을 이어가야 할지에 대해 진지하면서도 따뜻한 대화가 오갔습니다. 모두 제주지회가 더욱 활발히 소통하며 지역 교육 현장에 실질적인 힘이 되는 모임으로 성장하길 바라는 같은 마음이었습니다.</p>
 <p>함께 웃고, 서로의 생각을 경청하던 그날, 제주지회를 향한 애정과 기대가 온전히 스며 있었습니다.</p>
 <div class="aside-block"><span>황현철 사무국장 (제주대학교)</span></div>
 <hr>
-</div>
-  </details>
-</div>
-<div class="subsection-divider"><strong>— 제주지회 향후 계획 —</strong></div>
 
-<div class="subsection" id="제주교육학-제4차-공동학술대회">
-  <details>
-    <summary>
-      <div class="sub-title-wrap">
-        <span class="sub-title">제주교육학 제4차 공동학술대회</span>
-        <span class="sub-subtitle">2025년 11월 8일 오전 9:30 (GMT+9)</span>
-      </div>
-    </summary>
-    <div class="sub-content"><p><img src="images/fa9eb629_image.png" alt="image.png" loading="lazy"></p>
+    </div>
+  </div>
+</div>
+<div id="article-activities-제주교육학-제4차-공동학술대회" class="view">
+  <div class="article-view">
+    <div class="article-back-bar" onclick="backToSection()">
+      <span class="back-arrow">&larr;</span> 제주지회 활동 소개 목록으로
+    </div>
+    <div class="article-header">
+      <div class="article-kicker">제주지회 활동 소개</div>
+      <h1 class="article-title">제주교육학 제4차 공동학술대회</h1>
+      <div class="article-subtitle">2025년 11월 8일 오전 9:30 (GMT+9)</div>
+    </div>
+    <div class="article-body">
+      <p><img src="images/fa9eb629_image.png" alt="image.png" loading="lazy"></p>
 <hr>
-</div>
-  </details>
-</div>
 
-<div class="subsection" id="2026년-창립-59주년-학술행사">
-  <details>
-    <summary>
-      <div class="sub-title-wrap">
-        <span class="sub-title">2026년 창립 59주년 학술행사</span>
-        <span class="sub-subtitle">2026년 1월 23일 오후 2:00 (GMT+9)</span>
-      </div>
-    </summary>
-    <div class="sub-content"><h1 id="2026년-창립-59주년-학술행사를-준비하며">2026년 창립 59주년 학술행사를 준비하며</h1>
+    </div>
+  </div>
+</div>
+<div id="article-activities-2026년-창립-59주년-학술행사" class="view">
+  <div class="article-view">
+    <div class="article-back-bar" onclick="backToSection()">
+      <span class="back-arrow">&larr;</span> 제주지회 활동 소개 목록으로
+    </div>
+    <div class="article-header">
+      <div class="article-kicker">제주지회 활동 소개</div>
+      <h1 class="article-title">2026년 창립 59주년 학술행사</h1>
+      <div class="article-subtitle">2026년 1월 23일 오후 2:00 (GMT+9)</div>
+    </div>
+    <div class="article-body">
+      <h1 id="2026년-창립-59주년-학술행사를-준비하며">2026년 창립 59주년 학술행사를 준비하며</h1>
 <p>안녕하세요. 한국교육학회 제주지회 사무국장 황현철입니다. 뉴스레터로 인사드리게 되어 반갑습니다. 한국교육학회 제주지회는 1967년 창립된 이후 지금까지 제주지역의 교육 발전을 위해 노력해오고 있습니다. 특히 2023년 제주지회 활성화 노력을 바탕으로 재도약의 시기를 맞이하고 있습니다. 지금 발행하는 뉴스레터 또한 이러한 활성화를 위한 한 축이라고 할 수 있습니다.</p>
 <p>다가오는 창립 60주년을 준비하면서 한국교육학회 제주지회는 또 다른 도약을 준비하고 있습니다. 그중에서도 가장 중요한 일정은 오는 2026년 1월 23일(금)로 예정된 제주지회 창립기념행사입니다. 이번 행사는 제주지회의 의미 있는 발자취를 돌아보고, 앞으로의 비전을 다지는 자리가 될 것입니다.</p>
 <h2 id="창립기념행사의-주요-내용">창립기념행사의 주요 내용</h2>
@@ -1153,33 +1475,22 @@ footer {
 <p><strong>2026년 1월 23일, 여러분을 창립기념행사 현장에서 만나 뵙기를 진심으로 고대합니다.</strong></p>
 <div class="aside-block"><span>황현철 (한국교육학회 제주지회 사무국장, 제주대학교 교육학과 박사수료)</span></div>
 <hr>
-</div>
-  </details>
-</div></div>
-  </div>
-</section>
 
-
-<section id="member" class="newsletter-section">
-  <div class="section-header" style="border-left-color:#40916c">
-    <span class="section-icon"></span>
-    <div>
-      <h2 class="section-title">회원 동정</h2>
-      
     </div>
   </div>
-  <div class="section-content">
-    
-    <div class="subsections">
-<div class="subsection" id="연구비-수주">
-  <details>
-    <summary>
-      <div class="sub-title-wrap">
-        <span class="sub-title">연구비 수주</span>
-        
-      </div>
-    </summary>
-    <div class="sub-content"><div class="aside-block"><span>💡</span>
+</div>
+<div id="article-member-연구비-수주" class="view">
+  <div class="article-view">
+    <div class="article-back-bar" onclick="backToSection()">
+      <span class="back-arrow">&larr;</span> 회원 동정 목록으로
+    </div>
+    <div class="article-header">
+      <div class="article-kicker">회원 동정</div>
+      <h1 class="article-title">연구비 수주</h1>
+      
+    </div>
+    <div class="article-body">
+      <div class="aside-block"><span>💡</span>
 <span>한국교육학회 제주지회는 2025년 2개의 연구 과제(70,000,000원)를 수주하였습니다. 지회 회원님들의 연구 참여가 활성화 되었습니다. 연구가 마무리될 때까지 지회에서는 부단히 노력하겠습니다.</span></div>
 <div class="table-wrap"><table>
 <thead><tr><th>연구과제명</th><th>연구책임자</th><th>연구기간</th><th>총 연구비</th><th>발주기관</th></tr></thead>
@@ -1188,19 +1499,22 @@ footer {
 <tr><td>확장현실 기반 학습환경에서 멀티모달 학습분석을 활용한 학습자의 인지·정서·행동 통합 학습효과성 모형 개발</td><td>양은별 교수</td><td>2025년 6월 1일 ~ 2028년 5월 31일</td><td>60,000,000원</td><td>한국연구재단</td></tr>
 </tbody></table></div>
 <hr>
-</div>
-  </details>
-</div>
 
-<div class="subsection" id="회원-신간-안내">
-  <details>
-    <summary>
-      <div class="sub-title-wrap">
-        <span class="sub-title">회원 신간 안내</span>
-        
-      </div>
-    </summary>
-    <div class="sub-content"><div class="aside-block"><span><img src="images/553538f9_Rectangle_2.png"  alt="%ED%9A%8C%EC%9B%90%20%EC%8B%A0%EA%B0%84%20%EC%95%88%EB%82%B4/Rectangle_2.png" width="40px" ></span>
+    </div>
+  </div>
+</div>
+<div id="article-member-회원-신간-안내" class="view">
+  <div class="article-view">
+    <div class="article-back-bar" onclick="backToSection()">
+      <span class="back-arrow">&larr;</span> 회원 동정 목록으로
+    </div>
+    <div class="article-header">
+      <div class="article-kicker">회원 동정</div>
+      <h1 class="article-title">회원 신간 안내</h1>
+      
+    </div>
+    <div class="article-body">
+      <div class="aside-block"><span><img src="images/553538f9_Rectangle_2.png"  alt="%ED%9A%8C%EC%9B%90%20%EC%8B%A0%EA%B0%84%20%EC%95%88%EB%82%B4/Rectangle_2.png" width="40px" ></span>
 <span><img src="images/3cc5e1a7_image.png" alt="image.png" loading="lazy"></span>
 <span>### <strong>[eBook] 오늘의 교육 내일의 교육정책</strong></span>
 <span>박수정 , 김용 , 엄문영 , <strong>이인회</strong> , 이희숙 , 차성현 , 한은정 저/</span>
@@ -1255,19 +1569,22 @@ footer {
 <span>(A Narrative Inquiry of the Bilingual Education Experiences of Parents from Mongolian Backround Migrant Families)</span>
 <span><strong>바트나상 난딩토야 박사 (지도교수 김민호) / 2025. 2.</strong></span></div>
 <hr>
-</div>
-  </details>
-</div>
 
-<div class="subsection" id="회원-소식">
-  <details>
-    <summary>
-      <div class="sub-title-wrap">
-        <span class="sub-title">회원 소식</span>
-        
-      </div>
-    </summary>
-    <div class="sub-content"><div class="aside-block"><span><img src="images/553538f9_Rectangle_2.png"  alt="%ED%9A%8C%EC%9B%90%20%EC%8B%A0%EA%B0%84%20%EC%95%88%EB%82%B4/Rectangle_2.png" width="40px" ></span>
+    </div>
+  </div>
+</div>
+<div id="article-member-회원-소식" class="view">
+  <div class="article-view">
+    <div class="article-back-bar" onclick="backToSection()">
+      <span class="back-arrow">&larr;</span> 회원 동정 목록으로
+    </div>
+    <div class="article-header">
+      <div class="article-kicker">회원 동정</div>
+      <h1 class="article-title">회원 소식</h1>
+      
+    </div>
+    <div class="article-body">
+      <div class="aside-block"><span><img src="images/553538f9_Rectangle_2.png"  alt="%ED%9A%8C%EC%9B%90%20%EC%8B%A0%EA%B0%84%20%EC%95%88%EB%82%B4/Rectangle_2.png" width="40px" ></span>
 <span><img src="images/8fb7eb46_image.png" alt="image.png" loading="lazy"></span>
 <span><strong>김민호 교수 (제주대 사라캠)</strong></span>
 <span>### 김민호 교수, 정년퇴임</span>
@@ -1289,33 +1606,22 @@ footer {
 <span>2025년 3월 1일자로 제주대학교 초등교육학부 초등교육학전공(교육공학 세부전공) 조교수로 임용되었습니다.</span>
 <span>양은별 교수의 주요 연구 분야는 인공지능과 확장현실을 활용한 학습환경 설계 및 멀티모달 학습분석입니다.</span></div>
 <hr>
-</div>
-  </details>
-</div></div>
-  </div>
-</section>
 
-
-<section id="jeju-news" class="newsletter-section">
-  <div class="section-header" style="border-left-color:#52b788">
-    <span class="section-icon"></span>
-    <div>
-      <h2 class="section-title">제주교육소식</h2>
-      
     </div>
   </div>
-  <div class="section-content">
-    
-    <div class="subsections">
-<div class="subsection" id="생생-수업-나눔">
-  <details>
-    <summary>
-      <div class="sub-title-wrap">
-        <span class="sub-title">생생 수업 나눔</span>
-        <span class="sub-subtitle">[수업사례 나눔] 손끝으로 만드는 음악 세상</span>
-      </div>
-    </summary>
-    <div class="sub-content"><p class="section-desc">교육현장에서 일어나는 교육활동과 실천 사례를 나눕니다.</p>
+</div>
+<div id="article-jeju-news-생생-수업-나눔" class="view">
+  <div class="article-view">
+    <div class="article-back-bar" onclick="backToSection()">
+      <span class="back-arrow">&larr;</span> 제주교육소식 목록으로
+    </div>
+    <div class="article-header">
+      <div class="article-kicker">제주교육소식</div>
+      <h1 class="article-title">생생 수업 나눔</h1>
+      <div class="article-subtitle">[수업사례 나눔] 손끝으로 만드는 음악 세상</div>
+    </div>
+    <div class="article-body">
+      <p class="section-desc">교육현장에서 일어나는 교육활동과 실천 사례를 나눕니다.</p>
 
 <div class="aside-block"><span><img src="images/4a3a024e_황현철_선생님.jpg" alt="황현철 선생님.jpg" loading="lazy"></span>
 <span><strong>황현철 교사 (제주영송학교)</strong></span></div>
@@ -1340,19 +1646,22 @@ footer {
 <div class="aside-block"><span>(현) 제주영송학교 교사</span>
 <span>(현) 제주대학교 교육학과 박사과정 수료</span></div>
 <hr>
-</div>
-  </details>
-</div>
 
-<div class="subsection" id="교수님의-연구실">
-  <details>
-    <summary>
-      <div class="sub-title-wrap">
-        <span class="sub-title">교수님의 연구실</span>
-        <span class="sub-subtitle">교육공학, 무엇이든 물어보세요</span>
-      </div>
-    </summary>
-    <div class="sub-content"><p class="section-desc">제주지회 교수님들의 연구와 이야기를 인터뷰 형식으로 전합니다.</p>
+    </div>
+  </div>
+</div>
+<div id="article-jeju-news-교수님의-연구실" class="view">
+  <div class="article-view">
+    <div class="article-back-bar" onclick="backToSection()">
+      <span class="back-arrow">&larr;</span> 제주교육소식 목록으로
+    </div>
+    <div class="article-header">
+      <div class="article-kicker">제주교육소식</div>
+      <h1 class="article-title">교수님의 연구실</h1>
+      <div class="article-subtitle">교육공학, 무엇이든 물어보세요</div>
+    </div>
+    <div class="article-body">
+      <p class="section-desc">제주지회 교수님들의 연구와 이야기를 인터뷰 형식으로 전합니다.</p>
 <h1 id="미래-교육을-위한-XR-학습-연구">미래 교육을 위한 XR 학습 연구</h1>
 <div class="aside-block"><span><img src="images/4ff7a8ad_증명사진_V넥블라우스.jpeg" alt="증명사진_V넥블라우스.jpeg" loading="lazy"></span>
 <span><strong>양은별 교수 (제주대학교)</strong></span></div>
@@ -1397,19 +1706,22 @@ footer {
 <p>이번 호에서는 제주대학교 양은별 교수님을 모시고 인터뷰를 진행했습니다. 양은별 교수님의 연구를 이해하는 데 작은 계기가 되고, 동시에 우리 제주지회 회원들이 서로의 연구와 삶을 더 깊이 알아가는 출발점이 되기를 바랍니다.</p>
 <div class="aside-block"><span>(현) 제주대학교 초등교육학부 초등교육학전공 조교수</span></div>
 <hr>
-</div>
-  </details>
-</div>
 
-<div class="subsection" id="스마트-교실-비밀병기">
-  <details>
-    <summary>
-      <div class="sub-title-wrap">
-        <span class="sub-title">스마트 교실 비밀병기</span>
-        <span class="sub-subtitle">수업 준비 시간을 줄여주는 디지털 도구 모음</span>
-      </div>
-    </summary>
-    <div class="sub-content"><p class="section-desc">에듀테크 수업 도구를 소개하는 실용 코너입니다.</p>
+    </div>
+  </div>
+</div>
+<div id="article-jeju-news-스마트-교실-비밀병기" class="view">
+  <div class="article-view">
+    <div class="article-back-bar" onclick="backToSection()">
+      <span class="back-arrow">&larr;</span> 제주교육소식 목록으로
+    </div>
+    <div class="article-header">
+      <div class="article-kicker">제주교육소식</div>
+      <h1 class="article-title">스마트 교실 비밀병기</h1>
+      <div class="article-subtitle">수업 준비 시간을 줄여주는 디지털 도구 모음</div>
+    </div>
+    <div class="article-body">
+      <p class="section-desc">에듀테크 수업 도구를 소개하는 실용 코너입니다.</p>
 <h1 id="에듀테크-수업-도구-소개">에듀테크 수업 도구 소개</h1>
 <div class="aside-block"><span><img src="images/f21bdcdc_강민정_선생님.jpg" alt="강민정 선생님.jpg" loading="lazy"></span>
 <span><strong>강민정 박사과정 (제주대학교)</strong></span></div>
@@ -1510,19 +1822,22 @@ footer {
 <p>에듀테크 도구들은 이제 선택이 아니라 교실 수업의 필수적인 동반자가 되고 있다. 교사는 이를 통해 학습자 맞춤형 피드백을 제공하고, 학생은 보다 능동적이고 창의적으로 학습에 참여할 수 있다. 특히 AI 기반 도구들은 단순한 지식 전달을 넘어, 사고력·표현력·협업 능력을 신장시키는 새로운 가능성을 열어주고 있다. 앞으로 이러한 AI와 디지털 도구들이 교육 현장에서 더욱 잘 활용되어, 교실이 한층 더 풍성해지고 학생들이 미래 사회에 필요한 역량을 기를 수 있는 배움의 장이 되기를 기대한다.</p>
 <div class="aside-block"><span>(현) 제주대학교 교육학과 박사과정</span></div>
 <hr>
-</div>
-  </details>
-</div>
 
-<div class="subsection" id="제주교육-나침반">
-  <details>
-    <summary>
-      <div class="sub-title-wrap">
-        <span class="sub-title">제주교육 나침반</span>
-        <span class="sub-subtitle">한 아이도 놓치지 않는 교실을 위하여</span>
-      </div>
-    </summary>
-    <div class="sub-content"><p class="section-desc">제주교육 정책의 방향과 흐름을 소개합니다.</p>
+    </div>
+  </div>
+</div>
+<div id="article-jeju-news-제주교육-나침반" class="view">
+  <div class="article-view">
+    <div class="article-back-bar" onclick="backToSection()">
+      <span class="back-arrow">&larr;</span> 제주교육소식 목록으로
+    </div>
+    <div class="article-header">
+      <div class="article-kicker">제주교육소식</div>
+      <h1 class="article-title">제주교육 나침반</h1>
+      <div class="article-subtitle">한 아이도 놓치지 않는 교실을 위하여</div>
+    </div>
+    <div class="article-body">
+      <p class="section-desc">제주교육 정책의 방향과 흐름을 소개합니다.</p>
 <h1 id="제주형-학생맞춤통합지원-체계">제주형 학생맞춤통합지원 체계</h1>
 <p>구축의 현재와 미래</p>
 <div class="aside-block"><span><img src="images/a33a2473_증명사진.jpg" alt="증명사진.jpg" loading="lazy"></span>
@@ -1554,19 +1869,22 @@ footer {
 <div class="aside-block"><span>(현) 제주도서관 기획운영실장</span>
 <span>(전) 제주특별자치도교육청 교육행정과장</span></div>
 <hr>
-</div>
-  </details>
-</div>
 
-<div class="subsection" id="동백꽃-편지">
-  <details>
-    <summary>
-      <div class="sub-title-wrap">
-        <span class="sub-title">동백꽃 편지</span>
-        <span class="sub-subtitle">설렘과 두려움 사이, 교단에 첫 발을 딛다</span>
-      </div>
-    </summary>
-    <div class="sub-content"><p class="section-desc">자유롭게 나누는 교육 이야기, 경험, 제언을 담습니다.</p>
+    </div>
+  </div>
+</div>
+<div id="article-jeju-news-동백꽃-편지" class="view">
+  <div class="article-view">
+    <div class="article-back-bar" onclick="backToSection()">
+      <span class="back-arrow">&larr;</span> 제주교육소식 목록으로
+    </div>
+    <div class="article-header">
+      <div class="article-kicker">제주교육소식</div>
+      <h1 class="article-title">동백꽃 편지</h1>
+      <div class="article-subtitle">설렘과 두려움 사이, 교단에 첫 발을 딛다</div>
+    </div>
+    <div class="article-body">
+      <p class="section-desc">자유롭게 나누는 교육 이야기, 경험, 제언을 담습니다.</p>
 <h1 id="교사의-길-두려움-너머의-하루들">교사의 길, 두려움 너머의 하루들</h1>
 <div class="aside-block"><span><img src="images/70581134_image.png" alt="image.png" loading="lazy"></span>
 <span><strong>김도희 교사 (서귀북초등학교)</strong></span></div>
@@ -1583,19 +1901,22 @@ footer {
 <div class="aside-block"><span>(현) 서귀북초등학교 교사</span>
 <span>(현) 제주대학교 교육대학원 초등교육학전공 석사 과정</span></div>
 <hr>
-</div>
-  </details>
-</div>
 
-<div class="subsection" id="이어가는-이야기">
-  <details>
-    <summary>
-      <div class="sub-title-wrap">
-        <span class="sub-title">이어가는 이야기</span>
-        <span class="sub-subtitle">강단을 떠나, 교육을 품다</span>
-      </div>
-    </summary>
-    <div class="sub-content"><p class="section-desc">퇴임 후 삶과 경험을 회원들과 나눕니다.</p>
+    </div>
+  </div>
+</div>
+<div id="article-jeju-news-이어가는-이야기" class="view">
+  <div class="article-view">
+    <div class="article-back-bar" onclick="backToSection()">
+      <span class="back-arrow">&larr;</span> 제주교육소식 목록으로
+    </div>
+    <div class="article-header">
+      <div class="article-kicker">제주교육소식</div>
+      <h1 class="article-title">이어가는 이야기</h1>
+      <div class="article-subtitle">강단을 떠나, 교육을 품다</div>
+    </div>
+    <div class="article-body">
+      <p class="section-desc">퇴임 후 삶과 경험을 회원들과 나눕니다.</p>
 <h1 id="2025년-산티아고-도보-순례-소감">2025년 산티아고 도보 순례 소감</h1>
 <div class="aside-block"><span><img src="images/99ec5b63_image.png" alt="image.png" loading="lazy"></span>
 <span><strong>김민호 명예교수 (제주대학교)</strong></span></div>
@@ -1615,33 +1936,22 @@ footer {
 <span>(전) 제주대학교 초등교육학부 초등교육학전공 교수</span>
 <span>(전) 한국교육학회 제주지회 회장</span></div>
 <hr>
-</div>
-  </details>
-</div></div>
-  </div>
-</section>
 
-
-<section id="campus" class="newsletter-section">
-  <div class="section-header" style="border-left-color:#74c69d">
-    <span class="section-icon"></span>
-    <div>
-      <h2 class="section-title">캠퍼스 네트워크</h2>
-      
     </div>
   </div>
-  <div class="section-content">
-    
-    <div class="subsections">
-<div class="subsection" id="제주한라대학교">
-  <details>
-    <summary>
-      <div class="sub-title-wrap">
-        <span class="sub-title">제주한라대학교</span>
-        
-      </div>
-    </summary>
-    <div class="sub-content"><div class="aside-block"><span><img src="images/66db51bb_image.png" alt="image.png" loading="lazy"></span>
+</div>
+<div id="article-campus-제주한라대학교" class="view">
+  <div class="article-view">
+    <div class="article-back-bar" onclick="backToSection()">
+      <span class="back-arrow">&larr;</span> 캠퍼스 네트워크 목록으로
+    </div>
+    <div class="article-header">
+      <div class="article-kicker">캠퍼스 네트워크</div>
+      <h1 class="article-title">제주한라대학교</h1>
+      
+    </div>
+    <div class="article-body">
+      <div class="aside-block"><span><img src="images/66db51bb_image.png" alt="image.png" loading="lazy"></span>
 <span><strong>박한샘 교수 (제주한라대)</strong></span></div>
 <h1 id="행복한-대학생활의-세-가지-열쇠">행복한 대학생활의 세 가지 열쇠</h1>
 <p>빠르게 세대가 교체되고 기술과 사회가 급변하는 이 시대에, 대학이 오랫동안 맡아왔던 ‘지식 전달의 전당’이라는 역할은 이제 상당 부분 유튜브와 같은 온라인 플랫폼에 자리를 내어준 듯합니다. 그렇다면 오늘날 대학은 학생들에게 무엇을 제공하고, 어떤 지원을 해야 하는지에 대해 근본적인 고민을 하게됩니다.</p>
@@ -1662,19 +1972,22 @@ footer {
 <p>오늘날 대학생들은 학업 부담, 진로 불안, 인간관계 갈등 등 다양한 어려움 속에서 대학생활을 이어가고 있습니다. 그러나 단순히 외부 환경이나 제도만으로는 이 문제를 해결할 수 없습니다. <strong>자율성·유능성·관계성이라는 기본적인 심리적 욕구를 충족시키는 것</strong>이 대학생활 적응의 핵심으로 보여집니다. 따라서 대학은 단순히 수업을 제공하는 곳을 넘어, 학생들이 자기 삶의 주체로 성장할 수 있도록 돕는 공간이 되어야 합니다. 자기설계 교육과정, 동아리 활동, 경진대회와 비교과 프로그램과 같은 다양한 기회를 통해 학생들은 학업적 성취와 더불어 심리적 만족과 사회적 성숙을 경험할 수 있을 것입니다.</p>
 <p>결국 대학의 진정한 역할은 학생들에게 지식을 전달하는 것만이 아니라, <strong>행복하게 살아갈 힘과 자신감을 길러주는 것</strong>입니다. 학생이 자기 삶의 주인으로, 또 성숙한 사회의 구성원으로 성장할 수 있도록 돕는 것이야말로 오늘날 대학이 나아가야 할 길이라고 생각합니다.</p>
 <hr>
-</div>
-  </details>
-</div>
 
-<div class="subsection" id="제주국제대학교">
-  <details>
-    <summary>
-      <div class="sub-title-wrap">
-        <span class="sub-title">제주국제대학교</span>
-        
-      </div>
-    </summary>
-    <div class="sub-content"><div class="aside-block"><span><img src="images/e134f857_김은정_교수.jpg" alt="김은정 교수.jpg" loading="lazy"></span>
+    </div>
+  </div>
+</div>
+<div id="article-campus-제주국제대학교" class="view">
+  <div class="article-view">
+    <div class="article-back-bar" onclick="backToSection()">
+      <span class="back-arrow">&larr;</span> 캠퍼스 네트워크 목록으로
+    </div>
+    <div class="article-header">
+      <div class="article-kicker">캠퍼스 네트워크</div>
+      <h1 class="article-title">제주국제대학교</h1>
+      
+    </div>
+    <div class="article-body">
+      <div class="aside-block"><span><img src="images/e134f857_김은정_교수.jpg" alt="김은정 교수.jpg" loading="lazy"></span>
 <span><strong>김은정 교수 (국제대)</strong></span></div>
 <h1 id="제주국제대학교-유아교육과를">제주국제대학교 유아교육과를</h1>
 <p>소개합니다.</p>
@@ -1696,20 +2009,22 @@ footer {
 <li>2012년 3월 제주국제대학교(4년제)로 통합(제주산업정보대학과 탐라대학교)</li>
 </ul>
 <hr>
-</div>
-  </details>
-</div>
-<div class="subsection-divider"><strong>— 제주대학교 아라캠퍼스 —</strong></div>
 
-<div class="subsection" id="마을과-함께-가꾸는-교육의-터전">
-  <details>
-    <summary>
-      <div class="sub-title-wrap">
-        <span class="sub-title">마을과 함께 가꾸는 교육의 터전</span>
-        <span class="sub-subtitle">박정환 교수님</span>
-      </div>
-    </summary>
-    <div class="sub-content"><p>서귀포시 한림읍 신평리의 푸른 들녘에서는 지금도 특별한 교육 실험이 계속되고 있다. 박정환 교수님과 그의 연구실 구성원들이 마을 주민들과 손을 맞잡고 펼쳐가고 있는 논 프로그램은 단순한 농업 체험을 넘어, 지역사회와 교육이 만나는 새로운 패러다임을 제시하고 있다.</p>
+    </div>
+  </div>
+</div>
+<div id="article-campus-마을과-함께-가꾸는-교육의-터전" class="view">
+  <div class="article-view">
+    <div class="article-back-bar" onclick="backToSection()">
+      <span class="back-arrow">&larr;</span> 캠퍼스 네트워크 목록으로
+    </div>
+    <div class="article-header">
+      <div class="article-kicker">캠퍼스 네트워크</div>
+      <h1 class="article-title">마을과 함께 가꾸는 교육의 터전</h1>
+      <div class="article-subtitle">박정환 교수님</div>
+    </div>
+    <div class="article-body">
+      <p>서귀포시 한림읍 신평리의 푸른 들녘에서는 지금도 특별한 교육 실험이 계속되고 있다. 박정환 교수님과 그의 연구실 구성원들이 마을 주민들과 손을 맞잡고 펼쳐가고 있는 논 프로그램은 단순한 농업 체험을 넘어, 지역사회와 교육이 만나는 새로운 패러다임을 제시하고 있다.</p>
 <p>2024년, 박정환 교수님의 발걸음이 신평리를 향했을 때, 그 시작은 작은 씨앗 하나 같았다. 하지만 그 씨앗이 품고 있던 교육에 대한 열망과 지역사회와의 상생에 대한 철학은 시간이 흐를수록 더욱 풍성한 열매를 맺어가고 있다. 2024년 부터 2025년 8월 현재까지, 박정환 교수님은 매주 빠짐없이 신평리를 찾아가며 마을 주민들과의 협업을 통해 이 의미 있는 프로그램을 지속해오고 있다.</p>
 <p><img src="images/81b366ca_image.png" alt="image.png" loading="lazy"></p>
 <p>그 헌신의 결실은 눈에 띄게 드러났다. 2024년 1,000평 규모로 시작했던 논은 2025년에 들어 5,000평 규모로 대폭 확장되었다. 이는 단순한 면적의 증가를 넘어, 이 프로그램이 지역사회에 미치는 긍정적 영향력이 확산되고 있음을 보여주는 상징적인 변화였다. 작은 실험에서 시작된 교육적 시도가 이제는 제주도 교육계에서 주목받는 대표적인 사례로 자리잡아가고 있는 것이다.</p>
@@ -1729,19 +2044,22 @@ footer {
 <p>흙 냄새 가득한 신평리 논에서 자라나는 것은 단순히 벼만이 아니다. 그곳에서는 교육에 대한 새로운 꿈과 희망이, 지역사회와 함께하는 상생의 가치가, 그리고 미래를 이끌어갈 아이들의 건강한 마음이 함께 자라나고 있다.</p>
 <div class="aside-block"><span>이승록 (제주대학교 교육학과 박사과정)</span></div>
 <hr>
-</div>
-  </details>
-</div>
 
-<div class="subsection" id="2025-프론티어방-하계-워크숍">
-  <details>
-    <summary>
-      <div class="sub-title-wrap">
-        <span class="sub-title">2025 프론티어방 하계 워크숍</span>
-        <span class="sub-subtitle">이인회 교수님</span>
-      </div>
-    </summary>
-    <div class="sub-content"><p><img src="images/25a14b72_image.png" alt="image.png" loading="lazy"></p>
+    </div>
+  </div>
+</div>
+<div id="article-campus-2025-프론티어방-하계-워크숍" class="view">
+  <div class="article-view">
+    <div class="article-back-bar" onclick="backToSection()">
+      <span class="back-arrow">&larr;</span> 캠퍼스 네트워크 목록으로
+    </div>
+    <div class="article-header">
+      <div class="article-kicker">캠퍼스 네트워크</div>
+      <h1 class="article-title">2025 프론티어방 하계 워크숍</h1>
+      <div class="article-subtitle">이인회 교수님</div>
+    </div>
+    <div class="article-body">
+      <p><img src="images/25a14b72_image.png" alt="image.png" loading="lazy"></p>
 <h2 id="창조는-고통-없이-나올-수-없다">창조는 고통 없이 나올 수 없다</h2>
 <ul>
 <li>2025 프론티어방 하계 워크숍-</li>
@@ -1759,20 +2077,22 @@ footer {
 <p>뜨거운 여름, 학문의 열기로 더욱 뜨거웠지만 이 열기가 얼어붙은 겨울, 우리를 일으킬 땔감이 되기를 기대하며 1218호 문을 나선다.</p>
 <div class="aside-block"><span>김향란(제주대학교 교육학과 박사과정 수료)</span></div>
 <hr>
-</div>
-  </details>
-</div>
-<div class="subsection-divider"><strong>— 제주대학교 사라캠퍼스 —</strong></div>
 
-<div class="subsection" id="2025-유럽-선진-숲-교육기관-연수">
-  <details>
-    <summary>
-      <div class="sub-title-wrap">
-        <span class="sub-title">2025 유럽 선진 숲 교육기관 연수</span>
-        <span class="sub-subtitle">고전 교수님</span>
-      </div>
-    </summary>
-    <div class="sub-content"><h2 id="1-서론">1. 서론</h2>
+    </div>
+  </div>
+</div>
+<div id="article-campus-2025-유럽-선진-숲-교육기관-연수" class="view">
+  <div class="article-view">
+    <div class="article-back-bar" onclick="backToSection()">
+      <span class="back-arrow">&larr;</span> 캠퍼스 네트워크 목록으로
+    </div>
+    <div class="article-header">
+      <div class="article-kicker">캠퍼스 네트워크</div>
+      <h1 class="article-title">2025 유럽 선진 숲 교육기관 연수</h1>
+      <div class="article-subtitle">고전 교수님</div>
+    </div>
+    <div class="article-body">
+      <h2 id="1-서론">1. 서론</h2>
 <p>(사)한국숲유치원협회는 2025년 7월 30일부터 8월 8일까지 8박 10일간 협회 회원 34명을 대상으로 독일, 벨기에, 네덜란드 3개국 해외 연수를 진행했다. 이번 연수는 유럽 선진국의 유아교육기관 현장 방문을 통해 국내 숲교육의 질적 향상을 도모하고, 다양한 교육 정보 제공으로 교원의 직무 수행 능력을 증진시키는 것을 목적으로 했다. 참가자들은 기관 탐방, 프로그램 체험 및 문화 탐방의 기회를 가졌다.</p>
 <ul>
 <li>연수 주제: 독일, 벨기에, 네덜란드 선진국의 보육교육 및 유아교육기관 운영 실태 파악</li>
@@ -1824,49 +2144,53 @@ footer {
 <p><img src="images/4ff738de_image_2.png" alt="image.png" loading="lazy"></p>
 <div class="aside-block"><span>이영옥 (제주대학교 교육학과 박사과정 )</span></div>
 <hr>
-</div>
-  </details>
-</div>
 
-<div class="subsection" id="신입생-소개-이선아">
-  <details>
-    <summary>
-      <div class="sub-title-wrap">
-        <span class="sub-title">신입생 소개 — 이선아</span>
-        <span class="sub-subtitle">연준모 교수님</span>
-      </div>
-    </summary>
-    <div class="sub-content"><p><img src="images/d98e5ba4_image.png" alt="image.png" loading="lazy"></p>
+    </div>
+  </div>
+</div>
+<div id="article-campus-신입생-소개-이선아" class="view">
+  <div class="article-view">
+    <div class="article-back-bar" onclick="backToSection()">
+      <span class="back-arrow">&larr;</span> 캠퍼스 네트워크 목록으로
+    </div>
+    <div class="article-header">
+      <div class="article-kicker">캠퍼스 네트워크</div>
+      <h1 class="article-title">신입생 소개 - 이선아</h1>
+      <div class="article-subtitle">연준모 교수님</div>
+    </div>
+    <div class="article-body">
+      <p><img src="images/d98e5ba4_image.png" alt="image.png" loading="lazy"></p>
 <p>안녕하세요. 이번 학기부터 제주대학교 일반대학원 교육학과 박사과정에 입학한 <strong>이선아</strong>입니다. 저는 특수교육대상학생을 지도하는 특수교사입니다. 현재 제주서중학교에서 특수학급을 맡아 학생들과 함께 생활하며, 통합교육과 개별화교육의 필요성을 현장에서 깊이 느끼고 있습니다. 특히 문해력 향상이 학생들의 학업 성취뿐 아니라 자존감과 사회적 관계 형성에도 중요한 역할을 한다는 점을 체감하였습니다.</p>
 <p>이러한 경험을 바탕으로, 앞으로는 문학과 예술, 그리고 생성형 AI를 융합한 교육 방안을 탐구하고자 합니다. 시와 노래, 그림 등 다양한 예술적 매체를 활용하여 학생들이 쉽고 즐겁게 읽고 표현할 수 있는 문해력 기반 수업을 구상하고 있으며, 이를 통해 학생들의 다양성 이해와 자기표현 능력을 확장하는 것을 목표로 하고 있습니다.</p>
 <p>박사과정에서는 학문적 성장을 이루는 동시에 현장의 교육활동과 연구를 긴밀히 연결하여 특수교육의 새로운 가능성을 모색하고 실천하겠습니다. 아울러 한국교육학회 제주지회의 여러 선생님들과도 배움과 연구를 나누며, 학회 활동에도 적극적으로 참여하여 함께 성장하는 학문 공동체의 일원이 되고자 합니다. 앞으로 많은 지도와 조언 부탁드리며, 함께 배우고 성장할 수 있기를 기대합니다.</p>
 <div class="aside-block"><span>이선아 (제주대학교 교육학과 박사과정 )</span></div>
 <hr>
-</div>
-  </details>
-</div>
 
-<div class="subsection" id="신입생-소개-김신회">
-  <details>
-    <summary>
-      <div class="sub-title-wrap">
-        <span class="sub-title">신입생 소개 — 김신회</span>
-        <span class="sub-subtitle">연준모 교수님</span>
-      </div>
-    </summary>
-    <div class="sub-content"><p>안녕하세요.</p>
+    </div>
+  </div>
+</div>
+<div id="article-campus-신입생-소개-김신회" class="view">
+  <div class="article-view">
+    <div class="article-back-bar" onclick="backToSection()">
+      <span class="back-arrow">&larr;</span> 캠퍼스 네트워크 목록으로
+    </div>
+    <div class="article-header">
+      <div class="article-kicker">캠퍼스 네트워크</div>
+      <h1 class="article-title">신입생 소개 - 김신회</h1>
+      <div class="article-subtitle">연준모 교수님</div>
+    </div>
+    <div class="article-body">
+      <p>안녕하세요.</p>
 <p>이번 학기부터 제주대학교 일반대학원 교육학과 박사과정에 입학한 김신회입니다.</p>
 <p>저는 방송작가로서 오랜 시간 다양한 사람들의 삶을 가까이에서 기록해 왔습니다. 누군가의 이야기를 듣고 전하는 과정 속에서 저는 늘 마음의 힘, 그리고 심리적 회복이 지닌 의미를 깊이 느끼곤 했습니다. 누군가는 힘겨운 시간을 지나면서도 웃음을 찾아내고, 또 다른 누군가는 작지만 소중한 순간에서 삶을 이어갈 힘을 얻는 모습을 보았습니다. 이러한 경험은 자연스럽게 저를 사람의 마음을 탐구하는 길로 이끌었고, 결국 박사과정에서 본격적으로 연구해 보고자 하는 동기가 되었습니다.</p>
 <p>제가 깊이 연구하고 싶은 주제는 숏폼 콘텐츠와 청소년의 심리적 발달입니다. 요즘 청소년들은 짧고 강렬한 디지털 자극에 하루에도 수없이 노출됩니다. 즐겁고 편리하기도 하지만, 때로는 집중력이 흐트러지고 자기조절이 어렵다는 이야기도 자주 듣게 됩니다. 저는 그 현상을 단순히 걱정으로만 바라보기보다, 실제로 어떤 변화가 일어나는지를 차분히 살펴보고 싶습니다. 그리고 청소년들이 건강하게 성장할 수 있도록 도울 수 있는 방법을 찾고 싶습니다. 앞으로의 연구는 단순히 학문적인 성과를 위한 것이 아니라, 실제 삶 속에서 도움이 될 수 있기를 바랍니다. 청소년들이 스스로의 가능성을 잃지 않고, 자신을 지켜내며, 동시에 더 풍요로운 마음의 성장을 이룰 수 있도록 하는 데 작은 보탬이 되는 연구를 하고 싶습니다.</p>
 <p>한국교육학회 제주지회에서 만날 여러 선생님들과 함께 배우고 나누며, 서로의 길을 북돋아 주는 따뜻한 동료가 되고 싶습니다. 앞으로 많은 가르침과 조언 부탁드리며, 저 역시 진심을 다해 함께 성장해 나가겠습니다. 감사합니다.</p>
 <div class="aside-block"><span>김신회 (제주대학교 교육학과 박사과정 )</span></div>
 <hr>
-</div>
-  </details>
-</div></div>
-  </div>
-</section>
 
+    </div>
+  </div>
+</div>
 </main>
 
 <!-- FOOTER -->
@@ -1891,14 +2215,14 @@ footer {
       </div>
       <div class="footer-item">
         <label>카페</label>
-        <a href="https://cafe.naver.com/kerajeju" target="_blank" rel="noopener">한국교육학회 제주지회 카페 →</a>
+        <a href="https://cafe.naver.com/kerajeju" target="_blank" rel="noopener">한국교육학회 제주지회 카페 &rarr;</a>
       </div>
     </div>
     <hr class="footer-divider">
     <div class="feedback-box">
       이번 뉴스레터 어떠셨나요? 여러분의 생각과 의견을 기다립니다.<br>
       소중한 의견을 메일로 보내주시면 다음 호에 적극 반영하겠습니다.<br>
-      <a href="mailto:e.yang@jejunu.ac.kr">제주대학교 양은별 ✉ e.yang@jejunu.ac.kr</a><br><br>
+      <a href="mailto:e.yang@jejunu.ac.kr">제주대학교 양은별 &#9993; e.yang@jejunu.ac.kr</a><br><br>
       뉴스레터 후원: (농협) 302-2028-2520-51  이인회(제주지회)
     </div>
     <hr class="footer-divider">
@@ -1906,52 +2230,61 @@ footer {
   </div>
 </footer>
 
-<a href="#" class="back-top" aria-label="맨 위로">↑</a>
+<a href="#" class="back-top" aria-label="맨 위로">&uarr;</a>
 
 <script>
-// Tab-based navigation: show only selected section
+// 3-level drill-down navigation
+// Level 1: top tabs  - view-{id}   (shows section card with card-list or full content)
+// Level 2: card list - article-{sectionId}-{subId}  (shows article view)
+// Level 3: article   - back button returns to level 2
+
+var _currentSection = 'intro';
+
+// Show a level-1 view (section index or intro)
 function showSection(id) {
-  // Hide all sections and intro
-  document.querySelectorAll('.newsletter-section, .intro-section').forEach(s => {
-    s.style.display = 'none';
-  });
-  // Show selected
-  if (id === 'intro') {
-    document.querySelectorAll('.intro-section').forEach(s => s.style.display = 'block');
-  } else {
-    const el = document.getElementById(id);
-    if (el) el.style.display = 'block';
-  }
-  // Update active nav
-  document.querySelectorAll('.toc-list a').forEach(a => a.classList.remove('active'));
-  const activeLink = document.querySelector('.toc-list a[data-section="' + id + '"]');
-  if (activeLink) activeLink.classList.add('active');
-  // Scroll to top
-  window.scrollTo({ top: 0 });
-  // Open first subsection (except for specific sections)
-  if (typeof noAutoOpen === 'undefined' || !noAutoOpen.includes(id)) {
-    const section = document.getElementById(id);
-    if (section) {
-      const firstDetails = section.querySelector('.subsection:first-child details');
-      if (firstDetails) firstDetails.setAttribute('open', '');
-    }
+  document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
+  var view = document.getElementById('view-' + id);
+  if (view) view.classList.add('active');
+  _currentSection = id;
+
+  // Update nav active state
+  document.querySelectorAll('.toc-list a').forEach(function(a) { a.classList.remove('active'); });
+  var link = document.querySelector('.toc-list a[data-section="' + id + '"]');
+  if (link) link.classList.add('active');
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Show a level-3 article within a section
+function showArticle(sectionId, subId) {
+  // Hide the section view
+  document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
+
+  // Show the article view
+  var art = document.getElementById('article-' + sectionId + '-' + subId);
+  if (art) {
+    art.classList.add('active');
+    _currentSection = sectionId;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }
 
+// Back from article to section list
+function backToSection() {
+  showSection(_currentSection);
+}
+
 // Nav click handlers
-document.querySelectorAll('.toc-list a').forEach(a => {
-  a.addEventListener('click', e => {
+document.querySelectorAll('.toc-list a').forEach(function(a) {
+  a.addEventListener('click', function(e) {
     e.preventDefault();
-    const sectionId = a.getAttribute('data-section');
+    var sectionId = a.getAttribute('data-section');
     if (sectionId) showSection(sectionId);
   });
 });
 
 // Show intro by default
 showSection('intro');
-
-// Sections where first toggle should NOT auto-open
-const noAutoOpen = ['member', 'jeju-news', 'campus'];
 </script>
 </body>
 </html>

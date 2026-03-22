@@ -38,7 +38,7 @@ DONATION_ACCOUNT = "(농협) 302-2028-2520-51  이인회(제주지회)"
 # ---------------------------------------------------------------------------
 # Image handling
 # ---------------------------------------------------------------------------
-# Maps: source_abs_path (str) → local_relative_path (str, e.g. "images/xxx.png")
+# Maps: source_abs_path (str) &rarr; local_relative_path (str, e.g. "images/xxx.png")
 _image_registry = {}
 
 
@@ -96,7 +96,7 @@ def copy_all_images(out_dir):
 
 
 # ---------------------------------------------------------------------------
-# Markdown → HTML helpers
+# Markdown &rarr; HTML helpers
 # ---------------------------------------------------------------------------
 
 def slugify(text):
@@ -121,7 +121,7 @@ def apply_inline(text, md_file):
         src = m.group(1)
         attrs = m.group(2)
         if src.startswith('http') or src.startswith('images/'):
-            return m.group(0)  # already processed or external — leave unchanged
+            return m.group(0)  # already processed or external - leave unchanged
         local = register_image(md_file, src)
         return f'<img src="{local}" {attrs}>'
     text = re.sub(r'<img\s+src="([^"]+)"([^>]*?)/?>', html_img_replace, text)
@@ -137,7 +137,7 @@ def apply_inline(text, md_file):
     # Pattern: allow balanced () inside URL (handles Notion paths like (2025 1 24 )/image.png)
     text = re.sub(r'!\[([^\]]*)\]\(((?:[^)(]|\([^)]*\))+)\)', img_replace, text)
 
-    # Links: [text](url) — skip CSV links
+    # Links: [text](url) - skip CSV links
     def link_replace(m):
         link_text = m.group(1)
         url = m.group(2)
@@ -478,11 +478,11 @@ SECTIONS = [
         'file_key': '',
         'subsections': [
             {'title': '구성원 소개', 'file_key': '제주지회 활동 소개 237', 'strip_content': ['주요 행사와 운영 계획', '2025 주요 활동', '제주지회 향후 계획']},
-            {'title': '— 2025 주요 활동 —', 'file_key': '', 'is_divider': True},
+            {'title': '- 2025 주요 활동 -', 'file_key': '', 'is_divider': True},
             {'title': '창립 58주년 기념 강연 (2025.1.24.)', 'file_key': '창립 58주년 기념 강연'},
             {'title': '원도심마을탐방 (2025.4.26.)', 'file_key': '원도심마을탐방'},
             {'title': '2025 임원회의 (2025.9.12.)', 'file_key': '2025 임원회의'},
-            {'title': '— 제주지회 향후 계획 —', 'file_key': '', 'is_divider': True},
+            {'title': '- 제주지회 향후 계획 -', 'file_key': '', 'is_divider': True},
             {'title': '제주교육학 제4차 공동학술대회', 'file_key': '제주교육학 제 4차 공동학술대회'},
             {'title': '2026년 창립 59주년 학술행사', 'file_key': '2026년 창립 59주년'},
         ]
@@ -526,13 +526,13 @@ SECTIONS = [
         'subsections': [
             {'title': '제주한라대학교', 'file_key': '제주한라대학교'},
             {'title': '제주국제대학교', 'file_key': '제주국제대학교'},
-            {'title': '— 제주대학교 아라캠퍼스 —', 'file_key': '', 'is_divider': True},
+            {'title': '- 제주대학교 아라캠퍼스 -', 'file_key': '', 'is_divider': True},
             {'title': '마을과 함께 가꾸는 교육의 터전', 'file_key': '마을과 함께 가꾸는 교육의 터전'},
             {'title': '2025 프론티어방 하계 워크숍', 'file_key': '2025 프론티어방 하계 워크숍'},
-            {'title': '— 제주대학교 사라캠퍼스 —', 'file_key': '', 'is_divider': True},
+            {'title': '- 제주대학교 사라캠퍼스 -', 'file_key': '', 'is_divider': True},
             {'title': '2025 유럽 선진 숲 교육기관 연수', 'file_key': '2025 유럽 선진 숲 교육기관 연수'},
-            {'title': '신입생 소개 — 이선아', 'file_key': '신입생 소개 26cf7f2dc41f80df'},
-            {'title': '신입생 소개 — 김신회', 'file_key': '신입생 소개 28bf7f2dc41f80c5'},
+            {'title': '신입생 소개 - 이선아', 'file_key': '신입생 소개 26cf7f2dc41f80df'},
+            {'title': '신입생 소개 - 김신회', 'file_key': '신입생 소개 28bf7f2dc41f80c5'},
         ]
     },
 ]
@@ -562,54 +562,60 @@ def extract_metadata(md):
 
 
 def build_section_html(section, all_files):
+    """Build level-2 section view (card list or direct content) and all level-3 article views.
+    Returns (section_view_html, article_views_html).
+    """
     sid = section['id']
     title = section['title']
+    nav_title = section.get('nav_title', title)
     subtitle = section.get('subtitle', '')
-    icon = section.get('icon', '')
-    color = section.get('color', '#2d7d46')
 
-    # Main content
+    # -- Main content (sections with no subsections, e.g. 주론/시론) --
     main_content = ''
     if section.get('file_key'):
         main_file = find_file_by_key(all_files, section['file_key'])
         if main_file:
             md = strip_h1(read_md(main_file))
-            # Remove CSV links (Notion database embeds)
             md = re.sub(r'\[.+?\]\(.+?\.csv\)\n?', '', md)
             main_content = md_to_html(md, main_file)
 
-    # Subsections
-    subs_html = ''
+    # -- Subsections &rarr; card list + article views --
+    card_items_html = ''
+    article_views = []
+
     if section.get('subsections'):
-        sub_parts = []
+        card_parts = []
         for sub in section['subsections']:
             sub_title = sub['title']
             sub_key = sub.get('file_key', '')
-            # Divider (group header)
+
+            # Divider (group header) - kept as label in card list
             if sub.get('is_divider'):
-                sub_parts.append(f'<div class="subsection-divider"><strong>{escape_html(sub_title)}</strong></div>')
+                label = re.sub(r'^-\s*|-\s*$', '', sub_title).strip()
+                card_parts.append(
+                    f'<div class="subsection-divider">{escape_html(label)}</div>'
+                )
                 continue
+
             sub_file = find_file_by_key(all_files, sub_key) if sub_key else None
             if not sub_file:
                 if sub_key:
                     print(f"  Warning: not found: '{sub_key}'")
                 continue
+
             sub_md = read_md(sub_file)
             sub_md = strip_h1(sub_md)
-            # Remove specific content lines if requested
             for strip_kw in sub.get('strip_content', []):
-                # Remove only aside blocks containing keyword (not other content)
                 def _remove_aside_only(text, kw):
                     parts = re.split(r'(<aside>.*?</aside>)', text, flags=re.DOTALL)
                     return ''.join(p for p in parts if not ('<aside>' in p and kw in p))
                 sub_md = _remove_aside_only(sub_md, strip_kw)
-                # Remove headings containing keyword
                 sub_md = re.sub(r'^#{1,4}\s+.*' + re.escape(strip_kw) + r'.*$', '', sub_md, flags=re.MULTILINE)
-            # Remove CSV links
             sub_md = re.sub(r'\[.+?\]\(.+?\.csv\)\n?', '', sub_md)
             meta, sub_md = extract_metadata(sub_md)
             sub_id = slugify(sub_title)
-            # Build subtitle from metadata
+
+            # Build meta label
             meta_parts = []
             if '제목' in meta:
                 meta_parts.append(meta['제목'])
@@ -617,38 +623,69 @@ def build_section_html(section, all_files):
                 meta_parts.append(meta['날짜'])
             elif '연구실' in meta:
                 meta_parts.append(meta['연구실'])
-            meta_label = ' · '.join(meta_parts)
-            sub_html = md_to_html(sub_md, sub_file)
-            sub_parts.append(f'''
-<div class="subsection" id="{sub_id}">
-  <details>
-    <summary>
-      <div class="sub-title-wrap">
-        <span class="sub-title">{escape_html(sub_title)}</span>
-        {('<span class="sub-subtitle">' + escape_html(meta_label) + '</span>') if meta_label else ''}
-      </div>
-    </summary>
-    <div class="sub-content">{sub_html}</div>
-  </details>
-</div>''')
-        if sub_parts:
-            subs_html = '<div class="subsections">' + '\n'.join(sub_parts) + '</div>'
+            meta_label = ' &#183; '.join(meta_parts)
 
-    return f'''
-<section id="{sid}" class="newsletter-section">
-  <div class="section-header" style="border-left-color:{color}">
-    <span class="section-icon">{icon}</span>
-    <div>
-      <h2 class="section-title">{escape_html(title)}</h2>
-      {('<p class="section-subtitle">' + escape_html(subtitle) + '</p>') if subtitle else ''}
+            sub_html = md_to_html(sub_md, sub_file)
+
+            # Card in card list (level-2)
+            subtitle_span = (f'<div class="sub-subtitle">{escape_html(meta_label)}</div>'
+                             if meta_label else '')
+            card_parts.append(f'''<button class="sub-card" onclick="showArticle('{sid}','{sub_id}')" type="button">
+  <div class="sub-card-body">
+    <div class="sub-title">{escape_html(sub_title)}</div>
+    {subtitle_span}
+  </div>
+  <span class="sub-card-arrow">&rarr;</span>
+</button>''')
+
+            # Article view (level-3)
+            article_kicker_html = f'<div class="article-kicker">{escape_html(nav_title)}</div>'
+            article_subtitle_html = (f'<div class="article-subtitle">{escape_html(meta_label)}</div>'
+                                     if meta_label else '')
+            article_views.append(f'''<div id="article-{sid}-{sub_id}" class="view">
+  <div class="article-view">
+    <div class="article-back-bar" onclick="backToSection()">
+      <span class="back-arrow">&larr;</span> {escape_html(nav_title)} 목록으로
+    </div>
+    <div class="article-header">
+      {article_kicker_html}
+      <h1 class="article-title">{escape_html(sub_title)}</h1>
+      {article_subtitle_html}
+    </div>
+    <div class="article-body">
+      {sub_html}
     </div>
   </div>
-  <div class="section-content">
-    {main_content}
-    {subs_html}
+</div>''')
+
+        if card_parts:
+            card_items_html = '<div class="card-list">' + '\n'.join(card_parts) + '</div>'
+
+    # -- Build section view (level-2) --
+    kicker_html = f'<div class="section-kicker">{escape_html(nav_title)}</div>' if nav_title != title else ''
+    subtitle_html = (f'<p class="section-subtitle">{escape_html(subtitle)}</p>') if subtitle else ''
+
+    if main_content and not card_items_html:
+        # Direct content (주론, 시론 - no subsections)
+        content_area = f'<div class="section-content">{main_content}</div>'
+    elif card_items_html:
+        content_area = card_items_html
+    else:
+        content_area = ''
+
+    section_view = f'''<div id="view-{sid}" class="view">
+  <div class="newsletter-section">
+    <div class="section-header">
+      {kicker_html}
+      <h2 class="section-title">{escape_html(title)}</h2>
+      {subtitle_html}
+    </div>
+    {content_area}
   </div>
-</section>
-'''
+</div>'''
+
+    article_views_html = '\n'.join(article_views)
+    return section_view, article_views_html
 
 
 def build_intro_html(root_md_path):
@@ -671,19 +708,15 @@ def build_intro_html(root_md_path):
     md = re.sub(r'.*e\.yang@jejunu.*\n?', '', md)
     md = re.sub(r'.*뉴스레터 어떠셨나요.*\n?', '', md)
     content = md_to_html(md, root_md_path)
-    return f'''
-<section id="intro" class="newsletter-section intro-section">
-  <div class="section-header" style="border-left-color:#1a5c35">
-    <span class="section-icon"></span>
-    <div>
-      <h2 class="section-title">발간사</h2>
+    return f'''<div class="newsletter-section">
+    <div class="section-header">
+      <div class="section-kicker">발간사</div>
+      <h2 class="section-title">발간의 글</h2>
     </div>
-  </div>
-  <div class="section-content">
-    {content}
-  </div>
-</section>
-'''
+    <div class="section-content">
+      {content}
+    </div>
+  </div>'''
 
 
 # ---------------------------------------------------------------------------
@@ -692,7 +725,7 @@ def build_intro_html(root_md_path):
 
 CSS = """
 /* ============================================================
-   Newsletter CSS — 한국교육학회 제주지회
+   Newsletter CSS - 한국교육학회 제주지회 (Modern Magazine)
    ============================================================ */
 
 *, *::before, *::after {
@@ -708,16 +741,19 @@ CSS = """
     --green-pale:   #d8f3dc;
     --green-faint:  #f0faf3;
     --white:        #ffffff;
-    --gray-light:   #f8f9fa;
-    --gray-mid:     #e9ecef;
-    --gray-text:    #495057;
-    --black:        #212529;
+    --gray-light:   #f6f7f8;
+    --gray-mid:     #e4e8ec;
+    --gray-text:    #64748b;
+    --black:        #1e2630;
     --font-main:    'Noto Serif KR', 'NanumMyeongjo', Georgia, serif;
     --font-ui:      'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
-    --shadow-sm:    0 1px 3px rgba(0,0,0,.08);
-    --shadow-md:    0 4px 12px rgba(0,0,0,.12);
-    --radius:       8px;
-    --max-width:    900px;
+    --shadow-sm:    0 1px 4px rgba(0,0,0,.07);
+    --shadow-md:    0 4px 16px rgba(0,0,0,.10);
+    --shadow-card:  0 2px 12px rgba(26,92,53,.10);
+    --radius:       10px;
+    --radius-card:  12px;
+    --max-width:    860px;
+    --transition:   0.2s ease;
 }
 
 html { scroll-behavior: smooth; font-size: 16px; }
@@ -726,16 +762,17 @@ body {
     font-family: var(--font-main);
     color: var(--black);
     background: var(--gray-light);
-    line-height: 1.8;
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
 }
 
-/* NAV */
+/* -- NAV -- */
 nav.site-nav {
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 200;
     background: var(--green-dark);
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 2px 12px rgba(0,0,0,.18);
 }
 .nav-inner {
     max-width: var(--max-width);
@@ -743,7 +780,8 @@ nav.site-nav {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.5rem 1.5rem;
+    padding: 0 1.5rem;
+    height: 52px;
     flex-wrap: nowrap;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -751,82 +789,101 @@ nav.site-nav {
 .nav-brand {
     color: var(--white);
     font-family: var(--font-ui);
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     font-weight: 700;
     white-space: nowrap;
     text-decoration: none;
     flex-shrink: 0;
+    letter-spacing: -0.01em;
+    opacity: 0.92;
+    transition: opacity var(--transition);
+    cursor: pointer;
 }
+.nav-brand:hover { opacity: 1; }
 .toc-list {
     display: flex;
     list-style: none;
-    gap: 0.15rem;
+    gap: 0;
     flex-wrap: nowrap;
-    flex-shrink: 0;
+    flex-shrink: 1;
+    min-width: 0;
 }
 .toc-list a {
-    color: #b7e4c7;
+    color: rgba(255,255,255,0.7);
     text-decoration: none;
     font-family: var(--font-ui);
-    font-size: 0.78rem;
-    padding: 0.2rem 0.55rem;
-    border-radius: 4px;
-    transition: background 0.2s, color 0.2s;
+    font-size: 0.8rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    transition: background var(--transition), color var(--transition);
     white-space: nowrap;
+    display: block;
 }
-.toc-list a:hover, .toc-list a.active {
-    background: rgba(255,255,255,0.2);
+.toc-list a:hover {
+    background: rgba(255,255,255,0.12);
     color: var(--white);
 }
 .toc-list a.active {
-    background: rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.18);
+    color: var(--white);
     font-weight: 700;
 }
 
-/* MASTHEAD */
+/* -- MASTHEAD -- */
 .masthead {
-    background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-mid) 60%, var(--green-light) 100%);
+    background: linear-gradient(160deg, var(--green-dark) 0%, #2d6a4f 55%, #40916c 100%);
     color: var(--white);
-    padding: 3rem 1.5rem 2rem;
+    padding: 3.5rem 1.5rem 2.5rem;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+.masthead::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 70% 30%, rgba(116,198,157,0.18) 0%, transparent 60%);
+    pointer-events: none;
 }
 .masthead-inner {
     max-width: var(--max-width);
     margin: 0 auto;
+    position: relative;
 }
-.masthead-badge {
-    display: inline-flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.5rem 0.75rem;
-    background: rgba(255,255,255,0.12);
-    border: 1px solid rgba(255,255,255,0.3);
-    border-radius: 20px;
-    padding: 0.35rem 1rem;
+.masthead-eyebrow {
     font-family: var(--font-ui);
-    font-size: 0.85rem;
-    margin-bottom: 1.5rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 0.75rem;
 }
-.masthead-badge .sep { opacity: 0.4; }
 .masthead h1 {
-    font-size: clamp(1.5rem, 5vw, 2.5rem);
+    font-size: clamp(1.5rem, 5vw, 2.6rem);
     font-weight: 900;
     letter-spacing: -0.02em;
     margin-bottom: 0.5rem;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    line-height: 1.2;
 }
-.masthead-sub {
+.masthead-meta {
     font-family: var(--font-ui);
-    font-size: 0.9rem;
-    opacity: 0.85;
-    margin-bottom: 1.5rem;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
 }
+.masthead-meta .dot { opacity: 0.4; }
 .masthead-hero-img {
     margin: 0 auto;
-    max-width: 720px;
-    border-radius: var(--radius);
+    max-width: 700px;
+    border-radius: var(--radius-card);
     overflow: hidden;
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.25);
 }
 .masthead-hero-img img {
     width: 100%;
@@ -834,146 +891,183 @@ nav.site-nav {
     display: block;
 }
 
-/* LAYOUT */
+/* -- VIEW SHELL -- */
 main {
     max-width: var(--max-width);
     margin: 0 auto;
-    padding: 2rem 1.5rem;
+    padding: 2rem 1.5rem 3rem;
+    min-height: 60vh;
 }
 
-/* SECTIONS */
+/* -- VIEWS (level 1, 2, 3) -- */
+.view { display: none; }
+.view.active { display: block; }
+
+/* -- SECTION CARD (level-1 page) -- */
 .newsletter-section {
     background: var(--white);
-    border-radius: var(--radius);
+    border-radius: var(--radius-card);
     box-shadow: var(--shadow-sm);
-    margin-bottom: 2.5rem;
+    margin-bottom: 0;
     overflow: hidden;
+    animation: fadeUp 0.25s ease both;
+}
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 .section-header {
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-    padding: 1.5rem 1.75rem 1rem;
-    border-left: 5px solid var(--green-mid);
-    background: var(--green-faint);
+    padding: 2rem 2rem 1.25rem;
+    border-bottom: 1px solid var(--gray-mid);
+    background: var(--white);
 }
-.section-icon {
-    font-size: 1.4rem;
-    flex-shrink: 0;
-    margin-top: 0.1em;
+.section-kicker {
+    font-family: var(--font-ui);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--green-mid);
+    margin-bottom: 0.4rem;
 }
 .section-title {
-    font-size: 1.4rem;
-    font-weight: 800;
-    color: var(--green-dark);
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--black);
     font-family: var(--font-ui);
-    line-height: 1.3;
+    line-height: 1.25;
     word-break: keep-all;
+    letter-spacing: -0.02em;
 }
 .section-desc {
     font-size: 0.85rem;
-    color: #999;
+    color: var(--gray-text);
     font-family: var(--font-ui);
-    margin: 0.3rem 0 1rem;
-    line-height: 1.5;
+    margin-top: 0.5rem;
+    line-height: 1.6;
 }
 .section-subtitle {
     font-family: var(--font-ui);
     font-size: 0.88rem;
-    color: #40916c;
-    margin-top: 0.25rem;
-    line-height: 1.4;
+    color: var(--green-mid);
+    margin-top: 0.3rem;
+    line-height: 1.5;
 }
 .section-content {
-    padding: 1.5rem 1.75rem;
+    padding: 1.75rem 2rem;
     overflow-wrap: break-word;
     word-break: keep-all;
 }
 
-/* TYPOGRAPHY */
+/* -- TYPOGRAPHY (article content) -- */
+.article-body h1,
+.article-body h2,
+.article-body h3,
+.article-body h4,
 .section-content h1,
 .section-content h2,
 .section-content h3,
 .section-content h4 {
     font-family: var(--font-ui);
     color: var(--green-dark);
-    margin: 1.5rem 0 0.6rem;
+    margin: 1.75rem 0 0.65rem;
     line-height: 1.4;
 }
-.section-content h1 { font-size: 1.25rem; border-bottom: 2px solid var(--green-pale); padding-bottom: 0.3rem; }
-.section-content h2 { font-size: 1.1rem; }
-.section-content h3 { font-size: 1rem; }
-.section-content h4 { font-size: 0.95rem; color: var(--green-mid); }
-
-.section-content p {
-    margin-bottom: 1rem;
-    line-height: 1.9;
-    color: #333;
+.article-body h1, .section-content h1 {
+    font-size: 1.3rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 2px solid var(--green-pale);
 }
+.article-body h2, .section-content h2 { font-size: 1.15rem; }
+.article-body h3, .section-content h3 { font-size: 1.02rem; }
+.article-body h4, .section-content h4 { font-size: 0.95rem; color: var(--green-mid); }
+
+.article-body p,
+.section-content p {
+    margin-bottom: 1.1rem;
+    line-height: 2;
+    color: #2c3440;
+    font-size: 1rem;
+}
+.article-body strong,
 .section-content strong { color: var(--green-dark); font-weight: 700; }
+.article-body em,
 .section-content em { font-style: italic; }
+.article-body code,
 .section-content code {
     background: var(--green-pale);
     color: var(--green-dark);
     padding: 0.1em 0.4em;
-    border-radius: 3px;
+    border-radius: 4px;
     font-family: var(--font-ui);
     font-size: 0.85em;
 }
+.article-body hr,
 .section-content hr {
     border: none;
     border-top: 1px solid var(--gray-mid);
-    margin: 1.5rem 0;
+    margin: 2rem 0;
 }
+.article-body blockquote,
 .section-content blockquote {
     border-left: 3px solid var(--green-light);
-    padding: 0.75rem 1rem;
-    margin: 1rem 0;
+    padding: 0.85rem 1.25rem;
+    margin: 1.25rem 0;
     background: var(--green-faint);
     border-radius: 0 var(--radius) var(--radius) 0;
     font-style: italic;
     color: var(--gray-text);
 }
+.article-body ul, .article-body ol,
 .section-content ul, .section-content ol {
-    padding-left: 1.5rem;
-    margin-bottom: 1rem;
+    padding-left: 1.6rem;
+    margin-bottom: 1.1rem;
 }
-.section-content li { margin-bottom: 0.3rem; }
+.article-body li,
+.section-content li { margin-bottom: 0.35rem; line-height: 1.85; }
+.article-body a,
 .section-content a {
     color: var(--green-mid);
     text-decoration: underline;
     text-decoration-color: var(--green-pale);
-    transition: color 0.2s;
+    transition: color var(--transition);
 }
+.article-body a:hover,
 .section-content a:hover { color: var(--green-dark); }
 
-/* IMAGES */
+/* -- IMAGES -- */
+.article-body img,
 .section-content img {
     max-width: 100%;
     height: auto;
-    border-radius: var(--radius);
+    border-radius: var(--radius-card);
     display: block;
-    margin: 1.25rem auto;
+    margin: 1.5rem auto;
     box-shadow: var(--shadow-sm);
 }
+.article-body img[alt*="교수"],
+.article-body img[alt*="선생님"],
+.article-body img[alt*="사진"],
+.article-body img[alt*="증명"],
 .section-content img[alt*="교수"],
 .section-content img[alt*="선생님"],
 .section-content img[alt*="사진"],
 .section-content img[alt*="증명"] {
-    max-width: 160px;
+    max-width: 150px;
     border-radius: 50%;
     object-fit: cover;
     aspect-ratio: 1;
     object-position: top;
+    box-shadow: 0 2px 10px rgba(0,0,0,.12);
 }
 
-/* ASIDE BLOCKS */
+/* -- ASIDE BLOCKS -- */
 .aside-block {
-    background: var(--green-faint);
-    border-left: 3px solid var(--green-light);
-    border-radius: 0 var(--radius) var(--radius) 0;
-    padding: 1rem 1.25rem;
-    margin: 1rem 0;
+    background: var(--gray-light);
+    border: 1px solid var(--gray-mid);
+    border-radius: var(--radius-card);
+    padding: 1.1rem 1.4rem;
+    margin: 1.25rem 0;
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
@@ -982,7 +1076,7 @@ main {
     display: block;
     font-size: 0.93rem;
     color: var(--gray-text);
-    line-height: 1.7;
+    line-height: 1.75;
     word-break: keep-all;
 }
 .aside-block strong { color: var(--green-dark); }
@@ -996,19 +1090,19 @@ main {
 }
 .aside-block hr { border: none; border-top: 1px solid var(--gray-mid); margin: 0.25rem 0; }
 .aside-block img {
-    max-width: 120px;
+    max-width: 110px;
     border-radius: 50%;
     display: block;
     margin: 0.25rem auto;
     box-shadow: none;
 }
 
-/* TABLES */
+/* -- TABLES -- */
 .table-wrap {
     overflow-x: auto;
-    margin: 1.25rem 0;
+    margin: 1.5rem 0;
     border-radius: var(--radius);
-    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--gray-mid);
 }
 table {
     border-collapse: collapse;
@@ -1019,97 +1113,166 @@ table {
 th {
     background: var(--green-dark);
     color: var(--white);
-    padding: 0.65rem 0.9rem;
+    padding: 0.7rem 1rem;
     text-align: left;
     font-weight: 600;
+    white-space: nowrap;
 }
 td {
-    padding: 0.55rem 0.9rem;
+    padding: 0.6rem 1rem;
     border-bottom: 1px solid var(--gray-mid);
     vertical-align: top;
-    line-height: 1.6;
+    line-height: 1.65;
     word-break: keep-all;
     overflow-wrap: break-word;
 }
-tr:nth-child(even) td { background: var(--green-faint); }
-tr:hover td { background: #e9f5ec; }
+tr:last-child td { border-bottom: none; }
+tr:nth-child(even) td { background: #fafbfc; }
+tr:hover td { background: var(--green-faint); }
 
-/* SUBSECTIONS */
-.subsections { margin-top: 1.5rem; border-top: 1px solid var(--gray-mid); padding-top: 1rem; }
+/* -- CARD LIST (level-2: subsection list) -- */
+.card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 1.5rem 2rem;
+}
 .subsection-divider {
-    padding: 0.8rem 0 0.3rem;
+    padding: 1.1rem 0 0.35rem;
     font-family: var(--font-ui);
-    font-size: 0.9rem;
-    color: var(--green-dark);
+    font-size: 0.73rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--green-mid);
     border-top: 1px solid var(--gray-mid);
     margin-top: 0.5rem;
 }
-.subsection {
+.subsection-divider:first-child {
+    padding-top: 0;
+    border-top: none;
+    margin-top: 0;
+}
+.sub-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: var(--white);
     border: 1px solid var(--gray-mid);
     border-radius: var(--radius);
-    margin-bottom: 0.75rem;
-    overflow: hidden;
-    transition: box-shadow 0.2s;
-}
-.subsection:hover { box-shadow: var(--shadow-sm); }
-details > summary {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
-    padding: 0.85rem 1.25rem;
     cursor: pointer;
-    background: var(--green-faint);
-    font-family: var(--font-ui);
-    user-select: none;
-    border-left: 3px solid var(--green-light);
-    transition: background 0.2s;
-    list-style: none;
+    transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+    text-align: left;
+    text-decoration: none;
+    color: inherit;
 }
-details > summary::-webkit-details-marker { display: none; }
-details > summary::before {
-    content: '▶';
-    color: var(--green-mid);
-    font-size: 0.65rem;
-    transition: transform 0.2s;
-    flex-shrink: 0;
+.sub-card:hover {
+    border-color: var(--green-light);
+    box-shadow: var(--shadow-card);
+    transform: translateY(-1px);
 }
-details[open] > summary { border-left-color: var(--green-dark); }
-details[open] > summary::before { transform: rotate(90deg); }
-details > summary:hover { background: var(--green-pale); }
+.sub-card-body { flex: 1; min-width: 0; }
 .sub-title {
+    font-family: var(--font-ui);
     font-weight: 700;
-    color: var(--green-dark);
     font-size: 0.97rem;
-}
-.sub-title-wrap {
-    display: flex;
-    flex-direction: column;
-    gap: 0.15rem;
+    color: var(--black);
+    line-height: 1.4;
+    word-break: keep-all;
 }
 .sub-subtitle {
-    color: var(--gray-text);
+    font-family: var(--font-ui);
     font-size: 0.82rem;
-    font-weight: 400;
+    color: var(--gray-text);
+    margin-top: 0.2rem;
+    line-height: 1.5;
 }
-.sub-content {
-    padding: 1.5rem;
-    border-top: 1px solid var(--gray-mid);
-    background: var(--white);
+.sub-card-arrow {
+    color: var(--green-light);
+    font-size: 1rem;
+    flex-shrink: 0;
+    transition: color var(--transition), transform var(--transition);
+}
+.sub-card:hover .sub-card-arrow {
+    color: var(--green-dark);
+    transform: translateX(3px);
 }
 
-/* FOOTER */
+/* -- ARTICLE VIEW (level-3) -- */
+.article-view {
+    background: var(--white);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    animation: fadeUp 0.22s ease both;
+}
+.article-back-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.85rem 1.75rem;
+    background: var(--gray-light);
+    border-bottom: 1px solid var(--gray-mid);
+    font-family: var(--font-ui);
+    font-size: 0.83rem;
+    color: var(--green-dark);
+    cursor: pointer;
+    transition: background var(--transition);
+    user-select: none;
+}
+.article-back-bar:hover { background: var(--green-pale); }
+.article-back-bar .back-arrow { font-size: 1.05rem; }
+.article-header {
+    padding: 2rem 2rem 1.25rem;
+    border-bottom: 1px solid var(--gray-mid);
+}
+.article-kicker {
+    font-family: var(--font-ui);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--green-mid);
+    margin-bottom: 0.5rem;
+}
+.article-title {
+    font-family: var(--font-ui);
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--black);
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+    word-break: keep-all;
+}
+.article-subtitle {
+    font-family: var(--font-ui);
+    font-size: 0.88rem;
+    color: var(--gray-text);
+    margin-top: 0.5rem;
+}
+.article-body {
+    padding: 1.75rem 2rem 2.5rem;
+    overflow-wrap: break-word;
+    word-break: keep-all;
+    max-width: 680px;
+}
+
+/* -- FOOTER -- */
 footer {
     background: var(--green-dark);
-    color: rgba(255,255,255,0.85);
+    color: rgba(255,255,255,0.8);
     padding: 2.5rem 1.5rem 2rem;
     text-align: center;
     font-family: var(--font-ui);
     font-size: 0.85rem;
+    margin-top: 3rem;
 }
 .footer-inner { max-width: var(--max-width); margin: 0 auto; }
 .footer-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 1rem 1.5rem;
     text-align: left;
     margin-bottom: 1.5rem;
@@ -1117,38 +1280,40 @@ footer {
 .footer-item label {
     display: block;
     color: var(--green-pale);
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     font-weight: 700;
     margin-bottom: 0.2rem;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.07em;
 }
 .footer-item span, .footer-item a {
-    color: rgba(255,255,255,0.85);
+    color: rgba(255,255,255,0.8);
     text-decoration: none;
     line-height: 1.6;
+    font-size: 0.85rem;
 }
 .footer-item a:hover { color: var(--green-pale); }
-.footer-divider { border: none; border-top: 1px solid rgba(255,255,255,0.15); margin: 1.25rem 0; }
-.footer-copy { font-size: 0.78rem; opacity: 0.55; }
+.footer-divider { border: none; border-top: 1px solid rgba(255,255,255,0.12); margin: 1.25rem 0; }
+.footer-copy { font-size: 0.77rem; opacity: 0.45; }
 .feedback-box {
-    background: rgba(255,255,255,0.07);
+    background: rgba(255,255,255,0.06);
     border-radius: var(--radius);
     padding: 1rem 1.25rem;
     margin: 0 0 1rem;
-    font-size: 0.85rem;
-    line-height: 1.8;
+    font-size: 0.84rem;
+    line-height: 1.9;
     text-align: left;
+    border: 1px solid rgba(255,255,255,0.1);
 }
 .feedback-box a { color: var(--green-pale); }
-.donation-box { font-size: 0.8rem; opacity: 0.7; margin-bottom: 0.5rem; }
+.donation-box { font-size: 0.79rem; opacity: 0.65; margin-bottom: 0.5rem; }
 
-/* BACK TO TOP */
+/* -- BACK TO TOP -- */
 .back-top {
     position: fixed;
-    bottom: 1.5rem;
-    right: 1.5rem;
-    background: var(--green-mid);
+    bottom: 1.75rem;
+    right: 1.75rem;
+    background: var(--green-dark);
     color: white;
     border-radius: 50%;
     width: 44px;
@@ -1159,96 +1324,98 @@ footer {
     text-decoration: none;
     font-size: 1.1rem;
     box-shadow: var(--shadow-md);
-    transition: background 0.2s, transform 0.2s;
-    opacity: 0.88;
+    transition: background var(--transition), transform var(--transition);
+    opacity: 0.85;
     z-index: 50;
 }
-.back-top:hover { background: var(--green-dark); transform: translateY(-2px); opacity: 1; }
+.back-top:hover { background: var(--green-mid); transform: translateY(-2px); opacity: 1; }
 
-/* RESPONSIVE */
+/* -- RESPONSIVE -- */
 @media (max-width: 640px) {
     .nav-inner {
-        padding: 0.5rem 0.8rem;
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0.3rem;
+        padding: 0 0.75rem;
+        height: 48px;
     }
-    .nav-brand {
-        font-size: 0.85rem;
-        text-align: center;
-        border-bottom: 1px solid rgba(255,255,255,0.15);
-        padding-bottom: 0.4rem;
-    }
-    .toc-list {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 0.2rem;
-    }
-    .toc-list a { font-size: 0.85rem; padding: 0.25rem 0.5rem; }
-    main { padding: 1rem; }
-    .section-header { padding: 1rem 1.25rem 0.75rem; }
-    .section-content { padding: 1rem 1.25rem; }
-    .sub-content { padding: 1rem; }
-    .masthead { padding: 2rem 1rem 1.5rem; }
+    .nav-brand { font-size: 0.72rem; }
+    .toc-list a { font-size: 0.75rem; padding: 0.25rem 0.45rem; }
+    main { padding: 1rem 0.875rem 2rem; }
+    .masthead { padding: 2.5rem 1rem 2rem; }
+    .section-header,
+    .article-header { padding: 1.25rem 1.25rem 1rem; }
+    .section-content,
+    .article-body { padding: 1.25rem 1.25rem 1.75rem; }
+    .card-list { padding: 1rem 1.25rem; }
+    .article-back-bar { padding: 0.75rem 1.25rem; }
     .footer-grid { grid-template-columns: 1fr 1fr; }
+    .section-title { font-size: 1.35rem; }
+    .article-title { font-size: 1.25rem; }
 }
 
 @media print {
-    nav.site-nav, .back-top { display: none; }
+    nav.site-nav, .back-top, .article-back-bar { display: none !important; }
+    .view { display: block !important; }
     .newsletter-section { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
-    details { display: block !important; }
-    details > summary { display: none; }
-    .sub-content { display: block !important; padding: 1rem 0; }
+    .sub-card { page-break-inside: avoid; }
 }
+
 """
 
 # ---------------------------------------------------------------------------
 # JavaScript
 # ---------------------------------------------------------------------------
 INLINE_JS = """
-// Tab-based navigation: show only selected section
+// 3-level drill-down navigation
+// Level 1: top tabs  - view-{id}   (shows section card with card-list or full content)
+// Level 2: card list - article-{sectionId}-{subId}  (shows article view)
+// Level 3: article   - back button returns to level 2
+
+var _currentSection = 'intro';
+
+// Show a level-1 view (section index or intro)
 function showSection(id) {
-  // Hide all sections and intro
-  document.querySelectorAll('.newsletter-section, .intro-section').forEach(s => {
-    s.style.display = 'none';
-  });
-  // Show selected
-  if (id === 'intro') {
-    document.querySelectorAll('.intro-section').forEach(s => s.style.display = 'block');
-  } else {
-    const el = document.getElementById(id);
-    if (el) el.style.display = 'block';
-  }
-  // Update active nav
-  document.querySelectorAll('.toc-list a').forEach(a => a.classList.remove('active'));
-  const activeLink = document.querySelector('.toc-list a[data-section="' + id + '"]');
-  if (activeLink) activeLink.classList.add('active');
-  // Scroll to top
-  window.scrollTo({ top: 0 });
-  // Open first subsection (except for specific sections)
-  if (typeof noAutoOpen === 'undefined' || !noAutoOpen.includes(id)) {
-    const section = document.getElementById(id);
-    if (section) {
-      const firstDetails = section.querySelector('.subsection:first-child details');
-      if (firstDetails) firstDetails.setAttribute('open', '');
-    }
+  document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
+  var view = document.getElementById('view-' + id);
+  if (view) view.classList.add('active');
+  _currentSection = id;
+
+  // Update nav active state
+  document.querySelectorAll('.toc-list a').forEach(function(a) { a.classList.remove('active'); });
+  var link = document.querySelector('.toc-list a[data-section="' + id + '"]');
+  if (link) link.classList.add('active');
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Show a level-3 article within a section
+function showArticle(sectionId, subId) {
+  // Hide the section view
+  document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
+
+  // Show the article view
+  var art = document.getElementById('article-' + sectionId + '-' + subId);
+  if (art) {
+    art.classList.add('active');
+    _currentSection = sectionId;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }
 
+// Back from article to section list
+function backToSection() {
+  showSection(_currentSection);
+}
+
 // Nav click handlers
-document.querySelectorAll('.toc-list a').forEach(a => {
-  a.addEventListener('click', e => {
+document.querySelectorAll('.toc-list a').forEach(function(a) {
+  a.addEventListener('click', function(e) {
     e.preventDefault();
-    const sectionId = a.getAttribute('data-section');
+    var sectionId = a.getAttribute('data-section');
     if (sectionId) showSection(sectionId);
   });
 });
 
 // Show intro by default
 showSection('intro');
-
-// Sections where first toggle should NOT auto-open
-const noAutoOpen = ['member', 'jeju-news', 'campus'];
 """
 
 
@@ -1256,7 +1423,7 @@ const noAutoOpen = ['member', 'jeju-news', 'campus'];
 # Full HTML template
 # ---------------------------------------------------------------------------
 
-def build_html(toc_html, intro_html, sections_html, hero_img_src):
+def build_html(toc_html, intro_html, sections_html, article_views_html, hero_img_src):
     hero = ''
     if hero_img_src:
         hero = f'<div class="masthead-hero-img"><img src="{hero_img_src}" alt="뉴스레터 헤더 이미지"></div>'
@@ -1266,8 +1433,8 @@ def build_html(toc_html, intro_html, sections_html, hero_img_src):
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="{NEWSLETTER_TITLE} {NEWSLETTER_SUBTITLE} — {PUBLICATION_DATE}">
-  <title>{NEWSLETTER_TITLE} — {NEWSLETTER_SUBTITLE}</title>
+  <meta name="description" content="{NEWSLETTER_TITLE} {NEWSLETTER_SUBTITLE} {PUBLICATION_DATE}">
+  <title>{NEWSLETTER_TITLE} | {NEWSLETTER_SUBTITLE}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;900&family=Noto+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
@@ -1286,15 +1453,29 @@ def build_html(toc_html, intro_html, sections_html, hero_img_src):
 <!-- MASTHEAD -->
 <header class="masthead" role="banner">
   <div class="masthead-inner">
+    <div class="masthead-eyebrow">{SINCE} &#183; {NEWSLETTER_SUBTITLE}</div>
     <h1>{NEWSLETTER_TITLE}</h1>
+    <div class="masthead-meta">
+      <span>{PUBLISHER}</span>
+      <span class="dot">&#183;</span>
+      <span>{PUBLICATION_DATE}</span>
+    </div>
     {hero}
   </div>
 </header>
 
-<!-- CONTENT -->
+<!-- CONTENT (all views, JS shows/hides) -->
 <main>
-  {intro_html}
+  <!-- Level 1: Intro -->
+  <div id="view-intro" class="view">
+    {intro_html}
+  </div>
+
+  <!-- Level 1+2: Section views (card list or direct content) -->
   {sections_html}
+
+  <!-- Level 3: Article views -->
+  {article_views_html}
 </main>
 
 <!-- FOOTER -->
@@ -1319,14 +1500,14 @@ def build_html(toc_html, intro_html, sections_html, hero_img_src):
       </div>
       <div class="footer-item">
         <label>카페</label>
-        <a href="{CAFE_URL}" target="_blank" rel="noopener">한국교육학회 제주지회 카페 →</a>
+        <a href="{CAFE_URL}" target="_blank" rel="noopener">한국교육학회 제주지회 카페 &rarr;</a>
       </div>
     </div>
     <hr class="footer-divider">
     <div class="feedback-box">
       이번 뉴스레터 어떠셨나요? 여러분의 생각과 의견을 기다립니다.<br>
       소중한 의견을 메일로 보내주시면 다음 호에 적극 반영하겠습니다.<br>
-      <a href="mailto:{FEEDBACK_EMAIL}">{FEEDBACK_NAME} ✉ {FEEDBACK_EMAIL}</a><br><br>
+      <a href="mailto:{FEEDBACK_EMAIL}">{FEEDBACK_NAME} &#9993; {FEEDBACK_EMAIL}</a><br><br>
       뉴스레터 후원: {DONATION_ACCOUNT}
     </div>
     <hr class="footer-divider">
@@ -1334,7 +1515,7 @@ def build_html(toc_html, intro_html, sections_html, hero_img_src):
   </div>
 </footer>
 
-<a href="#" class="back-top" aria-label="맨 위로">↑</a>
+<a href="#" class="back-top" aria-label="맨 위로">&uarr;</a>
 
 <script>{INLINE_JS}</script>
 </body>
@@ -1351,7 +1532,7 @@ def build_toc():
     for sec in SECTIONS:
         nav_label = sec.get('nav_title', sec['title'])
         items.append(f'<li><a href="#" data-section="{sec["id"]}">{nav_label}</a></li>')
-    return '<ul class="toc-list">' + ''.join(items) + '</ul>'
+    return '<ul class="toc-list"><li><a href="#" data-section="intro">발간사</a></li>' + ''.join(items) + '</ul>'
 
 
 # ---------------------------------------------------------------------------
@@ -1398,9 +1579,13 @@ def build(src_root, out_dir):
     intro_html = build_intro_html(root_md)
 
     sections_parts = []
+    all_article_views = []
     for sec in SECTIONS:
         print(f"    {sec['title']}")
-        sections_parts.append(build_section_html(sec, all_files))
+        sec_view, art_views = build_section_html(sec, all_files)
+        sections_parts.append(sec_view)
+        if art_views:
+            all_article_views.append(art_views)
 
     # Copy images
     print("  Copying images...")
@@ -1410,7 +1595,8 @@ def build(src_root, out_dir):
     toc_html = build_toc()
 
     # Write output
-    html = build_html(toc_html, intro_html, '\n'.join(sections_parts), hero_img_src)
+    html = build_html(toc_html, intro_html, '\n'.join(sections_parts),
+                      '\n'.join(all_article_views), hero_img_src)
     # Post-process: remove any remaining ** markdown bold markers
     html = html.replace('**', '')
     # Fix split titles: H1 followed by a <p> that continues the title
