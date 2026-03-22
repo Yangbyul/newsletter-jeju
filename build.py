@@ -1119,15 +1119,17 @@ main {
     margin: 1rem 0;
 }
 .author-card img {
-    width: 65px !important;
-    height: 65px !important;
-    max-width: 65px !important;
+    width: 60px !important;
+    height: 60px !important;
+    max-width: 60px !important;
     border-radius: 50% !important;
-    object-fit: contain;
-    background: var(--gray-light);
+    object-fit: cover;
+    object-position: center 20%;
     flex-shrink: 0;
     margin: 0 !important;
     box-shadow: 0 2px 8px rgba(0,0,0,.1);
+    padding: 3px;
+    background: var(--gray-mid);
 }
 .author-card .author-info span {
     display: block;
@@ -1562,6 +1564,7 @@ def build_html(toc_html, intro_html, sections_html, article_views_html, hero_img
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="format-detection" content="telephone=no, email=no, address=no">
   <meta name="description" content="{NEWSLETTER_TITLE} {NEWSLETTER_SUBTITLE} {PUBLICATION_DATE}">
   <title>{NEWSLETTER_TITLE} | {NEWSLETTER_SUBTITLE}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
