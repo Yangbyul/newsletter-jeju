@@ -793,7 +793,7 @@ nav.site-nav {
 .nav-brand {
     color: var(--white);
     font-family: var(--font-ui);
-    font-size: 0.78rem;
+    font-size: 0.95rem;
     font-weight: 700;
     white-space: nowrap;
     text-decoration: none;
@@ -816,8 +816,8 @@ nav.site-nav {
     color: rgba(255,255,255,0.7);
     text-decoration: none;
     font-family: var(--font-ui);
-    font-size: 0.8rem;
-    padding: 0.3rem 0.6rem;
+    font-size: 0.92rem;
+    padding: 0.35rem 0.75rem;
     border-radius: 6px;
     transition: background var(--transition), color var(--transition);
     white-space: nowrap;
@@ -1597,7 +1597,7 @@ def build_toc():
     for sec in SECTIONS:
         nav_label = sec.get('nav_title', sec['title'])
         items.append(f'<li><a href="#" data-section="{sec["id"]}">{nav_label}</a></li>')
-    return '<ul class="toc-list"><li><a href="#" data-section="intro">발간사</a></li>' + ''.join(items) + '</ul>'
+    return '<ul class="toc-list">' + ''.join(items) + '</ul>'
 
 
 # ---------------------------------------------------------------------------
