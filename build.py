@@ -1087,6 +1087,20 @@ main {
     font-size: 0.8rem;
 }
 
+/* -- REFERENCE LIST (참고문헌) -- */
+.ref-list {
+    margin: 0.5rem 0 1.5rem 0;
+}
+.ref-list p {
+    padding-left: 2em;
+    text-indent: -2em;
+    margin: 0.35rem 0;
+    font-size: 0.93rem;
+    line-height: 1.75;
+    color: var(--black);
+    word-break: keep-all;
+}
+
 /* -- ASIDE BLOCKS -- */
 .aside-block {
     background: var(--gray-light);
@@ -1640,24 +1654,87 @@ def build(src_root, out_dir):
     # Remove empty paragraphs
     html = re.sub(r'<p>\s*</p>', '', html)
     # Footnotes: convert <code>[N]</code> inline to superscript links,
-    # and <p><code>[N]</code> ... to footnote definitions
-    # Step 1: footnote definitions at bottom of articles
-    def process_footnotes(html_text):
-        # Find footnote definition paragraphs: <p><code>[N]</code> text...</p>
-        fn_pattern = r'<p><code>\[(\d+)\]</code>\s*(.*?)</p>'
-        # Wrap them in a footnote section
+    # and <p><code>[N]</code> text</p> to footnote definitions.
+    # Process each view section separately to avoid duplicate IDs across articles.
+    def process_footnotes(html_text, prefix=''):
+        """Process footnotes in a single article's HTML.
+        prefix: a string to namespace IDs, e.g. 'juron-' → fn-juron-1, fnref-juron-1
+        Rules:
+          - <p><code>[N]</code> SOME TEXT</p>  →  footnote definition (requires non-empty text)
+          - <p><code>[N]</code></p>             →  standalone inline ref (no text = not a def)
+          - <code>[N]</code> anywhere remaining →  inline superscript reference
+        """
+        # Step 1: footnote definitions – only when there is actual text after the number
+        fn_def_pattern = r'<p><code>\[(\d+)\]</code>\s+(.+?)</p>'
         def fn_def_replace(m):
             num = m.group(1)
-            text = m.group(2)
-            return f'<div class="footnote-def" id="fn-{num}"><span class="fn-num">[{num}]</span> {text} <a href="#fnref-{num}" class="fn-back">↩</a></div>'
-        html_text = re.sub(fn_pattern, fn_def_replace, html_text)
-        # Step 2: inline references <code>[N]</code> → superscript link
+            text = m.group(2).strip()
+            pid = f'fn-{prefix}{num}'
+            rid = f'fnref-{prefix}{num}'
+            return (f'<div class="footnote-def" id="{pid}">'
+                    f'<span class="fn-num">[{num}]</span> {text} '
+                    f'<a href="#{rid}" class="fn-back">↩</a></div>')
+        html_text = re.sub(fn_def_pattern, fn_def_replace, html_text, flags=re.DOTALL)
+
+        # Step 2: standalone <p><code>[N]</code></p> (no text) → inline superscript ref
+        fn_standalone_pattern = r'<p>\s*<code>\[(\d+)\]</code>\s*</p>'
+        def fn_standalone_replace(m):
+            num = m.group(1)
+            pid = f'fn-{prefix}{num}'
+            rid = f'fnref-{prefix}{num}'
+            return f'<sup class="fn-ref" id="{rid}"><a href="#{pid}">[{num}]</a></sup>'
+        html_text = re.sub(fn_standalone_pattern, fn_standalone_replace, html_text)
+
+        # Step 3: remaining inline <code>[N]</code> → superscript ref (no duplicate id if already set)
         def fn_ref_replace(m):
             num = m.group(1)
-            return f'<sup class="fn-ref" id="fnref-{num}"><a href="#fn-{num}">[{num}]</a></sup>'
+            pid = f'fn-{prefix}{num}'
+            rid = f'fnref-{prefix}{num}'
+            return f'<sup class="fn-ref" id="{rid}"><a href="#{pid}">[{num}]</a></sup>'
         html_text = re.sub(r'<code>\[(\d+)\]</code>', fn_ref_replace, html_text)
         return html_text
-    html = process_footnotes(html)
+
+    def convert_ref_lists(html_text):
+        """Convert <ul><li>...</li></ul> that immediately follow a 참고문헌 heading
+        into hanging-indent <div class="ref-list"><p>...</p></div> blocks."""
+        html_text = re.sub(
+            r'(<h3[^>]*id="참고문헌"[^>]*>참고문헌</h3>\s*)<ul>(.*?)</ul>',
+            lambda m: m.group(1) + '<div class="ref-list">' + ''.join(
+                f'<p>{item.strip()}</p>'
+                for item in re.findall(r'<li>(.*?)</li>', m.group(2), re.DOTALL)
+            ) + '</div>',
+            html_text, flags=re.DOTALL)
+        return html_text
+
+    # Process each view section's footnotes with a unique prefix to avoid ID collisions
+    def process_all_footnotes(html_text):
+        # Split HTML into view sections and process each separately
+        # Pattern: <div id="view-SECTIONID" ...> ... </div>
+        # We'll find each view's boundaries and process footnotes within each
+        result_parts = []
+        last_end = 0
+        for m in re.finditer(r'<div\s+id="view-([^"]+)"', html_text):
+            prefix = m.group(1) + '-'
+            start = m.start()
+            # Append text before this view unchanged
+            result_parts.append(html_text[last_end:start])
+            # Find the extent of this view's content up to the next top-level view div
+            # We just need to find the matching close; use a simpler heuristic:
+            # process from this view start to the next <div id="view-"> or end
+            next_view = re.search(r'<div\s+id="view-', html_text[m.end():])
+            if next_view:
+                view_end = m.end() + next_view.start()
+            else:
+                view_end = len(html_text)
+            view_html = html_text[start:view_end]
+            view_html = process_footnotes(view_html, prefix)
+            result_parts.append(view_html)
+            last_end = view_end
+        result_parts.append(html_text[last_end:])
+        return ''.join(result_parts)
+
+    html = process_all_footnotes(html)
+    html = convert_ref_lists(html)
     out_path = Path(out_dir) / 'index.html'
     with open(str(out_path), 'w', encoding='utf-8') as f:
         f.write(html)
