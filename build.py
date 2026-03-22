@@ -214,6 +214,8 @@ def convert_aside_content(content, md_file):
         if re.match(r'^-{3,}$', s):
             parts.append('<hr>')
             continue
+        # Strip markdown heading markers
+        s = re.sub(r'^#{1,4}\s+', '', s)
         # Apply inline transformations
         s = apply_inline(s, md_file)
         parts.append(f'<span>{s}</span>')
