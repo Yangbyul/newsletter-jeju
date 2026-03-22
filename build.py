@@ -1765,6 +1765,32 @@ def build(src_root, out_dir):
         r'<span>- 전화번호: ([^<]+)</span>\s*<span>- 이메일:\s*([^<]+)</span>',
         r'<span>- 전화번호: \1 | 이메일: \2</span>', html)
 
+    # 시론 specific fixes:
+    # [1] move to title
+    html = html.replace(
+        '제주도 교육 특별자치, 이제 어드레 가멘?</h2>',
+        '제주도 교육 특별자치, 이제 어드레 가멘?<sup class="fn-ref" id="fnref-siron-1"><a href="#fn-siron-1">[1]</a></sup></h2>')
+    # Remove the standalone [1] that was floating
+    html = re.sub(r'\n<sup class="fn-ref" id="fnref-siron-1">.*?</sup>\n', '\n', html, count=1)
+
+    # [2] extended definition - merge following paragraphs into footnote
+    html = re.sub(
+        r'(</div>)\s*<p>(보고서의 핵심 결론은.*?)</p>\s*<p>(보고서는 개선안으로.*?)</p>',
+        r' \2 \3\1',
+        html, flags=re.DOTALL)
+
+    # [6],[7] in code block - convert to proper refs
+    html = html.replace(
+        '<code>미활용 [6] , 미제정 [7]</code>',
+        '미활용<sup class="fn-ref" id="fnref-siron-6"><a href="#fn-siron-6">[6]</a></sup>, '
+        '미제정<sup class="fn-ref" id="fnref-siron-7"><a href="#fn-siron-7">[7]</a></sup>')
+
+    # [14] in heading - fix backtick remnant
+    html = re.sub(
+        r'(<h3[^>]*>5\. 제주 교육자치 20여 년 궤적에서 어떤 반면교사를 삼을 것인가\?)`\[14\]`</h3>',
+        r'\1<sup class="fn-ref" id="fnref-siron-14"><a href="#fn-siron-14">[14]</a></sup></h3>',
+        html)
+
     out_path = Path(out_dir) / 'index.html'
     with open(str(out_path), 'w', encoding='utf-8') as f:
         f.write(html)
