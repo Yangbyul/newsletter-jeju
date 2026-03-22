@@ -857,14 +857,15 @@ nav.site-nav {
     padding: 1rem 1.5rem 0.5rem;
     background: var(--green-dark);
 }
-.masthead-title {
-    font-family: var(--font-main);
-    font-size: clamp(1.8rem, 5vw, 2.8rem);
-    font-weight: 900;
-    color: var(--white);
-    padding: 1.2rem 1.5rem;
-    letter-spacing: 0.05em;
-    margin: 0;
+.masthead-calligraphy {
+    padding: 0.5rem 1.5rem;
+    text-align: center;
+    background: var(--green-dark);
+}
+.masthead-calligraphy img {
+    max-height: 60px;
+    width: auto;
+    display: inline-block;
 }
 .masthead-hero-img {
     width: 100%;
@@ -1509,11 +1510,11 @@ function showSection(id) {
   var link = document.querySelector('.toc-list a[data-section="' + id + '"]');
   if (link) link.classList.add('active');
 
-  // Show/hide hero banner vs text title
+  // Show/hide hero banner vs calligraphy
   var heroImg = document.querySelector('.masthead-hero-img');
-  var mastheadTitle = document.querySelector('.masthead-title');
+  var calligraphy = document.querySelector('.masthead-calligraphy');
   if (heroImg) heroImg.style.display = (id === 'intro') ? '' : 'none';
-  if (mastheadTitle) mastheadTitle.style.display = (id === 'intro') ? 'none' : 'block';
+  if (calligraphy) calligraphy.style.display = (id === 'intro') ? 'none' : 'block';
 
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -1590,7 +1591,7 @@ def build_html(toc_html, intro_html, sections_html, article_views_html, hero_img
   <div class="masthead-inner">
     <div class="masthead-eyebrow">{SINCE} &#183; {NEWSLETTER_SUBTITLE}</div>
     {hero}
-    <h1 class="masthead-title" style="display:none;">제주교육마루</h1>
+    <div class="masthead-calligraphy" style="display:none;"><img src="images/calligraphy.jpg" alt="제주교육마루"></div>
     <div class="masthead-meta">
       <span>{NEWSLETTER_TITLE}</span>
       <span class="dot">&#183;</span>
