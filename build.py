@@ -1119,12 +1119,12 @@ main {
     margin: 1rem 0;
 }
 .author-card img {
-    width: 80px !important;
-    height: 80px !important;
-    max-width: 80px !important;
+    width: 70px !important;
+    height: 70px !important;
+    max-width: 70px !important;
     border-radius: 50% !important;
     object-fit: cover;
-    object-position: top;
+    object-position: center 20%;
     flex-shrink: 0;
     margin: 0 !important;
     box-shadow: 0 2px 8px rgba(0,0,0,.1);
@@ -1920,6 +1920,20 @@ def build(src_root, out_dir):
     html = html.replace(
         '<span>: 지역사회와의 생태학적 협력체계를 중심으로</span>',
         '<span><strong>: 지역사회와의 생태학적 협력체계를 중심으로</strong></span>')
+
+    # Split single-span author names into name + (소속) on separate lines
+    def split_author_name(m):
+        name_part = m.group(1).replace('<strong>','').replace('</strong>','').strip()
+        # Split at last ( to separate name and affiliation
+        paren_match = re.match(r'(.+?)\s*\((.+)\)', name_part)
+        if paren_match:
+            name = paren_match.group(1).strip()
+            affil = paren_match.group(2).strip()
+            return f'<div class="author-info"><span>{name}</span><span>({affil})</span></div>'
+        return m.group(0)
+    html = re.sub(
+        r'<div class="author-info"><span>(<strong>[^<]+\([^)]+\)[^<]*</strong>)</span></div>',
+        split_author_name, html)
 
     # Fix 제주교육 나침반 split title
     html = re.sub(
