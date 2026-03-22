@@ -1963,6 +1963,19 @@ def build(src_root, out_dir):
         '<span><strong>가입비 겸 연회비</strong>: 30,000 (농협, 302-2028-2520-51, 한국교육학회 제주지회)</span>',
         '<span><strong>가입비 겸 연회비</strong><br>30,000 (농협, 302-2028-2520-51, 이인회)</span>')
 
+    # Fix 생생수업나눔: subtitle → card에는 [수업사례 나눔]만, 글에는 제목 추가
+    html = html.replace(
+        '<div class="sub-subtitle">[수업사례 나눔] 손끝으로 만드는 음악 세상</div>',
+        '<div class="sub-subtitle">[수업사례 나눔]</div>')
+    html = html.replace(
+        '<div class="article-subtitle">[수업사례 나눔] 손끝으로 만드는 음악 세상</div>',
+        '<div class="article-subtitle">[수업사례 나눔]</div>')
+    # Add title before 황현철 author card
+    html = re.sub(
+        r'(교육현장에서 일어나는 교육활동과 실천 사례를 나눕니다\.</p>)\s*(<div class="author-card"><img src="images/4a3a024e)',
+        r'\1\n<h1>손끝으로 만드는 음악 세상</h1>\n\2',
+        html)
+
     # Fix 제주교육 나침반 split title → merge into one heading
     html = re.sub(
         r'<h1[^>]*>제주형 학생맞춤통합지원 체계</h1>\s*<p>구축의 현재와 미래</p>',
