@@ -190,7 +190,21 @@ def parse_table(lines, start_idx):
 
 
 def convert_aside_content(content, md_file):
-    """Convert the raw content inside <aside>...</aside> to HTML spans."""
+    """Convert the raw content inside <aside>...</aside> to HTML spans.
+    If the aside contains a Notion icon (phone_green, feed_green, etc.),
+    render as a small gray subtitle instead of a green aside block.
+    """
+    # Check if this is a Notion icon subtitle aside
+    if 'notion.so/icons/' in content:
+        # Extract just the text, remove icon img tag
+        text = re.sub(r'<img[^>]+/?>', '', content)
+        text = text.strip()
+        # Apply inline (removes ** etc.)
+        text = apply_inline(text, md_file)
+        # Remove leading/trailing whitespace and tags
+        text = re.sub(r'^\s*', '', text)
+        return f'__SUBTITLE__{text}__/SUBTITLE__'
+
     lines = content.strip().split('\n')
     parts = []
     for line in lines:
@@ -268,7 +282,12 @@ def md_to_html(md_text, md_file):
         if in_aside:
             if stripped == '</aside>':
                 aside_html = convert_aside_content('\n'.join(aside_buf), md_file)
-                out.append(f'<div class="aside-block">{aside_html}</div>\n')
+                if '__SUBTITLE__' in aside_html:
+                    # Render as small gray subtitle, not green aside block
+                    text = aside_html.replace('__SUBTITLE__', '').replace('__/SUBTITLE__', '')
+                    out.append(f'<p class="section-desc">{text}</p>\n')
+                else:
+                    out.append(f'<div class="aside-block">{aside_html}</div>\n')
                 in_aside = False
                 aside_buf = []
             else:
@@ -841,6 +860,13 @@ main {
     font-family: var(--font-ui);
     line-height: 1.3;
     word-break: keep-all;
+}
+.section-desc {
+    font-size: 0.85rem;
+    color: #999;
+    font-family: var(--font-ui);
+    margin: 0.3rem 0 1rem;
+    line-height: 1.5;
 }
 .section-subtitle {
     font-family: var(--font-ui);
