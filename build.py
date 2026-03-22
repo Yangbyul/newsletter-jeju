@@ -1947,6 +1947,14 @@ def build(src_root, out_dir):
         r'<div class="author-info"><span>(<strong>[^<]+\([^)]+\)[^<]*</strong>)</span></div>',
         split_author_name, html)
 
+    # Fix 구성원 소개: 회원가입/가입비 줄바꿈 + 계좌 이름 수정
+    html = html.replace(
+        '<span><strong>회원가입</strong>: 언제든지 가능',
+        '<span><strong>회원가입</strong><br>언제든지 가능')
+    html = html.replace(
+        '<span><strong>가입비 겸 연회비</strong>: 30,000 (농협, 302-2028-2520-51, 한국교육학회 제주지회)</span>',
+        '<span><strong>가입비 겸 연회비</strong><br>30,000 (농협, 302-2028-2520-51, 이인회)</span>')
+
     # Fix 제주교육 나침반 split title
     html = re.sub(
         r'<h1[^>]*>제주형 학생맞춤통합지원 체계</h1>\s*<p>구축의 현재와 미래</p>',
