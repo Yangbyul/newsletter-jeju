@@ -1342,13 +1342,17 @@ footer {
     text-transform: uppercase;
     letter-spacing: 0.07em;
 }
-.footer-contact-item a, .footer-contact-item span {
+.footer-contact-item > span {
     color: rgba(255,255,255,0.8);
     font-size: 0.85rem;
     text-decoration: none;
     line-height: 1.6;
-    display: block;
 }
+.footer-contact-item > span a {
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+}
+.footer-contact-item > span a:hover { color: var(--green-pale); }
 .footer-contact-item a:hover { color: var(--green-pale); }
 .footer-divider { border: none; border-top: 1px solid rgba(255,255,255,0.12); margin: 1.25rem 0; }
 .footer-copy { font-size: 0.77rem; opacity: 0.45; }
