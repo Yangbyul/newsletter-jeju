@@ -1061,6 +1061,30 @@ main {
     box-shadow: 0 2px 10px rgba(0,0,0,.12);
 }
 
+/* -- FOOTNOTES -- */
+.fn-ref a {
+    color: var(--green-mid);
+    text-decoration: none;
+    font-weight: 600;
+}
+.fn-ref a:hover { text-decoration: underline; }
+.footnote-def {
+    font-size: 0.85rem;
+    color: var(--gray-text);
+    padding: 0.5rem 0;
+    border-top: 1px solid var(--gray-mid);
+    line-height: 1.6;
+}
+.footnote-def .fn-num {
+    font-weight: 700;
+    color: var(--green-dark);
+}
+.fn-back {
+    color: var(--green-mid);
+    text-decoration: none;
+    font-size: 0.8rem;
+}
+
 /* -- ASIDE BLOCKS -- */
 .aside-block {
     background: var(--gray-light);
@@ -1609,6 +1633,29 @@ def build(src_root, out_dir):
     html = re.sub(
         r'<h1[^>]*>\[수업사례 나눔\]</h1>\s*<p>손끝으로 만드는 음악 세상</p>',
         '', html)
+    # Remove consecutive empty hrs and blank aside blocks
+    html = re.sub(r'(<hr>\s*){2,}', '<hr>', html)
+    # Remove empty paragraphs
+    html = re.sub(r'<p>\s*</p>', '', html)
+    # Footnotes: convert <code>[N]</code> inline to superscript links,
+    # and <p><code>[N]</code> ... to footnote definitions
+    # Step 1: footnote definitions at bottom of articles
+    def process_footnotes(html_text):
+        # Find footnote definition paragraphs: <p><code>[N]</code> text...</p>
+        fn_pattern = r'<p><code>\[(\d+)\]</code>\s*(.*?)</p>'
+        # Wrap them in a footnote section
+        def fn_def_replace(m):
+            num = m.group(1)
+            text = m.group(2)
+            return f'<div class="footnote-def" id="fn-{num}"><span class="fn-num">[{num}]</span> {text} <a href="#fnref-{num}" class="fn-back">↩</a></div>'
+        html_text = re.sub(fn_pattern, fn_def_replace, html_text)
+        # Step 2: inline references <code>[N]</code> → superscript link
+        def fn_ref_replace(m):
+            num = m.group(1)
+            return f'<sup class="fn-ref" id="fnref-{num}"><a href="#fn-{num}">[{num}]</a></sup>'
+        html_text = re.sub(r'<code>\[(\d+)\]</code>', fn_ref_replace, html_text)
+        return html_text
+    html = process_footnotes(html)
     out_path = Path(out_dir) / 'index.html'
     with open(str(out_path), 'w', encoding='utf-8') as f:
         f.write(html)
