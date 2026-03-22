@@ -1563,13 +1563,11 @@ def build_html(toc_html, intro_html, sections_html, article_views_html, hero_img
     </div>
     <hr class="footer-divider">
     <div class="feedback-box">
-      <p style="margin-bottom:1.2rem;">이번 뉴스레터 어떠셨나요? 여러분의 생각과 의견을 기다립니다.<br>
-      소중한 의견을 메일로 보내주시면 다음 호에 적극 반영하겠습니다.</p>
+      <p style="margin-bottom:1.2rem;">이번 뉴스레터 어떠셨나요? 여러분의 생각과 의견을 기다립니다. 소중한 의견을 메일로 보내주시면 다음 호에 적극 반영하겠습니다.</p>
       <div class="footer-contact-grid">
         <div class="footer-contact-item">
           <label>뉴스레터 문의</label>
-          <a href="mailto:{FEEDBACK_EMAIL}">{FEEDBACK_EMAIL}</a>
-          <span>({FEEDBACK_NAME})</span>
+          <span><a href="mailto:{FEEDBACK_EMAIL}">{FEEDBACK_EMAIL}</a> ({FEEDBACK_NAME})</span>
         </div>
         <div class="footer-contact-item">
           <label>뉴스레터 후원</label>
