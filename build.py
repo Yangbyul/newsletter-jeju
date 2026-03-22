@@ -1820,6 +1820,9 @@ def build(src_root, out_dir):
         f'<p class="figure-caption">&lt;표 2&gt; 제주지회 주요 활동 연혁</p>\n{table2_html}\n<p>이를 종합하면',
         html, flags=re.DOTALL)
 
+    # Remove 연구비 수주 description aside block
+    html = re.sub(r'<div class="aside-block">.*?연구 참여가 활성화.*?</div>', '', html, flags=re.DOTALL)
+
     # Fix 구성원 소개: remove blank hrs, 제주지회 구성원 heading, add 임원진 heading
     html = re.sub(r'<h1[^>]*>제주지회 구성원</h1>', '', html)
     html = html.replace(
