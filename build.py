@@ -598,11 +598,11 @@ def build_section_html(section, all_files):
             sub_md = strip_h1(sub_md)
             # Remove specific content lines if requested
             for strip_kw in sub.get('strip_content', []):
-                # Remove aside blocks containing keyword
-                def _remove_aside(text, kw):
+                # Remove only aside blocks containing keyword (not other content)
+                def _remove_aside_only(text, kw):
                     parts = re.split(r'(<aside>.*?</aside>)', text, flags=re.DOTALL)
-                    return ''.join(p for p in parts if kw not in p)
-                sub_md = _remove_aside(sub_md, strip_kw)
+                    return ''.join(p for p in parts if not ('<aside>' in p and kw in p))
+                sub_md = _remove_aside_only(sub_md, strip_kw)
                 # Remove headings containing keyword
                 sub_md = re.sub(r'^#{1,4}\s+.*' + re.escape(strip_kw) + r'.*$', '', sub_md, flags=re.MULTILINE)
             # Remove CSV links
@@ -661,6 +661,8 @@ def build_intro_html(root_md_path):
         parts = re.split(r'(<aside>.*?</aside>)', text, flags=re.DOTALL)
         return ''.join(p for p in parts if not any(kw in p for kw in keywords))
     md = remove_aside_blocks(md, ['cursor-click', 'Since 1993'])
+    # Remove first image (banner duplicate)
+    md = re.sub(r'!\[image\.png\]\([^)]+\)\n?', '', md, count=1)
     content = md_to_html(md, root_md_path)
     return f'''
 <section id="intro" class="newsletter-section intro-section">
