@@ -662,9 +662,14 @@ def build_intro_html(root_md_path):
     def remove_aside_blocks(text, keywords):
         parts = re.split(r'(<aside>.*?</aside>)', text, flags=re.DOTALL)
         return ''.join(p for p in parts if not any(kw in p for kw in keywords))
-    md = remove_aside_blocks(md, ['cursor-click', 'Since 1993'])
+    md = remove_aside_blocks(md, ['cursor-click', 'Since 1993', '발행처', '후원'])
     # Remove first image (banner duplicate)
     md = re.sub(r'!\[image\.png\]\([^)]+\)\n?', '', md, count=1)
+    # Remove footer-like content (cafe link, feedback email, etc.)
+    md = re.sub(r'.*카페 바로가기.*\n?', '', md)
+    md = re.sub(r'.*소중한 의견을 메일로.*\n?', '', md)
+    md = re.sub(r'.*e\.yang@jejunu.*\n?', '', md)
+    md = re.sub(r'.*뉴스레터 어떠셨나요.*\n?', '', md)
     content = md_to_html(md, root_md_path)
     return f'''
 <section id="intro" class="newsletter-section intro-section">
