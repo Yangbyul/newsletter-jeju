@@ -1157,6 +1157,7 @@ main {
 table {
     border-collapse: collapse;
     width: 100%;
+    min-width: 600px;
     font-family: var(--font-ui);
     font-size: 0.88rem;
 }
@@ -1789,10 +1790,17 @@ def build(src_root, out_dir):
     # Remove the standalone [1] that was floating
     html = re.sub(r'\n<sup class="fn-ref" id="fnref-siron-1">.*?</sup>\n', '\n', html, count=1)
 
-    # [2] extended definition - merge following paragraphs into footnote
+    # [2] extended definition - merge following paragraphs into footnote, move ↩ to end
+    def fix_fn2(m):
+        before_back = m.group(1)  # text before ↩ link
+        back_link = m.group(2)    # the ↩ link
+        after_div = m.group(3)    # </div>
+        p1 = m.group(4)           # first continuation paragraph
+        p2 = m.group(5)           # second continuation paragraph
+        return f'{before_back} {p1} {p2} {back_link}{after_div}'
     html = re.sub(
-        r'(</div>)\s*<p>(보고서의 핵심 결론은.*?)</p>\s*<p>(보고서는 개선안으로.*?)</p>',
-        r' \2 \3\1',
+        r'(발전방안이었다\.)\s*(<a href="#fnref-siron-2"[^>]*>↩</a>)(</div>)\s*<p>(보고서의 핵심 결론은.*?)</p>\s*<p>(보고서는 개선안으로.*?)</p>',
+        fix_fn2,
         html, flags=re.DOTALL)
 
     # [6],[7] in code block - convert to proper refs
