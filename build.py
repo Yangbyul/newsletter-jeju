@@ -1820,6 +1820,12 @@ def build(src_root, out_dir):
         f'<p class="figure-caption">&lt;표 2&gt; 제주지회 주요 활동 연혁</p>\n{table2_html}\n<p>이를 종합하면',
         html, flags=re.DOTALL)
 
+    # Fix 구성원 소개: remove blank hrs, 제주지회 구성원 heading, add 임원진 heading
+    html = re.sub(r'<h1[^>]*>제주지회 구성원</h1>', '', html)
+    html = html.replace(
+        '<h3 id="회장">회장</h3>',
+        '<h2 style="margin-top:1.5rem;">임원진</h2>\n<h3 id="회장">회장</h3>')
+
     # Fix 회장 info: merge phone/email spans into one line
     html = re.sub(
         r'<span>- 전화번호: ([^<]+)</span>\s*<span>- 이메일:\s*([^<]+)</span>',
