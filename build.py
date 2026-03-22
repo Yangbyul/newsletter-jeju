@@ -935,6 +935,7 @@ main {
     font-size: 0.93rem;
     color: var(--gray-text);
     line-height: 1.7;
+    word-break: keep-all;
 }
 .aside-block strong { color: var(--green-dark); }
 .aside-block code {
@@ -1254,9 +1255,9 @@ def build_html(toc_html, intro_html, sections_html, hero_img_src):
     <div class="feedback-box">
       이번 뉴스레터 어떠셨나요? 여러분의 생각과 의견을 기다립니다.<br>
       소중한 의견을 메일로 보내주시면 다음 호에 적극 반영하겠습니다.<br>
-      <a href="mailto:{FEEDBACK_EMAIL}">{FEEDBACK_NAME} ✉ {FEEDBACK_EMAIL}</a>
+      <a href="mailto:{FEEDBACK_EMAIL}">{FEEDBACK_NAME} ✉ {FEEDBACK_EMAIL}</a><br><br>
+      뉴스레터 후원: {DONATION_ACCOUNT}
     </div>
-    <div class="donation-box">뉴스레터 후원: {DONATION_ACCOUNT}</div>
     <hr class="footer-divider">
     <p class="footer-copy">&copy; 2025 {PUBLISHER}. All rights reserved.</p>
   </div>
