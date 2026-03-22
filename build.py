@@ -880,12 +880,12 @@ nav.site-nav {
 .masthead-calligraphy {
     background: var(--green-dark);
     text-align: center;
-    padding: 1rem 2rem;
+    padding: 1.5rem 2rem;
 }
 .masthead-calligraphy img {
-    max-height: 80px;
-    max-width: 90%;
-    width: auto;
+    width: 100%;
+    max-width: 500px;
+    height: auto;
     display: inline-block;
 }
 .masthead-hero-img {
