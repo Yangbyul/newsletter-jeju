@@ -458,11 +458,12 @@ SECTIONS = [
         'color': '#2d6a4f',
         'file_key': '',
         'subsections': [
-            {'title': '구성원 소개', 'file_key': '제주지회 활동 소개 237'},
+            {'title': '구성원 소개', 'file_key': '제주지회 활동 소개 237', 'strip_content': ['주요 행사와 운영 계획', '2025 주요 활동', '제주지회 향후 계획']},
+            {'title': '— 2025 주요 활동 —', 'file_key': '', 'is_divider': True},
             {'title': '창립 58주년 기념 강연 (2025.1.24.)', 'file_key': '창립 58주년 기념 강연'},
             {'title': '원도심마을탐방 (2025.4.26.)', 'file_key': '원도심마을탐방'},
             {'title': '2025 임원회의 (2025.9.12.)', 'file_key': '2025 임원회의'},
-            {'title': '— 향후 활동 계획 —', 'file_key': '', 'is_divider': True},
+            {'title': '— 제주지회 향후 계획 —', 'file_key': '', 'is_divider': True},
             {'title': '제주교육학 제4차 공동학술대회', 'file_key': '제주교육학 제 4차 공동학술대회'},
             {'title': '2026년 창립 59주년 학술행사', 'file_key': '2026년 창립 59주년'},
         ]
@@ -576,6 +577,17 @@ def build_section_html(section, all_files):
                 continue
             sub_md = read_md(sub_file)
             sub_md = strip_h1(sub_md)
+            # Remove specific content lines if requested
+            for strip_kw in sub.get('strip_content', []):
+                # Remove aside blocks containing keyword
+                def _remove_aside(text, kw):
+                    parts = re.split(r'(<aside>.*?</aside>)', text, flags=re.DOTALL)
+                    return ''.join(p for p in parts if kw not in p)
+                sub_md = _remove_aside(sub_md, strip_kw)
+                # Remove headings containing keyword
+                sub_md = re.sub(r'^#{1,4}\s+.*' + re.escape(strip_kw) + r'.*$', '', sub_md, flags=re.MULTILINE)
+            # Remove CSV links
+            sub_md = re.sub(r'\[.+?\]\(.+?\.csv\)\n?', '', sub_md)
             meta, sub_md = extract_metadata(sub_md)
             sub_id = slugify(sub_title)
             # Build subtitle from metadata
@@ -828,6 +840,7 @@ main {
     color: var(--green-dark);
     font-family: var(--font-ui);
     line-height: 1.3;
+    word-break: keep-all;
 }
 .section-subtitle {
     font-family: var(--font-ui);
