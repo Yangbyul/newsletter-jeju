@@ -1119,12 +1119,12 @@ main {
     margin: 1rem 0;
 }
 .author-card img {
-    width: 70px !important;
-    height: 70px !important;
-    max-width: 70px !important;
+    width: 65px !important;
+    height: 65px !important;
+    max-width: 65px !important;
     border-radius: 50% !important;
-    object-fit: cover;
-    object-position: center 20%;
+    object-fit: contain;
+    background: var(--gray-light);
     flex-shrink: 0;
     margin: 0 !important;
     box-shadow: 0 2px 8px rgba(0,0,0,.1);
@@ -1753,6 +1753,8 @@ def build(src_root, out_dir):
         '', html)
     # Remove consecutive empty hrs and blank aside blocks
     html = re.sub(r'(<hr>\s*){2,}', '<hr>', html)
+    # Remove leading hr after article-body opening
+    html = re.sub(r'(<div class="article-body">\s*)<hr>\s*', r'\1', html)
     # Remove empty paragraphs and empty blockquotes
     html = re.sub(r'<p>\s*</p>', '', html)
     html = re.sub(r'<blockquote>\s*</blockquote>', '', html)
@@ -1874,6 +1876,10 @@ def build(src_root, out_dir):
 
     # Fix 구성원 소개: remove blank hrs, 제주지회 구성원 heading, add 임원진 heading
     html = re.sub(r'<h1[^>]*>제주지회 구성원</h1>', '', html)
+    # Replace blockquote 70명 with compact text
+    html = html.replace(
+        '<blockquote><strong>제주지회 구성원 : 70명 (2025년 2월 기준)</strong> </blockquote>',
+        '<p style="font-size:0.9rem;color:var(--gray-text);margin:0.5rem 0 1rem;">제주지회 구성원 : 70명 (2025년 2월 기준)</p>')
     html = html.replace(
         '<h3 id="회장">회장</h3>',
         '<h2 style="margin-top:1.5rem;">임원진</h2>\n<h3 id="회장">회장</h3>')
