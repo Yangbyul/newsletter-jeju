@@ -451,10 +451,10 @@ SECTIONS = [
     {
         'id': 'activities',
         'title': '제주지회 활동 소개',
-        'subtitle': '주요 행사와 운영 계획',
-        'icon': '🎯',
+        'subtitle': '',
+        'icon': '',
         'color': '#2d6a4f',
-        'file_key': '제주지회 활동 소개 237',
+        'file_key': '',
         'subsections': [
             {'title': '창립 58주년 기념 강연 (2025.1.24.)', 'file_key': '창립 58주년 기념 강연'},
             {'title': '원도심마을탐방 (2025.4.26.)', 'file_key': '원도심마을탐방'},
@@ -466,10 +466,10 @@ SECTIONS = [
     {
         'id': 'member',
         'title': '회원 동정',
-        'subtitle': '인사 소식, 신간 발간, 연구비 수주',
-        'icon': '👥',
+        'subtitle': '',
+        'icon': '',
         'color': '#40916c',
-        'file_key': '회원 동정 237',
+        'file_key': '',
         'subsections': [
             {'title': '연구비 수주', 'file_key': '연구비 수주'},
             {'title': '회원 신간 안내', 'file_key': '회원 신간 안내'},
@@ -479,10 +479,10 @@ SECTIONS = [
     {
         'id': 'jeju-news',
         'title': '제주교육소식',
-        'subtitle': '제주 교육의 동향과 현장',
-        'icon': '🌿',
+        'subtitle': '',
+        'icon': '',
         'color': '#52b788',
-        'file_key': '제주교육소식 237',
+        'file_key': '',
         'subsections': [
             {'title': '생생 수업 나눔', 'file_key': '생생 수업 나눔'},
             {'title': '교수님의 연구실', 'file_key': '교수님의 연구실'},
@@ -495,10 +495,10 @@ SECTIONS = [
     {
         'id': 'campus',
         'title': '캠퍼스 네트워크',
-        'subtitle': '제주지역 4개 대학 5개 캠퍼스 소식',
-        'icon': '🏫',
+        'subtitle': '',
+        'icon': '',
         'color': '#74c69d',
-        'file_key': '캠퍼스 네트워크 237',
+        'file_key': '',
         'subsections': [
             {'title': '제주한라대학교', 'file_key': '제주한라대학교'},
             {'title': '제주국제대학교', 'file_key': '제주국제대학교'},
@@ -620,7 +620,7 @@ def build_intro_html(root_md_path):
     return f'''
 <section id="intro" class="newsletter-section intro-section">
   <div class="section-header" style="border-left-color:#1a5c35">
-    <span class="section-icon">📰</span>
+    <span class="section-icon"></span>
     <div>
       <h2 class="section-title">발간사</h2>
     </div>
