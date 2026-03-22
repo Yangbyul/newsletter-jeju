@@ -1063,6 +1063,16 @@ main {
     box-shadow: 0 2px 10px rgba(0,0,0,.12);
 }
 
+/* -- FIGURE CAPTIONS -- */
+.figure-caption {
+    font-size: 0.85rem;
+    color: #666;
+    text-align: center;
+    font-family: var(--font-ui);
+    margin: 0.5rem 0 1.5rem;
+    line-height: 1.5;
+}
+
 /* -- FOOTNOTES -- */
 .fn-ref a {
     color: var(--green-mid);
@@ -1735,6 +1745,26 @@ def build(src_root, out_dir):
 
     html = process_all_footnotes(html)
     html = convert_ref_lists(html)
+
+    # Convert all <ul><li> after 저서/논문/연구물 headings to ref-list too
+    html = re.sub(
+        r'(<h3[^>]*>(?:저서|그 외 공저서|논문|정책연구)[^<]*</h3>\s*)<ul>(.*?)</ul>',
+        lambda m: m.group(1) + '<div class="ref-list">' + ''.join(
+            f'<p>{item.strip()}</p>'
+            for item in re.findall(r'<li>(.*?)</li>', m.group(2), re.DOTALL)
+        ) + '</div>',
+        html, flags=re.DOTALL)
+
+    # Convert <code><표 N> ...</code> and <code>[그림 N] ...</code> to caption style
+    html = re.sub(
+        r'<p><code>(&lt;표\s*\d+&gt;[^<]*|<표[^<]*|\[그림\s*\d+\][^<]*)</code></p>',
+        r'<p class="figure-caption">\1</p>', html)
+
+    # Fix 회장 info: merge phone/email spans into one line
+    html = re.sub(
+        r'<span>- 전화번호: ([^<]+)</span>\s*<span>- 이메일:\s*([^<]+)</span>',
+        r'<span>- 전화번호: \1 | 이메일: \2</span>', html)
+
     out_path = Path(out_dir) / 'index.html'
     with open(str(out_path), 'w', encoding='utf-8') as f:
         f.write(html)
