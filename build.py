@@ -2012,6 +2012,23 @@ def build(src_root, out_dir):
         rf'\1{ara_card}\n{sara_card}\2',
         html, count=1)
 
+    # Fix 활동소개 카드: 날짜를 제목에서 부제로 이동, 시간 제거
+    # 창립 58주년 (2025.1.24.) → 제목: 창립 58주년 기념 강연, 부제: 2025.1.24.
+    # Use replace_all for both div and span variants
+    for tag in ['div', 'span']:
+        html = html.replace(
+            f'<{tag} class="sub-title">창립 58주년 기념 강연 (2025.1.24.)</{tag}>',
+            f'<{tag} class="sub-title">창립 58주년 기념 강연</{tag}><{tag} class="sub-subtitle">2025년 1월 24일</{tag}>')
+        html = html.replace(
+            f'<{tag} class="sub-title">원도심마을탐방 (2025.4.26.)</{tag}>',
+            f'<{tag} class="sub-title">원도심마을탐방</{tag}><{tag} class="sub-subtitle">2025년 4월 26일</{tag}>')
+        html = html.replace(
+            f'<{tag} class="sub-title">2025 임원회의 (2025.9.12.)</{tag}>',
+            f'<{tag} class="sub-title">2025 임원회의</{tag}><{tag} class="sub-subtitle">2025년 9월 12일</{tag}>')
+    # 향후 계획: 시간/GMT 제거
+    html = re.sub(r'(2025년 11월 8일)\s*오전.*?\(GMT\+9\)', r'\1', html)
+    html = re.sub(r'(2026년 1월 23일)\s*오후.*?\(GMT\+9\)', r'\1', html)
+
     # Fix 59주년 위원회 표: 3행 삭제, 상임이사 겸임을 연준모 교수 옆에
     html = html.replace(
         '<tr><td>위원장 양은별 교수</td><td>위원장 연준모 교수</td></tr>\n<tr><td>(상임이사 겸임)</td></tr>',
