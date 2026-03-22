@@ -1774,28 +1774,29 @@ def build(src_root, out_dir):
     # Write output
     html = build_html(toc_html, intro_html, '\n'.join(sections_parts),
                       '\n'.join(all_article_views), hero_img_src)
-    # Post-process: remove any remaining ** markdown bold markers
+
+    # -----------------------------------------------------------------------
+    # POST-PROCESSING
+    # Applied after full HTML assembly to fix Notion export artifacts and
+    # improve formatting. Grouped by concern area.
+    # -----------------------------------------------------------------------
+
+    # --- 1. General cleanup (markdown artifacts, empty elements) -----------
+    # Remove any remaining ** markdown bold markers
     html = html.replace('**', '')
-    # Fix split titles: H1 followed by a <p> that continues the title
-    html = re.sub(
-        r'<h1[^>]*>제주교육의 정체성 구현과</h1>\s*<p>제주지회의 활성화</p>',
-        '', html)
-    html = re.sub(
-        r'<h1[^>]*>제주도 교육 특별자치,</h1>\s*<p>이제 어드레 가멘\??</p>',
-        '', html)
-    html = re.sub(
-        r'<h1[^>]*>\[수업사례 나눔\]</h1>\s*<p>손끝으로 만드는 음악 세상</p>',
-        '', html)
-    # Remove consecutive empty hrs and blank aside blocks
-    html = re.sub(r'(<hr>\s*){2,}', '<hr>', html)
-    # Remove leading hr after article-body opening
-    html = re.sub(r'(<div class="article-body">\s*)<hr>\s*', r'\1', html)
     # Remove empty paragraphs and empty blockquotes
     html = re.sub(r'<p>\s*</p>', '', html)
     html = re.sub(r'<blockquote>\s*</blockquote>', '', html)
-    # Footnotes: convert <code>[N]</code> inline to superscript links,
-    # and <p><code>[N]</code> text</p> to footnote definitions.
-    # Process each view section separately to avoid duplicate IDs across articles.
+    # Collapse consecutive <hr> tags into one
+    html = re.sub(r'(<hr>\s*){2,}', '<hr>', html)
+    # Remove leading <hr> immediately after article-body opening
+    html = re.sub(r'(<div class="article-body">\s*)<hr>\s*', r'\1', html)
+
+    # --- 2. Footnote processing --------------------------------------------
+    # Convert <code>[N]</code> markers to superscript links and footnote
+    # definition blocks. Each view section is processed with a unique prefix
+    # to prevent duplicate anchor IDs across articles.
+
     def process_footnotes(html_text, prefix=''):
         """Process footnotes in a single article's HTML.
         prefix: a string to namespace IDs, e.g. 'juron-' → fn-juron-1, fnref-juron-1
@@ -1825,7 +1826,7 @@ def build(src_root, out_dir):
             return f'<sup class="fn-ref" id="{rid}"><a href="#{pid}">[{num}]</a></sup>'
         html_text = re.sub(fn_standalone_pattern, fn_standalone_replace, html_text)
 
-        # Step 3: remaining inline <code>[N]</code> → superscript ref (no duplicate id if already set)
+        # Step 3: remaining inline <code>[N]</code> → superscript ref
         def fn_ref_replace(m):
             num = m.group(1)
             pid = f'fn-{prefix}{num}'
@@ -1834,9 +1835,60 @@ def build(src_root, out_dir):
         html_text = re.sub(r'<code>\[(\d+)\]</code>', fn_ref_replace, html_text)
         return html_text
 
+    def process_all_footnotes(html_text):
+        """Split HTML into view sections and process footnotes in each separately."""
+        result_parts = []
+        last_end = 0
+        for m in re.finditer(r'<div\s+id="view-([^"]+)"', html_text):
+            prefix = m.group(1) + '-'
+            start = m.start()
+            result_parts.append(html_text[last_end:start])
+            next_view = re.search(r'<div\s+id="view-', html_text[m.end():])
+            view_end = m.end() + next_view.start() if next_view else len(html_text)
+            view_html = process_footnotes(html_text[start:view_end], prefix)
+            result_parts.append(view_html)
+            last_end = view_end
+        result_parts.append(html_text[last_end:])
+        return ''.join(result_parts)
+
+    html = process_all_footnotes(html)
+
+    # --- 3. 시론 footnote fixes (article-specific) -------------------------
+    # [1] footnote ref belongs in the section title, not as a standalone element
+    html = html.replace(
+        '제주도 교육 특별자치, 이제 어드레 가멘?</h2>',
+        '제주도 교육 특별자치, 이제 어드레 가멘?<sup class="fn-ref" id="fnref-siron-1"><a href="#fn-siron-1">[1]</a></sup></h2>')
+    html = re.sub(r'\n<sup class="fn-ref" id="fnref-siron-1">.*?</sup>\n', '\n', html, count=1)
+
+    # [2] footnote spans multiple paragraphs – merge continuation paragraphs into definition
+    def fix_fn2(m):
+        before_back = m.group(1)
+        back_link = m.group(2)
+        after_div = m.group(3)
+        p1 = m.group(4)
+        p2 = m.group(5)
+        return f'{before_back} {p1} {p2} {back_link}{after_div}'
+    html = re.sub(
+        r'(발전방안이었다\.)\s*(<a href="#fnref-siron-2"[^>]*>↩</a>)(</div>)\s*<p>(보고서의 핵심 결론은.*?)</p>\s*<p>(보고서는 개선안으로.*?)</p>',
+        fix_fn2, html, flags=re.DOTALL)
+
+    # [6],[7] appeared inside a <code> block – extract as proper inline refs
+    html = html.replace(
+        '<code>미활용 [6] , 미제정 [7]</code>',
+        '미활용<sup class="fn-ref" id="fnref-siron-6"><a href="#fn-siron-6">[6]</a></sup>, '
+        '미제정<sup class="fn-ref" id="fnref-siron-7"><a href="#fn-siron-7">[7]</a></sup>')
+
+    # [14] appeared as backtick in a heading – convert to proper superscript
+    html = re.sub(
+        r'(<h3[^>]*>5\. 제주 교육자치 20여 년 궤적에서 어떤 반면교사를 삼을 것인가\?)`\[14\]`</h3>',
+        r'\1<sup class="fn-ref" id="fnref-siron-14"><a href="#fn-siron-14">[14]</a></sup></h3>',
+        html)
+
+    # --- 4. Reference lists ------------------------------------------------
+    # Convert <ul><li> lists after 참고문헌 headings to hanging-indent ref-list blocks
+
     def convert_ref_lists(html_text):
-        """Convert <ul><li>...</li></ul> that immediately follow a 참고문헌 heading
-        into hanging-indent <div class="ref-list"><p>...</p></div> blocks."""
+        """Convert <ul> after 참고문헌 heading to hanging-indent ref-list div."""
         html_text = re.sub(
             r'(<h3[^>]*id="참고문헌"[^>]*>참고문헌</h3>\s*)<ul>(.*?)</ul>',
             lambda m: m.group(1) + '<div class="ref-list">' + ''.join(
@@ -1846,37 +1898,9 @@ def build(src_root, out_dir):
             html_text, flags=re.DOTALL)
         return html_text
 
-    # Process each view section's footnotes with a unique prefix to avoid ID collisions
-    def process_all_footnotes(html_text):
-        # Split HTML into view sections and process each separately
-        # Pattern: <div id="view-SECTIONID" ...> ... </div>
-        # We'll find each view's boundaries and process footnotes within each
-        result_parts = []
-        last_end = 0
-        for m in re.finditer(r'<div\s+id="view-([^"]+)"', html_text):
-            prefix = m.group(1) + '-'
-            start = m.start()
-            # Append text before this view unchanged
-            result_parts.append(html_text[last_end:start])
-            # Find the extent of this view's content up to the next top-level view div
-            # We just need to find the matching close; use a simpler heuristic:
-            # process from this view start to the next <div id="view-"> or end
-            next_view = re.search(r'<div\s+id="view-', html_text[m.end():])
-            if next_view:
-                view_end = m.end() + next_view.start()
-            else:
-                view_end = len(html_text)
-            view_html = html_text[start:view_end]
-            view_html = process_footnotes(view_html, prefix)
-            result_parts.append(view_html)
-            last_end = view_end
-        result_parts.append(html_text[last_end:])
-        return ''.join(result_parts)
-
-    html = process_all_footnotes(html)
     html = convert_ref_lists(html)
 
-    # Convert all <ul><li> after 저서/논문/연구물 headings to ref-list too
+    # Convert <ul> after 저서/논문/정책연구 headings to ref-list blocks
     html = re.sub(
         r'(<h3[^>]*>(?:저서|그 외 공저서|논문|정책연구)[^<]*</h3>\s*)<ul>(.*?)</ul>',
         lambda m: m.group(1) + '<div class="ref-list">' + ''.join(
@@ -1885,12 +1909,31 @@ def build(src_root, out_dir):
         ) + '</div>',
         html, flags=re.DOTALL)
 
-    # Convert <code><표 N> ...</code> and <code>[그림 N] ...</code> to caption style
+    # --- 5. Figure captions ------------------------------------------------
+    # Convert inline-code table/figure labels to caption-styled paragraphs
     html = re.sub(
         r'<p><code>(&lt;표\s*\d+&gt;[^<]*|<표[^<]*|\[그림\s*\d+\][^<]*)</code></p>',
         r'<p class="figure-caption">\1</p>', html)
 
-    # Fix 주론 <표 2> - replace broken table with correct HTML
+    # --- 6. Split title fixes ----------------------------------------------
+    # Notion sometimes splits long headings across an <h1> and a following <p>.
+    # Remove the duplicated fragments (the real title is already in the section header).
+    html = re.sub(
+        r'<h1[^>]*>제주교육의 정체성 구현과</h1>\s*<p>제주지회의 활성화</p>',
+        '', html)
+    html = re.sub(
+        r'<h1[^>]*>제주도 교육 특별자치,</h1>\s*<p>이제 어드레 가멘\??</p>',
+        '', html)
+    html = re.sub(
+        r'<h1[^>]*>\[수업사례 나눔\]</h1>\s*<p>손끝으로 만드는 음악 세상</p>',
+        '', html)
+    # 제주교육 나침반: split title → merge into one heading
+    html = re.sub(
+        r'<h1[^>]*>제주형 학생맞춤통합지원 체계</h1>\s*<p>구축의 현재와 미래</p>',
+        '<h1>제주형 학생맞춤통합지원 체계 구축의 현재와 미래</h1>', html)
+
+    # --- 7. 주론 <표 2> hardcoded table ------------------------------------
+    # The Notion export breaks this table; replace with correct HTML
     table2_html = '''<div class="table-wrap"><table>
 <thead><tr><th>연대</th><th>주요 활동</th><th>특이 사항</th></tr></thead>
 <tbody>
@@ -1900,77 +1943,30 @@ def build(src_root, out_dir):
 <tr><td>1990년대</td><td>-&lt;한국교육학회 제주지회 소식&gt; 뉴스레터 발간<br>-연구발표지 출간 고려</td><td>-질적 측면 강화<br>-지회 정체성 논의<br>-제주교육대학교 교육대학원 개원</td></tr>
 <tr><td>2000년대</td><td>-2007. 11월. 한국교육학회 연차학술대회 제주 개최<br>-2018. 6월. 한국교육학회 연차학술대회 제주 개최<br>-2023. 6월. 제주지회 활성화 추진, 김민호 신임회장 선출<br>-2023. 12월. 제주교육학 학술대회 공동주관<br>-2024. 11월. 제주교육학 학술대회 공동주관<br>-2025. 1월. 신진학자·정년기념 강연<sup class="fn-ref" id="fnref-juron-1"><a href="#fn-juron-1">[1]</a></sup><br>-2025. 4월. 원도심마을탐방 행사<br>-2025. 10월. 제주지회 뉴스레터 재창간 예정</td><td>-지회활동 장기간 비활성화<br>-제주지회 활성화 추진<br>-지회 조직정비(부회장, 소위원회 등) 및 4대 활동영역 구조화<br>-제주교육학연구회와 협업체제 구축</td></tr>
 </tbody></table></div>'''
-    # Find and replace the broken table section
     html = re.sub(
         r'<p class="figure-caption"><표 2> 제주지회 주요 활동 연혁</p>.*?<p>이를 종합하면',
         f'<p class="figure-caption">&lt;표 2&gt; 제주지회 주요 활동 연혁</p>\n{table2_html}\n<p>이를 종합하면',
         html, flags=re.DOTALL)
 
-    # Remove 연구비 수주 description aside block
-    html = re.sub(r'<div class="aside-block"><span>💡</span>\s*<span>[^<]*연구 참여가 활성화[^<]*</span></div>', '', html)
-
-    # Fix 구성원 소개: remove blank hrs, 제주지회 구성원 heading, add 임원진 heading
-    html = re.sub(r'<h1[^>]*>제주지회 구성원</h1>', '', html)
-    # Replace blockquote 70명 with compact text
-    html = html.replace(
-        '<blockquote><strong>제주지회 구성원 : 70명 (2025년 2월 기준)</strong> </blockquote>',
-        '<p style="font-size:0.9rem;color:var(--gray-text);margin:0.5rem 0 1rem;">제주지회 구성원 : 70명 (2025년 2월 기준)</p>')
-    html = html.replace(
-        '<h3 id="회장">회장</h3>',
-        '<h2 style="margin-top:1.5rem;">임원진</h2>\n<h3 id="회장">회장</h3>')
-
-    # Convert aside blocks with portrait photos to author-card layout
+    # --- 8. Author card fixes ----------------------------------------------
+    # Convert aside blocks containing portrait photos to author-card layout
     def convert_author_cards(html_text):
         def replace_author(m):
             img_tag = m.group(1)
             spans = m.group(2)
-            # Extract span contents
             span_texts = re.findall(r'<span>(.*?)</span>', spans, re.DOTALL)
             info_html = ''.join(f'<span>{s}</span>' for s in span_texts)
             return f'<div class="author-card">{img_tag}<div class="author-info">{info_html}</div></div>'
-        # Match aside-block with portrait image (교수, 선생님, 증명사진, or generic image.png in first span)
         html_text = re.sub(
             r'<div class="aside-block"><span>(<img[^>]*alt="[^"]*(?:교수|선생님|증명|image\.png)[^"]*"[^>]*>)</span>\s*((?:<span>.*?</span>\s*)+)</div>',
             replace_author, html_text, flags=re.DOTALL)
         return html_text
+
     html = convert_author_cards(html)
 
-    # Fix 회원동정 취임 text: merge spans into flowing text
-    html = re.sub(
-        r'<span>제주대학교 교육대학원 교육학과 이인회 교수님께서</span>\s*<span><strong>한국교육학회 제주지회 회장</strong>으로 취임하셨습니다\.</span>\s*<span>\(임기: 2025\.1\.1\.~2026\.12\.31\.\)</span>',
-        '<span>제주대학교 교육대학원 교육학과 이인회 교수님께서 <strong>한국교육학회 제주지회 회장</strong>으로 취임하셨습니다. (임기: 2025.1.1.~2026.12.31.)</span>',
-        html)
-
-    # Fix 신간 안내: merge 저/ and 학지사 lines
-    html = html.replace(
-        '한은정 저/</span>\n<span>학지사/ 2025.04.30. 출간</span>',
-        '한은정 저/ 학지사/ 2025.04.30. 출간</span>')
-
-    # Fix 박사학위논문 bold consistency:
-    # 통일 규칙: 한글 제목 볼드, 영문 제목 일반체, 저자정보 볼드
-    # 1. 영문제목에서 bold 제거 (전체 <strong> 감싸진 경우)
-    html = re.sub(
-        r'<span><strong>\((Experiences of Youth.*?)\)</strong></span>',
-        r'<span>(\1)</span>', html)
-    # 2. <strong>(</strong> 패턴 수정 (볼드 괄호만 있는 경우)
-    html = re.sub(r'<strong>\(</strong>', '(', html)
-    # 3. 장애학생 논문: 한글 제목 볼드로
-    html = html.replace(
-        '<span>장애학생 진로직업교육에 대한 질적 시스템다이내믹스 접근</span>',
-        '<span><strong>장애학생 진로직업교육에 대한 질적 시스템다이내믹스 접근</strong></span>')
-    html = html.replace(
-        '<span>: 지역사회와의 생태학적 협력체계를 중심으로</span>',
-        '<span><strong>: 지역사회와의 생태학적 협력체계를 중심으로</strong></span>')
-
-    # Normalize affiliations: 제주대 → 제주대학교, 한라대 → 제주한라대학교, 국제대 → 제주국제대학교
-    html = html.replace('(제주대)', '(제주대학교)')
-    html = html.replace('(제주한라대)', '(제주한라대학교)')
-    html = html.replace('(국제대)', '(제주국제대학교)')
-
-    # Split single-span author names into name + (소속) on separate lines
+    # Split single-span "이름 (소속)" into separate name + affiliation spans
     def split_author_name(m):
-        name_part = m.group(1).replace('<strong>','').replace('</strong>','').strip()
-        # Split at last ( to separate name and affiliation
+        name_part = m.group(1).replace('<strong>', '').replace('</strong>', '').strip()
         paren_match = re.match(r'(.+?)\s*\((.+)\)', name_part)
         if paren_match:
             name = paren_match.group(1).strip()
@@ -1981,7 +1977,41 @@ def build(src_root, out_dir):
         r'<div class="author-info"><span>(<strong>[^<]+\([^)]+\)[^<]*</strong>)</span></div>',
         split_author_name, html)
 
-    # Fix 구성원 소개: 회원가입/가입비 줄바꿈 + 계좌 이름 수정
+    # Normalize affiliation abbreviations
+    html = html.replace('(제주대)', '(제주대학교)')
+    html = html.replace('(제주한라대)', '(제주한라대학교)')
+    html = html.replace('(국제대)', '(제주국제대학교)')
+
+    # --- 9. 박사학위논문 bold consistency fix (회원동정) --------------------
+    # Rule: Korean title → bold, English title → plain, author info → bold
+    html = re.sub(
+        r'<span><strong>\((Experiences of Youth.*?)\)</strong></span>',
+        r'<span>(\1)</span>', html)
+    html = re.sub(r'<strong>\(</strong>', '(', html)
+    html = html.replace(
+        '<span>장애학생 진로직업교육에 대한 질적 시스템다이내믹스 접근</span>',
+        '<span><strong>장애학생 진로직업교육에 대한 질적 시스템다이내믹스 접근</strong></span>')
+    html = html.replace(
+        '<span>: 지역사회와의 생태학적 협력체계를 중심으로</span>',
+        '<span><strong>: 지역사회와의 생태학적 협력체계를 중심으로</strong></span>')
+
+    # --- 10. Section-specific content fixes --------------------------------
+
+    # 연구비 수주: remove auto-generated description aside block
+    html = re.sub(
+        r'<div class="aside-block"><span>💡</span>\s*<span>[^<]*연구 참여가 활성화[^<]*</span></div>',
+        '', html)
+
+    # 구성원 소개: remove redundant heading, style member count, add 임원진 subheading
+    html = re.sub(r'<h1[^>]*>제주지회 구성원</h1>', '', html)
+    html = html.replace(
+        '<blockquote><strong>제주지회 구성원 : 70명 (2025년 2월 기준)</strong> </blockquote>',
+        '<p style="font-size:0.9rem;color:var(--gray-text);margin:0.5rem 0 1rem;">제주지회 구성원 : 70명 (2025년 2월 기준)</p>')
+    html = html.replace(
+        '<h3 id="회장">회장</h3>',
+        '<h2 style="margin-top:1.5rem;">임원진</h2>\n<h3 id="회장">회장</h3>')
+
+    # 구성원 소개: 회원가입/가입비 line breaks + account name correction
     html = html.replace(
         '<span><strong>회원가입</strong>: 언제든지 가능',
         '<span><strong>회원가입</strong><br>언제든지 가능')
@@ -1989,66 +2019,18 @@ def build(src_root, out_dir):
         '<span><strong>가입비 겸 연회비</strong>: 30,000 (농협, 302-2028-2520-51, 한국교육학회 제주지회)</span>',
         '<span><strong>가입비 겸 연회비</strong><br>30,000 (농협, 302-2028-2520-51, 이인회)</span>')
 
-    # Fix 생생수업나눔: subtitle → card에는 [수업사례 나눔]만, 글에는 제목 추가
-    html = html.replace(
-        '<div class="sub-subtitle">[수업사례 나눔] 손끝으로 만드는 음악 세상</div>',
-        '<div class="sub-subtitle">[수업사례 나눔]</div>')
-    html = html.replace(
-        '<div class="article-subtitle">[수업사례 나눔] 손끝으로 만드는 음악 세상</div>',
-        '<div class="article-subtitle">[수업사례 나눔]</div>')
-    # Add title before 황현철 author card
+    # 회원동정 취임: merge three separate spans into one flowing sentence
     html = re.sub(
-        r'(교육현장에서 일어나는 교육활동과 실천 사례를 나눕니다\.</p>)\s*(<div class="author-card"><img src="images/4a3a024e)',
-        r'\1\n<h1>손끝으로 만드는 음악 세상</h1>\n\2',
+        r'<span>제주대학교 교육대학원 교육학과 이인회 교수님께서</span>\s*<span><strong>한국교육학회 제주지회 회장</strong>으로 취임하셨습니다\.</span>\s*<span>\(임기: 2025\.1\.1\.~2026\.12\.31\.\)</span>',
+        '<span>제주대학교 교육대학원 교육학과 이인회 교수님께서 <strong>한국교육학회 제주지회 회장</strong>으로 취임하셨습니다. (임기: 2025.1.1.~2026.12.31.)</span>',
         html)
 
-    # Fix 제주교육 나침반 split title → merge into one heading
-    html = re.sub(
-        r'<h1[^>]*>제주형 학생맞춤통합지원 체계</h1>\s*<p>구축의 현재와 미래</p>',
-        '<h1>제주형 학생맞춤통합지원 체계 구축의 현재와 미래</h1>', html)
-
-    # Add 아라캠/사라캠 cards to campus card list
-    ara_card = '<button class="sub-card" onclick="showSection(\'campus-ara\')" type="button"><div class="sub-card-content"><div class="sub-title-wrap"><span class="sub-title">제주대학교 아라캠퍼스</span></div></div><span class="sub-card-arrow">&rarr;</span></button>'
-    sara_card = '<button class="sub-card" onclick="showSection(\'campus-sara\')" type="button"><div class="sub-card-content"><div class="sub-title-wrap"><span class="sub-title">제주대학교 사라캠퍼스</span></div></div><span class="sub-card-arrow">&rarr;</span></button>'
-    html = re.sub(
-        r'(</button>)(</div>\s*</div>\s*</div>\s*<div id="view-campus-ara")',
-        rf'\1{ara_card}\n{sara_card}\2',
-        html, count=1)
-
-    # Add back button to 아라캠/사라캠 section views
-    for campus_id in ['campus-ara', 'campus-sara']:
-        html = html.replace(
-            f'<div id="view-{campus_id}" class="view">\n  <div class="newsletter-section">\n    <div class="section-header">',
-            f'<div id="view-{campus_id}" class="view">\n  <div class="newsletter-section">\n    <div class="article-back-bar" onclick="showSection(\'campus\')"><span class="back-arrow">&larr;</span> 캠퍼스 네트워크 목록으로</div>\n    <div class="section-header">')
-
-    # Fix 활동소개 카드: 날짜를 제목에서 부제로 이동, 시간 제거
-    # 창립 58주년 (2025.1.24.) → 제목: 창립 58주년 기념 강연, 부제: 2025.1.24.
-    # Use replace_all for both div and span variants
-    for tag in ['div', 'span']:
-        html = html.replace(
-            f'<{tag} class="sub-title">창립 58주년 기념 강연 (2025.1.24.)</{tag}>',
-            f'<{tag} class="sub-title">창립 58주년 기념 강연</{tag}><{tag} class="sub-subtitle">2025년 1월 24일</{tag}>')
-        html = html.replace(
-            f'<{tag} class="sub-title">원도심마을탐방 (2025.4.26.)</{tag}>',
-            f'<{tag} class="sub-title">원도심마을탐방</{tag}><{tag} class="sub-subtitle">2025년 4월 26일</{tag}>')
-        html = html.replace(
-            f'<{tag} class="sub-title">2025 임원회의 (2025.9.12.)</{tag}>',
-            f'<{tag} class="sub-title">2025 임원회의</{tag}><{tag} class="sub-subtitle">2025년 9월 12일</{tag}>')
-    # 향후 계획: 시간/GMT 제거
-    html = re.sub(r'(2025년 11월 8일)\s*오전.*?\(GMT\+9\)', r'\1', html)
-    html = re.sub(r'(2026년 1월 23일)\s*오후.*?\(GMT\+9\)', r'\1', html)
-
-    # Fix 59주년 위원회 표: 3행 삭제, 상임이사 겸임을 연준모 교수 옆에
+    # 회원동정 신간 안내: merge split publisher line
     html = html.replace(
-        '<tr><td>위원장 양은별 교수</td><td>위원장 연준모 교수</td></tr>\n<tr><td>(상임이사 겸임)</td></tr>',
-        '<tr><td>위원장 양은별 교수</td><td>위원장 연준모 교수 (상임이사 겸임)</td></tr>')
+        '한은정 저/</span>\n<span>학지사/ 2025.04.30. 출간</span>',
+        '한은정 저/ 학지사/ 2025.04.30. 출간</span>')
 
-    # Fix footer address: add line break after 아라캠퍼스
-    html = html.replace(
-        f'<span>{ADDRESS}</span>',
-        f'<span>제주대학교 아라캠퍼스<br>사범대학 2호관 1312호</span>')
-
-    # Fix 회장 info: clean up phone/email display
+    # 회장 info: split combined phone|email span into two separate spans
     html = re.sub(
         r'<span>- 전화번호: ([^<|]+)\|?\s*이메일:\s*([^<]+)</span>',
         r'<span>- 전화번호: \1</span><span>- 이메일: \2</span>', html)
@@ -2056,38 +2038,71 @@ def build(src_root, out_dir):
         r'<span>- 전화번호: ([^<]+)</span>\s*<span>- 이메일:\s*([^<]+)</span>',
         r'<span>- 전화번호: \1</span><span>- 이메일: \2</span>', html)
 
-    # 시론 specific fixes:
-    # [1] move to title
+    # 생생수업나눔: shorten subtitle in card/article header; add article title before author card
     html = html.replace(
-        '제주도 교육 특별자치, 이제 어드레 가멘?</h2>',
-        '제주도 교육 특별자치, 이제 어드레 가멘?<sup class="fn-ref" id="fnref-siron-1"><a href="#fn-siron-1">[1]</a></sup></h2>')
-    # Remove the standalone [1] that was floating
-    html = re.sub(r'\n<sup class="fn-ref" id="fnref-siron-1">.*?</sup>\n', '\n', html, count=1)
-
-    # [2] extended definition - merge following paragraphs into footnote, move ↩ to end
-    def fix_fn2(m):
-        before_back = m.group(1)  # text before ↩ link
-        back_link = m.group(2)    # the ↩ link
-        after_div = m.group(3)    # </div>
-        p1 = m.group(4)           # first continuation paragraph
-        p2 = m.group(5)           # second continuation paragraph
-        return f'{before_back} {p1} {p2} {back_link}{after_div}'
-    html = re.sub(
-        r'(발전방안이었다\.)\s*(<a href="#fnref-siron-2"[^>]*>↩</a>)(</div>)\s*<p>(보고서의 핵심 결론은.*?)</p>\s*<p>(보고서는 개선안으로.*?)</p>',
-        fix_fn2,
-        html, flags=re.DOTALL)
-
-    # [6],[7] in code block - convert to proper refs
+        '<div class="sub-subtitle">[수업사례 나눔] 손끝으로 만드는 음악 세상</div>',
+        '<div class="sub-subtitle">[수업사례 나눔]</div>')
     html = html.replace(
-        '<code>미활용 [6] , 미제정 [7]</code>',
-        '미활용<sup class="fn-ref" id="fnref-siron-6"><a href="#fn-siron-6">[6]</a></sup>, '
-        '미제정<sup class="fn-ref" id="fnref-siron-7"><a href="#fn-siron-7">[7]</a></sup>')
-
-    # [14] in heading - fix backtick remnant
+        '<div class="article-subtitle">[수업사례 나눔] 손끝으로 만드는 음악 세상</div>',
+        '<div class="article-subtitle">[수업사례 나눔]</div>')
     html = re.sub(
-        r'(<h3[^>]*>5\. 제주 교육자치 20여 년 궤적에서 어떤 반면교사를 삼을 것인가\?)`\[14\]`</h3>',
-        r'\1<sup class="fn-ref" id="fnref-siron-14"><a href="#fn-siron-14">[14]</a></sup></h3>',
+        r'(교육현장에서 일어나는 교육활동과 실천 사례를 나눕니다\.</p>)\s*(<div class="author-card"><img src="images/4a3a024e)',
+        r'\1\n<h1>손끝으로 만드는 음악 세상</h1>\n\2',
         html)
+
+    # --- 11. Campus navigation (아라캠퍼스 / 사라캠퍼스) -------------------
+    # These sections are nav-hidden; inject their cards into the campus card list
+    ara_card = ('<button class="sub-card" onclick="showSection(\'campus-ara\')" type="button">'
+                '<div class="sub-card-content"><div class="sub-title-wrap">'
+                '<span class="sub-title">제주대학교 아라캠퍼스</span>'
+                '</div></div><span class="sub-card-arrow">&rarr;</span></button>')
+    sara_card = ('<button class="sub-card" onclick="showSection(\'campus-sara\')" type="button">'
+                 '<div class="sub-card-content"><div class="sub-title-wrap">'
+                 '<span class="sub-title">제주대학교 사라캠퍼스</span>'
+                 '</div></div><span class="sub-card-arrow">&rarr;</span></button>')
+    html = re.sub(
+        r'(</button>)(</div>\s*</div>\s*</div>\s*<div id="view-campus-ara")',
+        rf'\1{ara_card}\n{sara_card}\2',
+        html, count=1)
+
+    # Add back-to-campus-list button at the top of each sub-campus section view
+    for campus_id in ['campus-ara', 'campus-sara']:
+        html = html.replace(
+            f'<div id="view-{campus_id}" class="view">\n  <div class="newsletter-section">\n    <div class="section-header">',
+            f'<div id="view-{campus_id}" class="view">\n  <div class="newsletter-section">\n'
+            f'    <div class="article-back-bar" onclick="showSection(\'campus\')">'
+            f'<span class="back-arrow">&larr;</span> 캠퍼스 네트워크 목록으로</div>\n'
+            f'    <div class="section-header">')
+
+    # --- 12. 활동소개 카드: date formatting --------------------------------
+    # Move parenthesised dates from card titles into subtitle slots;
+    # strip time-of-day and timezone from future event dates.
+    for tag in ['div', 'span']:
+        html = html.replace(
+            f'<{tag} class="sub-title">창립 58주년 기념 강연 (2025.1.24.)</{tag}>',
+            f'<{tag} class="sub-title">창립 58주년 기념 강연</{tag}>'
+            f'<{tag} class="sub-subtitle">2025년 1월 24일</{tag}>')
+        html = html.replace(
+            f'<{tag} class="sub-title">원도심마을탐방 (2025.4.26.)</{tag}>',
+            f'<{tag} class="sub-title">원도심마을탐방</{tag}>'
+            f'<{tag} class="sub-subtitle">2025년 4월 26일</{tag}>')
+        html = html.replace(
+            f'<{tag} class="sub-title">2025 임원회의 (2025.9.12.)</{tag}>',
+            f'<{tag} class="sub-title">2025 임원회의</{tag}>'
+            f'<{tag} class="sub-subtitle">2025년 9월 12일</{tag}>')
+    html = re.sub(r'(2025년 11월 8일)\s*오전.*?\(GMT\+9\)', r'\1', html)
+    html = re.sub(r'(2026년 1월 23일)\s*오후.*?\(GMT\+9\)', r'\1', html)
+
+    # 59주년 committee table: merge orphan "(상임이사 겸임)" row into previous cell
+    html = html.replace(
+        '<tr><td>위원장 양은별 교수</td><td>위원장 연준모 교수</td></tr>\n<tr><td>(상임이사 겸임)</td></tr>',
+        '<tr><td>위원장 양은별 교수</td><td>위원장 연준모 교수 (상임이사 겸임)</td></tr>')
+
+    # --- 13. Footer fixes --------------------------------------------------
+    # Format address with line break between campus name and building
+    html = html.replace(
+        f'<span>{ADDRESS}</span>',
+        f'<span>제주대학교 아라캠퍼스<br>사범대학 2호관 1312호</span>')
 
     out_path = Path(out_dir) / 'index.html'
     with open(str(out_path), 'w', encoding='utf-8') as f:
